@@ -37,6 +37,8 @@ menu:
 search:
   path: search.xml
   field: post
+  format: html
+  limit: 10000
 
 # Enable/Disable menu icons.
 # Icon Mapping:
@@ -84,7 +86,7 @@ font:
   global:
     # external: true will load this font family from host.
     external: true
-    family: Lato
+    family: Monda
 
   # Font settings for Headlines (h1, h2, h3, h4, h5, h6)
   # Fallback to `global` font settings.
@@ -97,6 +99,7 @@ font:
   posts:
     external: true
     family:
+    size: 16px
 
   # Font settings for Logo
   # Fallback to `global` font settings.
@@ -104,7 +107,7 @@ font:
   logo:
     external: true
     family:
-    size:
+    size: 24px
 
   # Font settings for <code> and code blocks.
   codes:
@@ -148,10 +151,10 @@ avatar: /uploads/avatar.jpg
 
 # Table Of Contents in the Sidebar
 toc:
-  enable: false
+  enable: true
 
   # Automatically add list number to toc.
-  number: true
+  number: false
 
 
 # Creative Commons 4.0 International License.
@@ -394,6 +397,9 @@ vendors:
 css: css
 js: js
 images: images
+
+# since
+since: 2014
 
 # Theme version
 version: 5.0.1
