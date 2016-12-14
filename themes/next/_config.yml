@@ -154,7 +154,7 @@ toc:
   enable: true
 
   # Automatically add list number to toc.
-  number: false
+  number: true
 
 
 # Creative Commons 4.0 International License.
@@ -181,11 +181,12 @@ sidebar:
 
 
 # Blogrolls
-#links_title: Links
+links_title: 友情链接
 #links_layout: block
-#links_layout: inline
-#links:
-  #Title: http://example.com/
+links_layout: inline
+links:
+  Hcharts中文网: http://www.hcharts.cn/
+  Hcharts论坛: http://bbs.hcharts.cn/
 
 
 # ---------------------------------------------------------------

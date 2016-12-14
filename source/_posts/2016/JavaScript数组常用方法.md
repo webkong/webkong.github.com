@@ -321,7 +321,7 @@ third call    | 3            | 3     | 3     | [0,1,2,3,4] | 6
 fourth call   | 6            | 4     | 4     | [0,1,2,3,4] | 10
 
 
-### ES6中的方法
+#### ES6中的方法
 
 #### from()
 可以将一个类数组对象或可遍历对象转换成真正的数组。
@@ -372,15 +372,15 @@ thisArg
 
 #### 使用技巧
 
-##### slice()方法复制数组，看前面的例子
+* slice()方法复制数组，看前面的例子
 
-##### push()和pop()可以实现先进后出栈的原理
+* push()和pop()可以实现先进后出栈的原理
 
-##### push()和shift()可以实现先进先出队列的原理
+* push()和shift()可以实现先进先出队列的原理
 
 >后续继续添加
 
-### 参考：
+#### 参考
 
 [MDN-JavaScript标准库](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array)
 [w3school JavaScript Array 对象](http://www.w3school.com.cn/jsref/jsref_obj_array.asp)
