@@ -3,9 +3,9 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: "Share for web technology"
-subtitle: "webkong"
-description: "记录分享工作生活点滴"
+title: "Web控"
+subtitle: "Share For Web Technology - webkong"
+description: "以分享前端知识为主，向全栈"
 author: "webkong"
 language: "zh-Hans"
 timezone:
