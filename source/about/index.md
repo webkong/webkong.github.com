@@ -18,3 +18,9 @@ type: about
 
 > QQ : 772930508
 > Blog : [www.webkong.cn](www.webkong.cn)
+
+**我的开源GitBook**
+
+> CSS命名规范： [https://webkong.gitbooks.io/css-naming-schemes/content/](https://webkong.gitbooks.io/css-naming-schemes/content/)
+
+> Gulp实践：[https://webkong.gitbooks.io/gulp-practices/content/](https://webkong.gitbooks.io/gulp-practices/content/)
