@@ -67,6 +67,13 @@ pagination_dir: page
 ## Themes: https://hexo.io/themes/
 theme: next
 
+#algolia search
+algolia:
+  applicationID: 'U1DOHPTKLP'
+  apiKey: 'e375297fe307ce8640b317ba49785353'
+  adminApiKey: '35bc10d1377f3adee70eb2ffb565bade'
+  indexName: 'webkong'
+  chunkSize: 5000
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
