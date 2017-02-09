@@ -34,11 +34,22 @@ menu:
   tags: /tags
   about: /about
   #commonweal: /404.html
-search:
-  path: search.xml
-  field: post
-  format: html
-  limit: 10000
+# Algolia Search
+algolia_search:
+  enable: true
+  hits:
+    per_page: 10
+  labels:
+    input_placeholder: Search for Posts
+    hits_empty: "没有找到相关内容: ${query}"
+    #hits_stats: "${hits} results found in ${time} ms"
+
+#
+# search:
+#   path: search.xml
+#   field: post
+#   format: html
+#   limit: 10000
 
 # Enable/Disable menu icons.
 # Icon Mapping:

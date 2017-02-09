@@ -12,7 +12,7 @@
 
       {% set display_toc = is_post and theme.toc.enable %}
 
-      {% if display_toc %}
+      {% if display_toc and toc(page.content).length > 1 %}
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
             {{ __('sidebar.toc') }}
@@ -23,7 +23,7 @@
         </ul>
       {% endif %}
 
-      <section class="site-overview sidebar-panel {% if not display_toc %} sidebar-panel-active {% endif %}">
+      <section class="site-overview sidebar-panel{% if not display_toc or toc(page.content).length <= 1 %} sidebar-panel-active{% endif %}">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="{{ url_for( theme.avatar | default(theme.images + '/avatar.gif') ) }}"
@@ -32,12 +32,15 @@
           <p class="site-description motion-element" itemprop="description">{{ theme.description }}</p>
         </div>
         <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="{{ url_for(theme.menu.archives) }}">
-              <span class="site-state-item-count">{{ site.posts.length }}</span>
-              <span class="site-state-item-name">{{ __('state.posts') }}</span>
-            </a>
-          </div>
+        
+          {% if config.archive_dir != '/' %}
+            <div class="site-state-item site-state-posts">
+              <a href="{{ url_for(theme.menu.archives) }}">
+                <span class="site-state-item-count">{{ site.posts.length }}</span>
+                <span class="site-state-item-name">{{ __('state.posts') }}</span>
+              </a>
+            </div>
+          {% endif %}
 
           {% if site.categories.length > 0 %}
             <div class="site-state-item site-state-categories">
@@ -109,23 +112,30 @@
           </div>
         {% endif %}
 
+        {% include '../_custom/sidebar.swig' %}
+
       </section>
 
-      {% if display_toc %}
+      {% if display_toc and toc(page.content).length > 1 %}
+      <!--noindex-->
         <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
           <div class="post-toc">
-            {% if page.toc_number === undefine %}
+
+            {% if page.toc_number === undefined %}
               {% set toc = toc(page.content, { "class": "nav", list_number: theme.toc.number }) %}
             {% else %}
-              {% set toc = toc(page.content, {"class": "nav", list_number: page.toc_number}) %}
+              {% set toc = toc(page.content, { "class": "nav", list_number: page.toc_number }) %}
             {% endif %}
+
             {% if toc.length <= 1 %}
               <p class="post-toc-empty">{{ __('post.toc_empty') }}</p>
             {% else %}
               <div class="post-toc-content">{{ toc }}</div>
             {% endif %}
+
           </div>
         </section>
+      <!--/noindex-->
       {% endif %}
 
     </div>
