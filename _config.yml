@@ -74,6 +74,11 @@ algolia:
   adminApiKey: '35bc10d1377f3adee70eb2ffb565bade'
   indexName: 'webkong'
   chunkSize: 5000
+  fields:
+    - title
+    - slug
+    - path
+    - content:strip
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
