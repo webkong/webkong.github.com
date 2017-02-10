@@ -16,6 +16,10 @@ tags:
 $ git config --global user.name "webkong"
 $ git config --global user.email "webkong@webkong.cn"
 ```
+
+<!-- more -->
+
+
 2.生成密钥
 
 ```
