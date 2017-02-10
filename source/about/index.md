@@ -17,7 +17,7 @@ type: about
 
 
 > QQ : 772930508
-> Blog : [www.webkong.cn](www.webkong.cn)
+> Blog : [http://webkong.cn](#), 2017年02月更改为[http://blog.webkong.cn](http://blog.webkong.cn)
 
 **我的开源GitBook**
 
