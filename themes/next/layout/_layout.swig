@@ -31,7 +31,7 @@
       <div class="main-inner">
         <div class="content-wrap">
           <div id="content" class="content">
-            {% block content %}{% endblock %}          
+            {% block content %}{% endblock %}
           </div>
           {% include '_partials/duoshuo-hot-articles.swig' %}
           {% include '_partials/comments.swig' %}
@@ -45,7 +45,7 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         {% include '_partials/footer.swig' %}
-        {% include '_scripts/third-party/analytics/busuanzi-counter.swig' %}
+        <!-- {% include '_scripts/third-party/analytics/busuanzi-counter.swig' %} -->
         {% block footer %}{% endblock %}
       </div>
     </footer>
