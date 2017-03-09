@@ -6,7 +6,7 @@
 favicon: /favicon.ico
 
 # Set default keywords (Use a comma to separate)
-keywords: "webkong, JavaScript, web, html5, js, css, css3, jquery, nginx, webpack, avalon, es5, angularJs, lua"
+keywords: "webkong, JavaScript, web, html5, js, css, css3, jquery, nginx, webpack, avalon, es5, angularJs, lua, gulp"
 
 # Set rss to false to disable feed link.
 # Leave rss as empty to use site's feed link.
