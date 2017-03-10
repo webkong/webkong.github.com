@@ -42,7 +42,7 @@ menu:
   tags: /tags
   about: /about
   #sitemap: /sitemap.xml
-  commonweal: /404.html
+  #commonweal: /404.html
 
 # sitemap
 sitemap:
