@@ -277,7 +277,7 @@ mathjax:
 #swiftype_key:
 
 # Baidu Analytics ID
-#baidu_analytics:
+baidu_analytics: 8ba11da7b79cc92af224bd3d4d7ed860`
 
 # Duoshuo ShortName
 duoshuo_shortname: webkong
@@ -319,7 +319,7 @@ duoshuo_share: true
 #google_site_verification:
 
 # Google Analytics
-google_analytics: UA-83894204-1
+google_analytics: UA-93765710-1
 
 # Yandex Webmaster tools verification setting
 # See: https://webmaster.yandex.ru/
