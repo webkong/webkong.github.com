@@ -1,10 +1,10 @@
 {
-  "name": "webkong blog",
+  "name": "webkong-blog",
   "version": "2.0.0",
   "description": "webkong's blog",
   "private": true,
   "hexo": {
-    "version": "3.2.2"
+    "version": "3.3.7"
   },
   "dependencies": {
     "hexo": "^3.2.0",

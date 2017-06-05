@@ -43,3 +43,5 @@ db.json
 node_modules
 
 /.vscode
+
+.deploy_git/
