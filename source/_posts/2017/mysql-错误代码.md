@@ -9,6 +9,8 @@ tags:
 - 错误代码
 ---
 
+原文地址 [http://www.cnblogs.com/skillCoding/archive/2011/09/07/2169932.html](http://www.cnblogs.com/skillCoding/archive/2011/09/07/2169932.html)
+
 本章列出了当你用任何主机语言调用MySQL时可能出现的错误。首先列出了服务器错误消息。其次列出了客户端程序消息。
 B.1. 服务器错误代码和消息
 服务器错误信息来自下述源文件：
