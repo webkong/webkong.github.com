@@ -62,6 +62,14 @@ time_format: HH:mm:ss
 per_page: 10
 pagination_dir: page
 
+#baidusitemap
+baidusitemap:
+path: baidusitemap.xml
+
+sitemap:
+    path: sitemap.xml
+    template: ./sitemap_template.xml
+
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
