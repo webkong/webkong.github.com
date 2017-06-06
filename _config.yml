@@ -68,7 +68,6 @@ path: baidusitemap.xml
 
 sitemap:
     path: sitemap.xml
-    template: ./sitemap_template.xml
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/

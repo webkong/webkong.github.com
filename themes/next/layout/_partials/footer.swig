@@ -18,5 +18,7 @@
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
     NexT.{{ theme.scheme }}
   </a>
+&nbsp;  |  &nbsp;
+  Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
 </div>
 {% endif %}
