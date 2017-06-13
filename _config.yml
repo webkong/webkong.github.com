@@ -90,5 +90,6 @@ algolia:
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
+  #repo: https://git.coding.net/webkong/webkong.coding.me.git
   repo: https://github.com/webkong/webkong.github.com.git
   branch: master

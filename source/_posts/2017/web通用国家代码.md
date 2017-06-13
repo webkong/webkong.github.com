@@ -1,7 +1,7 @@
 ---
 layout: "post"
 title: web常用国家代码
-date: 2017年03月16日17:05:52
+date: 2017-03-16 17:05:52
 categories:
 - Other
 tags:
