@@ -1,7 +1,7 @@
 ---
 layout: "post"
 title: Flex弹性布局
-date: 2017年02月10日22:18:00
+date: 2017-02-10 22:18:00
 categories:
 - CSS
 tags:

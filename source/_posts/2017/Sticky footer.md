@@ -1,7 +1,7 @@
 ---
 layout: "post"
 title: Sticky footer
-date: 2017年02月13日15:15:43
+date: 2017-02-13 15:15:43
 categories:
 - CSS
 tags:
