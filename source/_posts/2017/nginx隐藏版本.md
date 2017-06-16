@@ -11,7 +11,11 @@ tags:
 ---
 
 >mark and learn
+
+
 在搭建好了nginx之后，一般会隐藏版本号，避免不必要的麻烦，
+
+<!-- more -->
 ```
 curl -I www.nginx.org
 
@@ -50,8 +54,8 @@ nginx -s reload
 
 如果要隐藏php的版本，“X-Powered-By: PHP/5.2.13” 这个信息
 编辑 `php.ini`配置文件，修改或者加入 expose_php = Off
-再重启php-fpm 
+再重启php-fpm
 
 ```
-/etc/init.d/php-fpm restart 
+/etc/init.d/php-fpm restart
 ```
