@@ -28,7 +28,7 @@ Password changed successfully for user 'admin'
 ### 如果修改不成功可以通过新建来达到目的
 
 ```
-python manage.py createsuperuser root
+python manage.py createsuperuser --username admin
 ```
 
 可以删掉之前的，重新再添加一个。

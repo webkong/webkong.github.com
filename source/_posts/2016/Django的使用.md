@@ -263,7 +263,7 @@ class AdProperties(models.Model):
 
 ```
 
-python manage.py makeigrations //创建迁移文件
+python manage.py makemigrations //创建迁移文件
 
 python manage.py migrate //更新到数据库
 
