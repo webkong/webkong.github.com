@@ -3,7 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: "Web控 - Share For Web Technology"
+title: "webkong - Share For Web Technology"
 subtitle: "Share For Web Technology - 以分享前端知识为主，向全栈迈进"
 description: "以分享前端知识为主，向全栈迈进"
 author: "webkong"
@@ -91,5 +91,5 @@ algolia:
 deploy:
   type: git
   repo: https://git.coding.net/webkong/webkong.coding.me.git
-  #repo: https://github.com/webkong/webkong.github.com.git
+  # repo: https://github.com/webkong/webkong.github.com.git
   branch: master

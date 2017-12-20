@@ -1,6 +1,6 @@
 ---
 layout: "post"
-title: "Git的删除操作"
+title: "git的删除操作"
 date: "2014-09-23 11:24"
 categories:
 - 版本控制
