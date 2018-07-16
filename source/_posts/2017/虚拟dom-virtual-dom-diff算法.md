@@ -64,12 +64,38 @@ diff操作，就是基于解决LCS问题， 也就是说，假设给出两个序
 用js简单实现一个算法：
 
 ```javascript
-let a = ['a','b','c','d','f','g','h','j','q','z'];
-let b = ['a','b','c','d','e','f','g','i','j','k','r','x','y','z'];
+let a1 = ['a', 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'q', 'z', 'k'];
+let b1 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'i', 'j', 'k', 'r', 'x', 'y', 'z'];
 
-let lcs = (a, b) =>{
+let clsQuence = [];
 
+
+function lcs(a, b) {
+    if (a.length > 0 && b.length > 0) {
+        if (a[0] === b[0]) {
+            clsQuence.push(a[0]);
+            a1.shift();
+            b1.shift();
+        } else {
+            let index = b.indexOf(a[0]);
+            if (index > -1) {
+                clsQuence.push(a[0]);
+                a1.shift();
+                b1 = b.slice(index);
+            } else {
+                a1.shift();
+            }
+        }
+        lcs(a1, b1)
+    } else {
+        return;
+    }
 }
+lcs(a1, b1);
+console.log(clsQuence);
+
+
+
 ```
 
 ### 虚拟dom
