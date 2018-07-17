@@ -4,7 +4,7 @@
   "description": "webkong's blog",
   "private": true,
   "hexo": {
-    "version": "3.3.7"
+    "version": "3.7.1"
   },
   "dependencies": {
     "fsevents": "^1.1.2",
