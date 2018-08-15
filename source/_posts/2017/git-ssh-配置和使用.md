@@ -1,6 +1,6 @@
 ---
 layout: "post"
-title: git-ssh 配置和使用
+title: git ssh配置和使用
 date: 2017-01-20 17:17:55
 categories:
 - 版本控制
@@ -47,13 +47,18 @@ ssh-add ~/.ssh/id_rsa
 
 3.多git账号配置
 
+在 `.ssh`新建文件 `config`
+
 ```
-Host *.github.com
-HostName github.com
-IdentityFile ~/.ssh/id_rsa_github
-User webkong
-Host dev
-HostName 192.169.1.1
-IdentityFile ~/.ssh/id_rsa_dev
-User wangsw
+Host github.com //配置host地址
+    HostName github.com
+    User webkong //用户名
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_rsa_github //公钥地址
+
+Host gitlab.webkong.org
+    HostName gitlab.webkong.org
+    User wangsw
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_rsa   
 ```
