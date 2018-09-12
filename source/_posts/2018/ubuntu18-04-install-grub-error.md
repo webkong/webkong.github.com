@@ -1,6 +1,6 @@
 ---
 layout: "post"
-title: "ubuntu18.04 install grub error"
+title: "ubuntu18.04 grub error"
 date: "2018-05-04 11:14"
 author: "webkong"
 categories:
