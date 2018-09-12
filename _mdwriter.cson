@@ -15,7 +15,7 @@
 # - One of: general, html, jekyll, octopress, hexo
 siteEngine: "hexo"
 # Website URL of your blog
-siteUrl: "http://blog.webkong.cn"
+siteUrl: "https://blog.webkong.cn"
 
 # Root directory to your blog
 # - Leave it empty to use the current project path (recommended)

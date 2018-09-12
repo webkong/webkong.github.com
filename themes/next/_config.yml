@@ -567,18 +567,18 @@ needmoreshare2:
 
 # Google Webmaster tools verification setting
 # See: https://www.google.com/webmasters/
-#google_site_verification:
+google_site_verification: 97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs
 
 # Google Analytics
 google_analytics: UA-93765710-1
 
 # Bing Webmaster tools verification setting
 # See: https://www.bing.com/webmaster/
-#bing_site_verification:
+bing_site_verification: BABF339751DEC853F1915E4C3272192A
 
 # Yandex Webmaster tools verification setting
 # See: https://webmaster.yandex.ru/
-#yandex_site_verification:
+yandex_site_verification: eceb5773d0fe4679
 
 # Baidu Webmaster tools verification setting
 # See: https://ziyuan.baidu.com/site/
