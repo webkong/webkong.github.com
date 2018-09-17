@@ -517,8 +517,8 @@ gitment:
   enable: true
   mint: true # RECOMMEND, A mint on Gitment, to support count, language and proxy_gateway
   count: true # Show comments count in post meta area
-  lazy: true # Comments lazy loading with a button
-  cleanly: false # Hide 'Powered by ...' on footer, and more
+  lazy: false # Comments lazy loading with a button
+  cleanly: true # Hide 'Powered by ...' on footer, and more
   language: # Force language, or auto switch by theme
   github_user: webkong # MUST HAVE, Your Github Username
   github_repo: https://github.com/webkong/blog-gitment # MUST HAVE, The name of the repo you use to store Gitment comments
@@ -558,7 +558,7 @@ needmoreshare2:
       position: bottomCenter
       networks: Weibo,Wechat,Douban,QQZone,Twitter,Facebook
   float:
-    enable: falsetrue
+    enable: false
     options:
       iconStyle: box
       boxForm: horizontal
