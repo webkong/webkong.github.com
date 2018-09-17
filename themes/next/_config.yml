@@ -121,10 +121,10 @@ menu:
   about: /about/ || user
   tags: /tags/ || tags
   categories: /categories/ || th
-  # archives: /archives/ || archive
-  #schedule: /schedule/ || calendar
+  archives: /archives/ || archive
+  # schedule: /schedule/ || calendar
   #sitemap: /sitemap.xml || sitemap
-  #commonweal: /404/ || heartbeat
+  # commonweal: /404/ || heartbeat
 
 # Enable/Disable menu icons / item badges.
 menu_settings:
@@ -521,7 +521,7 @@ gitment:
   cleanly: true # Hide 'Powered by ...' on footer, and more
   language: # Force language, or auto switch by theme
   github_user: webkong # MUST HAVE, Your Github Username
-  github_repo: https://github.com/webkong/blog-gitment # MUST HAVE, The name of the repo you use to store Gitment comments
+  github_repo: blog-gitment # MUST HAVE, The name of the repo you use to store Gitment comments
   client_id: 54ecf778fa1a619ba5f7 # MUST HAVE, Github client id for the Gitment
   client_secret: 7fc721167bf96eb27e9edc7307a50fa3a7d12d4a # EITHER this or proxy_gateway, Github access secret token for the Gitment
   proxy_gateway: # Address of api proxy, See: https://github.com/aimingoo/intersect
