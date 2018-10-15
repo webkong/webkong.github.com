@@ -52,23 +52,23 @@ PWA 涉及到从安全、性能和体验等方面的优化，可以考虑以下�
 
 ## 支持程度/覆盖率
 
-![image](http://note.youdao.com/yws/res/40498/1D8087DD37ED4C9CA8FD01708C6A684B)
+![image](../../images/2018/pwa-1.png)
 
-![image](http://note.youdao.com/yws/res/40500/340076E24B774ECBB4A351CE6572B95A)
+![image](../../images/2018/pwa-2.png)
 
-![image](http://note.youdao.com/yws/res/40502/9F3A5E2B239147B38CCFBCA8F8A221F2)
+![image](../../images/2018/pwa-3.png)
 
-![image](http://note.youdao.com/yws/res/40505/DA9318AC71ED4532BAFA0C7DE729E26C)
+![image](../../images/2018/pwa-4.png)
 
-![image](http://note.youdao.com/yws/res/40507/8F035C5619C64C0E85946B7FFA80A30A)
+![image](../../images/2018/pwa-5.png)
 
-![image](http://note.youdao.com/yws/res/40509/AE60C0D5560047DCA5F59151643A5A05)
+![image](../../images/2018/pwa-6.png)
 
-![image](http://note.youdao.com/yws/res/40511/5E5E820F915C4C9BB6A27C31E7726092)
+![image](../../images/2018/pwa-7.png)
 
-![image](http://note.youdao.com/yws/res/40513/8AD68720B1554AAA976961723FEB28E3)
+![image](../../images/2018/pwa-8.png)
 
-![image](http://note.youdao.com/yws/res/40515/D77DDE5B743147AB8468B30A183A23BB)
+![image](../../images/2018/pwa-9.png)
 
 
 ## Service Worker
@@ -220,11 +220,11 @@ navigator.serviceWorker.register('/service-worker.js').then(function (reg) {
 
 
 **示意图**
-![image](http://note.youdao.com/yws/res/40630/WEBRESOURCEb736f7b443c3493dece6ae6d290109af)
+![image](../../images/2018/pwa-10.gif)
 
 每个状态都会有`ing`,进行态。
 
-![image](http://note.youdao.com/yws/res/40725/7CA82BDDB18F44A58E1E34C1E993B6B4)
+![image](../../images/2018/pwa-11.png)
 
 
 
