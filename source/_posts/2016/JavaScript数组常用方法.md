@@ -246,6 +246,26 @@ if (!Array.prototype.indexOf) {
   };
 }
 ```
+#### lastIndexOf()
+
+lastIndexOf() 方法返回指定元素（也即有效的 JavaScript 值或变量）在数组中的最后一个的索引，如果不存在则返回 -1。从数组的后面向前查找，从 fromIndex 处开始。
+
+语法
+```
+arr.lastIndexOf(searchElement[, fromIndex = arr.length - 1])
+```
+
+参数
+  searchElement
+    被查找的元素。
+  fromIndex
+    从此位置开始逆向查找。默认为数组的长度减 1，即整个数组都被查找。如果该值大于或等于数组的长度，则整个数组会被查找。如果为负值，将其视为从数组末尾向前的偏移。即使该值为负，数组仍然会被从后向前查找。如果该值为负时，其绝对值大于数组长度，则方法返回 -1，即数组不会被查找。
+返回值
+  数组中最后一个元素的索引，如未找到返回-1
+
+[https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf)
+
+
 #### isArray()
 方法用来判断某个值是否为Array。如果是，则返回 true，否则返回 false。
 
@@ -267,6 +287,40 @@ callback 被调用时传入三个参数：元素值，元素的索引，原数�
 
 如果为 every 提供一个 thisArg 参数，在该参数为调用 callback 时的 this 值。如果省略该参数，则 callback 被调用时的 this 值，在非严格模式下为全局对象，在严格模式下传入 undefined。
 every 不会改变原数组。
+
+#### same()
+
+some() 方法测试数组中的某些元素是否通过由提供的函数实现的测试。
+对于放在空数组上的任何条件，此方法返回false。
+```
+arr.some(callback[, thisArg])
+```
+参数
+  callback
+    用来测试每个元素的函数，接受三个参数：
+  currentValue
+    数组中正在处理的元素。
+  index 可选
+    数组中正在处理的元素的索引值。
+  array可选
+    some()被调用的数组。
+  thisArg可选
+    执行 callback 时使用的 this 值。
+返回值
+  如果回调函数返回任何数组元素的truthy值，则返回true；否则为false。
+
+```
+  var array = [1, 2, 3, 4, 5];
+
+var even = function(element) {
+  // checks whether an element is even
+  return element % 2 === 0;
+};
+
+console.log(array.some(even));
+// expected output: true
+
+```
 
 #### filter()
 filter() 方法使用指定的函数测试所有元素，并创建一个包含所有通过测试的元素的新数组。
@@ -365,9 +419,33 @@ callback
 thisArg
 可选，指定 callback 的 this 参数。
 
+#### includes()
 
+```
+arr.includes(searchElement)
+arr.includes(searchElement, fromIndex)
+```
+参数说明:
+searchElement : 需要查找的元素值。
 
+fromIndex 可选
+  从该索引处开始查找 searchElement。如果为负值，则按升序从 array.length - fromIndex 的索引开始搜索。默认为 0。
+  返回值节
+返回值  
+  一个 Boolean。
 
+#### key()
+
+keys() 方法返回一个包含数组中每个索引键的Array Iterator对象。
+
+语法
+```
+arr.keys()
+```
+返回值
+  一个新的 Array 迭代器对象。
+
+####
 
 
 #### 使用技巧
