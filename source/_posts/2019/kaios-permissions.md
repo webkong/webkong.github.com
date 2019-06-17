@@ -1,11 +1,11 @@
+---
 layout: "post"
 title: "KaiOS Permissions Table"
 date: "2019-06-17"
 author: "webkong"
 categories:
 - JavaScript
-
-#
+---
 
 KaiOS 权限列表
 
