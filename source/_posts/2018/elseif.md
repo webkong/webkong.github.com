@@ -158,7 +158,7 @@ console.log('swap');
 // this will log:
 
 // "face"
-// "swap
+// "swap"
 ```
 
 
