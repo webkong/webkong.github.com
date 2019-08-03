@@ -16,6 +16,13 @@ tags:
 $ git config --global user.name "webkong"
 $ git config --global user.email "webkong@webkong.cn"
 ```
+如果在多用户情况下，一般设置本地用户
+
+```
+//cd to repo path
+$ git config --local user.name "webkong"
+$ git config --local user.email "webkong@webkong.cn"
+```
 
 <!-- more -->
 
@@ -25,7 +32,7 @@ $ git config --global user.email "webkong@webkong.cn"
 ```
 $ ssh-keygen -t rsa -C "webkong@webkong.cn"  [-f id_rsa_github]
 
-* 可以在后面带生成的文件名， 在配置多git账号的时候使用,以区分不同的密钥文件。
+// -f 后面带生成的文件名， 在配置多git账号的时候使用,以区分不同的密钥文件
 
 然后连续敲3个回车，确认默认设置。
 
@@ -33,21 +40,33 @@ $ ssh-keygen -t rsa -C "webkong@webkong.cn"  [-f id_rsa_github]
 ```
 id_rsa.pub 就是公钥文件，将内容复制出来，添加到私人Git服务器或者是github上。
 
+可以使用 ssh-agent 密钥管理器，将私钥交给ssh-agent来管理和使用
 
-ssh就配置好了。
-
-可以使用 ssh-agent 密钥管理器，将私钥交给ssh-agent来管理，使用
-
+>如果windows系统上传完还是不能使用，就要将ssh加入到agent里面。
 ```
 ssh-agent -s
 ssh-add ~/.ssh/id_rsa
 ```
-添加。
 
+> 如果 执行ssh-add时添加私钥到git中报错Could not open a connection to your authentication agent 
+
+```
+eval `ssh-agent` //执行启动，再执行add操作
+```
+
+```
+ssh-add -l  //查看
+```
+
+> 若途中报错 “Permissions ???? for '/Users/xxx/.ssh/rsa' are too open”的问题，则是该私钥文件权限过高，需要设置其权限
+
+```
+chmod 600 ~/.ssh/rsa
+```
 
 3.多git账号配置
 
-在 `.ssh`新建文件 `config`
+在 `~/.ssh`目录新建文件 `config`
 
 ```
 Host github.com //配置host地址
