@@ -45,3 +45,5 @@ node_modules
 /.vscode
 
 .deploy_git/
+
+.history
