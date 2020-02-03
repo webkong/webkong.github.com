@@ -16,9 +16,11 @@ date: 2020-02-02 12:14:50
 公司的 VPN 需要使用 Cisco Anyconnect 作为客户端来连接，这个客户端在每次连接的时候需都要输入 LDAP 密码来登录。密码很复杂很是麻烦。可以通过 Anyconnect 提供的命令行工具来实现免密登录。经过网上一番搜集，根据
 [https://hiberabyss.github.io/2017/11/27/no-password-anyconnect/](https://hiberabyss.github.io/2017/11/27/no-password-anyconnect/)整理。
 
-
-
 <!-- more -->
+
+# 安装
+
+安装过程不再赘述， 官网自行查看。 [下载地址](https://software.cisco.com/download/home/286281283/type/282364313/release/4.8.02042?i=!pp)
 
 # 通过命令行连接 VPN
 
@@ -64,13 +66,14 @@ VPN 需要知道三个信息：VPN 地址、用户名和密码。 密码是比�
 `security find-generic-password -wl VPN_NAME`
 
 ## 创建连接 VPN 的脚本文件
+
 下面的 shell 脚本文件会从 Keychain Access 工具里获取 VPN 的密码，然后利用 vpn 命令行工具连接 VPN ，最后打开 Anyconnect 客户端的 UI 界面：
 
 ```
 #!/bin/bash
 
 KEYCHAIN_LABEL="VPN_NAME"
-USERNAME=$(whoami)
+USERNAME= "UserName"
 PASSWORD=$(security find-generic-password -wl $KEYCHAIN_LABEL)
 VPN_URL="your.vpn.url"
 VPN_BIN="/opt/cisco/anyconnect/bin/vpn"
@@ -135,7 +138,7 @@ main() {
 main "$*"
 ```
 
-把上面的内容保存到`anyconnect`文件中， 给文件加上执行权限 `chmod +x anyconnect`。现在直接执行 anyconnect就可以连上VPN了。
+把上面的内容保存到`anyconnect`文件中， 给文件加上执行权限 `chmod +x anyconnect`。现在直接执行 anyconnect 就可以连上 VPN 了。
 
 建议文件路径为: `$HOME/bin/anyconnect`。（后面结合 Alfred Workflow 优化效率）。
 
@@ -171,7 +174,7 @@ VPN> connect your.vpn.url
 Username: [your.name] your.name
 
   >> Please enter your password.
-Password: 
+Password:
   >> state: Connecting
   >> notice: Establishing VPN session...
   >> notice: The AnyConnect Downloader is performing update checks...
@@ -188,10 +191,10 @@ Password:
   >> notice: Establishing VPN - Configuring system...
   >> notice: Establishing VPN...
   >> state: Connected
-VPN> 
+VPN>
 [ VPN Connection commands ]
-    connect             disconnect        hosts         stats        
-    state               block             cancel 
+    connect             disconnect        hosts         stats
+    state               block             cancel
 
 [ Misc commands ]
     help                version           exit
@@ -204,7 +207,7 @@ VPN> goodbye...
   >> note: VPN Connection is still active.
 ```
 
-VPN就已经连接成功了。
+VPN 就已经连接成功了。
 
 # 通过 Alfred Workflow 插件来连接
 
@@ -212,9 +215,6 @@ VPN就已经连接成功了。
 
 ![](../images/../../images/2020/vpn-alfred.jpg)
 
-没有任何参数时会连接VPN ，输入参数 s|stop 就会断开 VPN 连接。
-
+没有任何参数时会连接 VPN ，输入参数 s|stop 就会断开 VPN 连接。
 
 ![](../images/../../images/2020/fwvpn_s.jpg)
-
-
