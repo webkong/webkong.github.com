@@ -3,9 +3,8 @@ layout: "post"
 title: "Lua基础-文件库"
 date: "2016-10-08 14:21"
 categories:
-- 服务器端
+  - Lua
 tags:
-- Lua
 ---
 
 # 文件操作
@@ -84,7 +83,7 @@ file:close()
 
 #### io.open \(filename \[, mode\]\)
 
-按指定的模式 mode，打开一个文件名为`filename`的文件，成功则返回文件句柄，失败则返回nil加错误信息。模式：
+按指定的模式 mode，打开一个文件名为`filename`的文件，成功则返回文件句柄，失败则返回 nil 加错误信息。模式：
 
 ![mode](../../images/2016/file_1.png)
 
@@ -92,10 +91,9 @@ file:close()
 
 注意 "w" 和 "wb" 的区别
 
-* “w” 表示文本文件。某些文件系统\(如 Linux 的文件系统\)认为 0x0A 为文本文件的换行符，Windows 的文件系统认为 0x0D0A 为文本文件的换行符。为了兼容其他文件系统（如从 Linux 拷贝来的文件），Windows 的文件系统在写文件时，会在文件中 0x0A 的前面加上 0x0D。使用 “w”，其属性要看所在的平台。
+- “w” 表示文本文件。某些文件系统\(如 Linux 的文件系统\)认为 0x0A 为文本文件的换行符，Windows 的文件系统认为 0x0D0A 为文本文件的换行符。为了兼容其他文件系统（如从 Linux 拷贝来的文件），Windows 的文件系统在写文件时，会在文件中 0x0A 的前面加上 0x0D。使用 “w”，其属性要看所在的平台。
 
-* “wb” 表示二进制文件。文件系统会按纯粹的二进制格式进行写操作，因此也就不存在格式转换的问题。（Linux 文件系统下 “w” 和 “wb” 没有区别）
-
+- “wb” 表示二进制文件。文件系统会按纯粹的二进制格式进行写操作，因此也就不存在格式转换的问题。（Linux 文件系统下 “w” 和 “wb” 没有区别）
 
 #### file:close \(\)
 
@@ -167,9 +165,6 @@ file:close()
 ![buf](../../images/2016/file_4.png)
 
 最后两种模式，size 可以指定缓冲的大小\(按字节\)，忽略 size 将自动调整为最佳的大小。
-
-
-
 
 原文
 [https://moonbingbing.gitbooks.io/openresty-best-practices/content/lua/file.html](https://moonbingbing.gitbooks.io/openresty-best-practices/content/lua/file.html)

@@ -3,17 +3,17 @@ layout: "post"
 title: "git的删除操作"
 date: "2014-09-23 11:24"
 categories:
-- 版本控制
+  - Git
 tags:
-- git
-- 原创
+  - git
+  - 原创
 ---
 
-> 记录一下git的删除回滚类操作
+> 记录一下 git 的删除回滚类操作
 
-***本地库操作***
+**_本地库操作_**
 
-> 场景： 已经commit 但是没有 push
+> 场景： 已经 commit 但是没有 push
 
 ```
 git log
@@ -22,6 +22,7 @@ git log
 git reset --soft commit-id
 //撤销commit操作，保留commit时候改的的代码。
 ```
+
 强制回滚
 
 ```
@@ -29,7 +30,7 @@ git reset --hard commit-id
 //回退到某个版本，并且删除修改的文件
 ```
 
-> 场景： 没有commit，而且是新建的文件或者文件夹，抛弃所有这些修改
+> 场景： 没有 commit，而且是新建的文件或者文件夹，抛弃所有这些修改
 
 ```
 git clean
@@ -38,11 +39,11 @@ git clean
 
 > tips: git 文件的三种状态
 
- 1. untracked 未被git跟踪的文件 (新增文件，未加入到暂存区)
- 2. new files(Changes to be committed) 文件被commit到了暂存区
- 3. modified (Changes not staged for commit) 已经提交过的文件被修改，还未提交到暂存区
+1.  untracked 未被 git 跟踪的文件 (新增文件，未加入到暂存区)
+2.  new files(Changes to be committed) 文件被 commit 到了暂存区
+3.  modified (Changes not staged for commit) 已经提交过的文件被修改，还未提交到暂存区
 
-> 场景： 抛弃所有 modified状态的 文件
+> 场景： 抛弃所有 modified 状态的 文件
 
 ```
 git checkout .  //一定要带点（.）

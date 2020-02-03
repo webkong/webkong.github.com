@@ -2,15 +2,19 @@
 title: Hexo常用命令
 date: 2016-09-08 17:54:00
 categories: Blog
-tags: Hexo
----
-### hexo安装升级
+categories:
+  - Hexo
+
+---### hexo 安装升级
+
 ```
 npm install hexo -g #安装
 npm update hexo -g #升级
 hexo init #初始化
 ```
+
 ### 简写
+
 ```
 hexo n "我的博客" == hexo new "我的博客" #新建文章
 hexo p == hexo publish
@@ -18,6 +22,7 @@ hexo g == hexo generate#生成
 hexo s == hexo server #启动服务预览
 hexo d == hexo deploy#部署
 ```
+
 ### 开启本地服务器
 
 ```
@@ -30,12 +35,14 @@ hexo clean #清除缓存 网页正常情况下可以忽略此条命令
 hexo g #生成静态网页
 hexo d #开始部署
 ```
+
 ### 监视文件变动
 
 ```
 hexo generate #使用 Hexo 生成静态文件快速而且简单
 hexo generate --watch #监视文件变动
 ```
+
 ### 完成后部署
 
 ```
@@ -45,11 +52,13 @@ hexo deploy --generate
 hexo deploy -g
 hexo server -g
 ```
+
 ### 发布草稿
 
 ```
 hexo publish [layout] <title>
 ```
+
 ### 模版
 
 ```

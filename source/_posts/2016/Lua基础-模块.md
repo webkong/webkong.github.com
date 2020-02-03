@@ -3,9 +3,8 @@ layout: "post"
 title: "Lua基础-模块"
 date: "2016-09-29 16:24"
 categories:
-- 服务器端
+  - Lua
 tags:
-- Lua
 ---
 
 从 Lua 5.1 语言添加了对模块和包的支持。一个 Lua 模块的数据结构是用一个 Lua 值（通常是一个 Lua 表或者 Lua 函数）。一个 Lua 模块代码就是一个会返回这个 Lua 值的代码块。 可以使用内建函数 require() 来加载和缓存模块。简单的说，一个代码模块就是一个程序库，可以通过 require 来加载。模块加载后的结果通过是一个 Lua table，这个表就像是一个命名空间，其内容就是模块中导出的所有东西，比如函数和变量。require 函数会返回 Lua 模块加载后的结果，即用于表示该 Lua 模块的 Lua 值。
@@ -39,9 +38,6 @@ fp.greeting()     -->output: hello Lucy
 
 注：对于需要导出给外部使用的公共模块，处于安全考虑，是要避免全局变量的出现。我们可以使用 lua-releng 工具完成全局变量的检测，具体参考 lua 的 局部变量 章节。
 
-
-
-
-
 #### 原文
+
 [https://moonbingbing.gitbooks.io/openresty-best-practices/content/lua/module.html](https://moonbingbing.gitbooks.io/openresty-best-practices/content/lua/module.html)
