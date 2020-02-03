@@ -8,7 +8,7 @@ subtitle: "Share For Web Technology - 以分享前端知识为主，向全栈迈
 description: "以分享前端知识为主，向全栈迈进"
 author: "webkong"
 language: "zh-Hans"
-timezone:
+timezone: Asia/Shanghai
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
@@ -27,7 +27,7 @@ category_dir: categories
 about_dir: about
 code_dir: downloads/code
 i18n_dir: :lang
-skip_render: 'demo/*'
+skip_render: "demo/*"
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -68,8 +68,8 @@ path: baidusitemap.xml
 
 #Plugins
 sitemap:
-    path: sitemap.xml
-    template: ./template/sitemap.xml
+  path: sitemap.xml
+  template: ./template/sitemap.xml
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
@@ -88,7 +88,7 @@ theme: next
 #     - slug
 #     - path
 #     - content:strip
-# local search 
+# local search
 search:
   path: search.xml
   field: post
