@@ -1,11 +1,11 @@
 ---
 title: Hexo常用命令
 date: 2016-09-08 17:54:00
-categories: Blog
 categories:
-  - Hexo
+  - DevOps
+---
 
----### hexo 安装升级
+### hexo 安装升级
 
 ```
 npm install hexo -g #安装

@@ -7,7 +7,7 @@ title: "WebKong"
 subtitle: "Share For Web Technology - 以分享前端知识为主，向全栈迈进"
 description: "以分享前端知识为主，向全栈迈进"
 author: "webkong"
-language: "zh-Hans"
+language: en
 timezone: Asia/Shanghai
 
 # URL
@@ -15,7 +15,7 @@ timezone: Asia/Shanghai
 url: https//blog.webkong.cn
 #url: http://webkong.github.io
 root: /
-permalink: :title/
+permalink: :post_title/
 permalink_defaults:
 
 # Directory
@@ -99,5 +99,5 @@ search:
 deploy:
   type: git
   # repo: https://git.coding.net/webkong/webkong.coding.me.git
-  repo: https://github.com/webkong/webkong.github.com.git
+  repo: git@github.com:webkong/webkong.github.com.git
   branch: master
