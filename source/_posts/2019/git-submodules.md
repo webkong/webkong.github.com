@@ -4,19 +4,22 @@ title: "git子模块的管理和使用"
 date: "2019-08-17"
 author: "webkong"
 categories:
-- Git
+  - Git
+tags:
+  - git子模块
 ---
 
 > 备忘速查
->git子模块的管理和使用
-
+> git 子模块的管理和使用
 
 ## 添加子模块
 
 ```
 git submodule add https://github.com/webkong/baby.git baby
 ```
+
 <!-- more -->
+
 ## 查看子模块
 
 ```

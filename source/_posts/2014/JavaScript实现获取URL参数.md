@@ -2,17 +2,18 @@
 title: JavaScript实现获取URL参数
 date: 2014-12-10 18:43:20
 categories:
-- JavaScript
+  - JavaScript
 tags:
-- JavaScript
-- URL参数
-- 原创
+  - JavaScript
+  - URL参数
+  - 原创
 ---
->通过JavaScript来获取url上携带的参数
 
-  假设url="http://xxx.com.cn?name=webkong&age=23&sex=男"
+> 通过 JavaScript 来获取 url 上携带的参数
 
->第一种，直接js函数，截取url，拼装成对象
+假设 url="http://xxx.com.cn?name=webkong&age=23&sex=男"
+
+> 第一种，直接 js 函数，截取 url，拼装成对象
 
 ```
 function GET(){
@@ -39,7 +40,7 @@ var getParam = GET(); //通过变量保存参数对象
 }
 ```
 
->和第一种逻辑过程一样，只是结果是对象本身
+> 和第一种逻辑过程一样，只是结果是对象本身
 
 ```
 var $_GET = (function(){
@@ -61,7 +62,7 @@ var $_GET = (function(){
 // 使用时, 可以直接 $_GET['name'], 就直接获得name值
 ```
 
->第二种，通过正则来匹配
+> 第二种，通过正则来匹配
 
 ```
 //通过传递参数来获取url上的某一个参数值
@@ -74,7 +75,7 @@ function GET(name){
 //调用 GET('name');
 ```
 
->或者扩展成jQuery
+> 或者扩展成 jQuery
 
 ```
 (function($){
@@ -88,5 +89,4 @@ function GET(name){
 
 ```
 
-
->大概有这4种封装方式，可以任意搭配封装方式和逻辑代码
+> 大概有这 4 种封装方式，可以任意搭配封装方式和逻辑代码

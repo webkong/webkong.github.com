@@ -6,6 +6,7 @@ categories:
   - JavaScript
 tags:
   - PWA
+  - 渐进式Web应用
 date: 2018-09-11 18:15:10
 ---
 
@@ -17,25 +18,25 @@ PWA 能做到原生应用的体验不是靠特指某一项技术，而是经过�
 
 技术依赖:
 
-* Service Worker
-* Web storage（IndexedDB, Caches）
-* Fetch
-* Promises
+- Service Worker
+- Web storage（IndexedDB, Caches）
+- Fetch
+- Promises
 
 <!-- more -->
 
 ## PWA advantages
 
-PWA应用应该是：
+PWA 应用应该是：
 
-* discoverable 可发现, 可以被识别为应用程序，通过搜索引擎容易找到
-* installable 可安装，可用于移动设备，添加到用户主屏幕
-* linkable 可连接 通过URL共享，无需复杂安装
-* network independent 网络独立 可工作在离线或者低速的网络环境
-* progressive 渐进增强 适用于所有用户，支持的浏览器可以体验更好，不支持的浏览器访问不会邮到影响
-* re-engageable 再参与 通过提醒，让用户容易进行参与
-* responsive 响应式 适合任何形式的设备
-* safe 安全 内容传递机制可以防止监听，并保证内容不被篡改
+- discoverable 可发现, 可以被识别为应用程序，通过搜索引擎容易找到
+- installable 可安装，可用于移动设备，添加到用户主屏幕
+- linkable 可连接 通过 URL 共享，无需复杂安装
+- network independent 网络独立 可工作在离线或者低速的网络环境
+- progressive 渐进增强 适用于所有用户，支持的浏览器可以体验更好，不支持的浏览器访问不会邮到影响
+- re-engageable 再参与 通过提醒，让用户容易进行参与
+- responsive 响应式 适合任何形式的设备
+- safe 安全 内容传递机制可以防止监听，并保证内容不被篡改
 
 [Progressive web app advantages](https://developer.mozilla.org/en-US/docs/Web/Apps/Progressive/Advantages). To find out how to implement PWAs, consult the guides listed in the below section.
 
@@ -44,11 +45,10 @@ PWA应用应该是：
 强调是渐进式的，改造过程中可以逐步进行，降低站点的改造成本，新技术支持程度不完整，跟着新技术逐步进化。
 PWA 涉及到从安全、性能和体验等方面的优化，可以考虑以下步骤：
 
-
-* 第一步，应该是安全，将全站 HTTPS 化，因为这是 PWA 的基础，没有 HTTPS，就没有 Service Worker
-* 第二步，应该是 Service Worker 来提升基础性能，离线提供静态文件，把用户首屏体验提升上来
-* 第三步，App Manifest，这一步可以和第二步同时进行
-* 后续，再考虑其他的特性，离线消息推送等
+- 第一步，应该是安全，将全站 HTTPS 化，因为这是 PWA 的基础，没有 HTTPS，就没有 Service Worker
+- 第二步，应该是 Service Worker 来提升基础性能，离线提供静态文件，把用户首屏体验提升上来
+- 第三步，App Manifest，这一步可以和第二步同时进行
+- 后续，再考虑其他的特性，离线消息推送等
 
 ## 支持程度/覆盖率
 
@@ -70,35 +70,32 @@ PWA 涉及到从安全、性能和体验等方面的优化，可以考虑以下�
 
 ![image](../../images/2018/pwa-9.png)
 
-
 ## Service Worker
 
-Service Worker，是一个浏览器和network之间的代理，解决的是如何缓存页面的资产和如果在脱机状态下仍然正常工作的问题。独立于当前网页进程，有自己独立的 worker context，没有对于DOM的访问权限，与传统的API不同，它是非阻塞的，并基于promise方法在就绪时返回结果。它不但只是离线能力，还有消息通知、添加桌面图标等功能。
+Service Worker，是一个浏览器和 network 之间的代理，解决的是如何缓存页面的资产和如果在脱机状态下仍然正常工作的问题。独立于当前网页进程，有自己独立的 worker context，没有对于 DOM 的访问权限，与传统的 API 不同，它是非阻塞的，并基于 promise 方法在就绪时返回结果。它不但只是离线能力，还有消息通知、添加桌面图标等功能。
 
 ### 前提条件
 
-* HTTPS， 由于 Service Worker 要求 HTTPS 的环境，我们可以借助 github page 进行学习调试。一般浏览器允许调试 Service Worker 的时候 host 为 localhost。
-* Service Worker 的缓存机制是依赖 [Cache API](https://developer.mozilla.org/zh-CN/docs/Web/API/Cach)实现的
-* 依赖 [HTML5 fetch API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API)
-* 依赖 [Promise](https://developer.mozilla.org/zh-CN/docs/Web/javaScript/Reference/Global_Objects/Promise) 实现
-
+- HTTPS， 由于 Service Worker 要求 HTTPS 的环境，我们可以借助 github page 进行学习调试。一般浏览器允许调试 Service Worker 的时候 host 为 localhost。
+- Service Worker 的缓存机制是依赖 [Cache API](https://developer.mozilla.org/zh-CN/docs/Web/API/Cach)实现的
+- 依赖 [HTML5 fetch API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API)
+- 依赖 [Promise](https://developer.mozilla.org/zh-CN/docs/Web/javaScript/Reference/Global_Objects/Promise) 实现
 
 ### Lifecycle
 
 A more detailed introduction to[ The Service Worker Lifecycle](https://developers.google.com/web/fundamentals/primers/service-workers/lifecycle)
 
-
 A service worker goes through three steps in its lifecycle:
 
-* Registration 注册
-* Installation 安装
-* Activation 激活
+- Registration 注册
+- Installation 安装
+- Activation 激活
 
 #### 1. 注册
 
-在install Server Worker之前，要在主进程JavaScript代码里面注册它，注册是为了告诉浏览器我们的Servic e Worker文件是哪个，然后在后台，Service Worker就开始安装激活。
+在 install Server Worker 之前，要在主进程 JavaScript 代码里面注册它，注册是为了告诉浏览器我们的 Servic e Worker 文件是哪个，然后在后台，Service Worker 就开始安装激活。
 
->注册代码可以放到html文件的`<script></script>`标签中，也可以单独放到`main.js`文件在引入html文件中。
+> 注册代码可以放到 html 文件的`<script></script>`标签中，也可以单独放到`main.js`文件在引入 html 文件中。
 
 ```JavaScript
 if ('serviceWorker' in navigator) {
@@ -111,29 +108,30 @@ if ('serviceWorker' in navigator) {
   });
 }
 ```
-代码中，先检测是浏览器是不是支持Service Worker，如果支持，就用`navigator.serviceWorker.register`注册，如果成功，就会在promise的 `.then` 里面得到`registration`.
 
-service-worker.js文件就是我们要编写Service Worker功能的文件。
+代码中，先检测是浏览器是不是支持 Service Worker，如果支持，就用`navigator.serviceWorker.register`注册，如果成功，就会在 promise 的 `.then` 里面得到`registration`.
 
-注册时，还可以指定可选参数scope，scope是Service Worker 可以以访问到的作用域，或者说是目录。
+service-worker.js 文件就是我们要编写 Service Worker 功能的文件。
+
+注册时，还可以指定可选参数 scope，scope 是 Service Worker 可以以访问到的作用域，或者说是目录。
 
 ```JavaScript
 navigator.serviceWorker.register('/service-worker.js', {
   scope: '/app/'
 });
 ```
-代码中指定作用域是`/app/`,意思就是说，Service Workder 可以控制的path是类似于`app` `/app/home/` `/app/abbout/`等内部目录，而不能访问 `/` '/images'等 `/app`更上一次层的path。
 
-如果Service Worker 已经安装了，再次注册会返回当前活动的registration对象。
+代码中指定作用域是`/app/`,意思就是说，Service Workder 可以控制的 path 是类似于`app` `/app/home/` `/app/abbout/`等内部目录，而不能访问 `/` '/images'等 `/app`更上一次层的 path。
 
+如果 Service Worker 已经安装了，再次注册会返回当前活动的 registration 对象。
 
-chrome浏览器已经很好的支持了Service Worker的debug功能，可在浏览器输入`chrome://inspect/#service-workers`查看是否注册成功了。
-或者在控制台的application选项查看。
+chrome 浏览器已经很好的支持了 Service Worker 的 debug 功能，可在浏览器输入`chrome://inspect/#service-workers`查看是否注册成功了。
+或者在控制台的 application 选项查看。
 
 #### 2.安装
 
-install事件绑定在Service Worker文件中，当安装成功后，install事件就会被触发。
-一般我们会在install事件里面进行缓存的处理，用到之前提到的`Cahce API`,它是一个Service Worker上的全局对象<sup>[5]</sup>,可以缓存网络相应的资源，并根据他们的请求生成key，这个API和浏览器标准的缓存工作原理相似，但是只是针对自己的scope域的，缓存会一直存在，知道手动清楚或者刷新。
+install 事件绑定在 Service Worker 文件中，当安装成功后，install 事件就会被触发。
+一般我们会在 install 事件里面进行缓存的处理，用到之前提到的`Cahce API`,它是一个 Service Worker 上的全局对象<sup>[5]</sup>,可以缓存网络相应的资源，并根据他们的请求生成 key，这个 API 和浏览器标准的缓存工作原理相似，但是只是针对自己的 scope 域的，缓存会一直存在，知道手动清楚或者刷新。
 
 ```JavaScript
 var cacheName = 'cachev1'
@@ -153,10 +151,11 @@ self.addEventListener('install', function(event) {
   );
 });
 ```
-1. 新增install的监听器，并用`event.waitUntil()`来确保，Service Worker不会在`waitUntil()`执行完成之前安装完成。
-2. 使用`caches.open()`创建一个cachev1的新缓存，返回一个缓存的promise对象，当它resolved时候，我们在then方法里面用`caches.addAll`来添加想要缓存的列表，列表是一个数组，里面的URL是相对于origin的。
-3. 如果promise被rejected，安装失败，我们并没有catch，所以并不会做任何事情，也可以修改代码，加上重新注册的代码。
-4. 当安装完成时，Service Worker就会激活成功。
+
+1. 新增 install 的监听器，并用`event.waitUntil()`来确保，Service Worker 不会在`waitUntil()`执行完成之前安装完成。
+2. 使用`caches.open()`创建一个 cachev1 的新缓存，返回一个缓存的 promise 对象，当它 resolved 时候，我们在 then 方法里面用`caches.addAll`来添加想要缓存的列表，列表是一个数组，里面的 URL 是相对于 origin 的。
+3. 如果 promise 被 rejected，安装失败，我们并没有 catch，所以并不会做任何事情，也可以修改代码，加上重新注册的代码。
+4. 当安装完成时，Service Worker 就会激活成功。
 
 #### 3. 激活
 
@@ -164,7 +163,7 @@ self.addEventListener('install', function(event) {
 
 #### Service Worker 如何更新呢？
 
-`service-worker.js`控制着页面资源和请求的缓存，如果 js 内容有更新，当访问网站页面时浏览器获取了新的文件，逐字节比对js 文件发现不同时它会认为有更新启动 [更新算法](https://w3c.github.io/ServiceWorker/#update-algorithm)，于是会安装新的文件并触发 install 事件。但是此时已经处于激活状态的旧的 Service Worker 还在运行，新的 Service Worker 完成安装后会进入 waiting 状态。直到所有已打开的页面都关闭，旧的 Service Worker 自动停止，新的 Service Worker 才会在接下来重新打开的页面里生效。
+`service-worker.js`控制着页面资源和请求的缓存，如果 js 内容有更新，当访问网站页面时浏览器获取了新的文件，逐字节比对 js 文件发现不同时它会认为有更新启动 [更新算法](https://w3c.github.io/ServiceWorker/#update-algorithm)，于是会安装新的文件并触发 install 事件。但是此时已经处于激活状态的旧的 Service Worker 还在运行，新的 Service Worker 完成安装后会进入 waiting 状态。直到所有已打开的页面都关闭，旧的 Service Worker 自动停止，新的 Service Worker 才会在接下来重新打开的页面里生效。
 
 如果希望在有了新版本时，所有的页面都得到及时自动更新怎么办呢？可以在 install 事件中执行 self.skipWaiting() 方法跳过 waiting 状态，然后会直接进入 activate 阶段。接着在 activate 事件发生时，通过执行 self.clients.claim() 方法，更新所有客户端上的 Service Worker。
 
@@ -194,7 +193,8 @@ self.addEventListener('activate', function (event) {
     );
 });
 ```
-当js 文件可能会因为浏览器缓存问题，当文件有了变化时，浏览器里还是旧的文件。这会导致更新得不到响应。如遇到该问题，可尝试这么做：在 Web Server 上添加对该文件的过滤规则，不缓存或设置较短的有效期。
+
+当 js 文件可能会因为浏览器缓存问题，当文件有了变化时，浏览器里还是旧的文件。这会导致更新得不到响应。如遇到该问题，可尝试这么做：在 Web Server 上添加对该文件的过滤规则，不缓存或设置较短的有效期。
 
 或者手动调用`update()`来更新
 
@@ -204,7 +204,8 @@ navigator.serviceWorker.register('/service-worker.js').then(reg => {
   reg.update();
 });
 ```
-可以结合localStorage来使用，不必每次加载更新
+
+可以结合 localStorage 来使用，不必每次加载更新
 
 ```JavaScript
 var version = 'v1';
@@ -218,15 +219,12 @@ navigator.serviceWorker.register('/service-worker.js').then(function (reg) {
 });
 ```
 
-
 **示意图**
 ![image](../../images/2018/pwa-10.gif)
 
 每个状态都会有`ing`,进行态。
 
 ![image](../../images/2018/pwa-11.png)
-
-
 
 ### Web Storage
 
@@ -246,20 +244,20 @@ navigator.serviceWorker.register('/service-worker.js').then(function (reg) {
 
 [Inspect and Manage Storage, Databases, and Caches](https://developers.google.cn/web/tools/chrome-devtools/manage-data/local-storage)
 
-#### cache API和 IndexedDB
+#### cache API 和 IndexedDB
 
 针对于离线存储数据,建议可以有:
 
-* 对于网址可寻址的资源，使用[Cache API]() (Service Worker 的一部分)
-* 对于所有其他数据，使用[IndexedDB}(https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) (就有一个promise包装器)
+- 对于网址可寻址的资源，使用[Cache API]() (Service Worker 的一部分)
+- 对于所有其他数据，使用[IndexedDB}(https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) (就有一个 promise 包装器)
 
 基本原理
 
-上面的两个API都是异步的（IndexedDB是基于事件的，而Cache API是基于Promise的）。他们可以与`web Workers` `windows` `service workers`一起使用。IndexedDB基本可以在所有浏览器环境使用（参看上面的CanIUse），Service Wokers和Cahce API的支持情况，可以通过上面的图看到，已经支持Chrome，Firefox，Opera。IndexedDB的Promise包装器隐藏了IndexedDB库自带的一些强大但同时非常复杂的machinery（例如：事务处理 transactions，架构版本schema versioning）。IndexedDB将支持observers，这个特性可以轻松实现标签之间的同步。
+上面的两个 API 都是异步的（IndexedDB 是基于事件的，而 Cache API 是基于 Promise 的）。他们可以与`web Workers` `windows` `service workers`一起使用。IndexedDB 基本可以在所有浏览器环境使用（参看上面的 CanIUse），Service Wokers 和 Cahce API 的支持情况，可以通过上面的图看到，已经支持 Chrome，Firefox，Opera。IndexedDB 的 Promise 包装器隐藏了 IndexedDB 库自带的一些强大但同时非常复杂的 machinery（例如：事务处理 transactions，架构版本 schema versioning）。IndexedDB 将支持 observers，这个特性可以轻松实现标签之间的同步。
 
-对于PWA，我们可以缓存静态资源，从而使用 Cache API 编写的应用 Application Shell（JS/CSS/HTML 文件），并从 IndexedDB 填充离线页面数据。
+对于 PWA，我们可以缓存静态资源，从而使用 Cache API 编写的应用 Application Shell（JS/CSS/HTML 文件），并从 IndexedDB 填充离线页面数据。
 
-对于Web Storage（LocalStorage/SessionStorage）是同步的，不支持 Web worker线程，并且有大小和类型（仅限字符串）的限制。
+对于 Web Storage（LocalStorage/SessionStorage）是同步的，不支持 Web worker 线程，并且有大小和类型（仅限字符串）的限制。
 
 ### 添加到桌面
 
@@ -289,11 +287,13 @@ PWA 添加至桌面的功能实现依赖于 `manifest.json`。
   }
 
 ```
+
 使用 link 标签将 manifest.json 部署到 PWA 站点 HTML 页面的头部，如下所示：
 
 ```
 <link rel="manifest" href="path-to-manifest/manifest.json">
 ```
+
 参数解释：
 
 ```
@@ -336,18 +336,18 @@ related_applications: Array.<AppInfo> 关联应用列表 可以引导用户下�
 
 ### Push Notifications
 
-我们都是通知就是在我们设备上弹出的消息。通知可以是本地触发的，也可以是服务器推送的，而且我们的应用当时并没有运行。消息推送可以使App的更新提醒，也可能是我们感兴趣的内容。
+我们都是通知就是在我们设备上弹出的消息。通知可以是本地触发的，也可以是服务器推送的，而且我们的应用当时并没有运行。消息推送可以使 App 的更新提醒，也可能是我们感兴趣的内容。
 
-当我们的web可以实现push的时候，web的体验就里Native APP更近一步了。
+当我们的 web 可以实现 push 的时候，web 的体验就里 Native APP 更近一步了。
 
-Push Notifications 由两个API构成：
+Push Notifications 由两个 API 构成：
 
-* Notifications API 用来显示系统的通知
-* Push API 用来处理Server下发的push消息
+- Notifications API 用来显示系统的通知
+- Push API 用来处理 Server 下发的 push 消息
 
-这两个API都是建立在在Service Worker API基础上的，Service Worker 在后台响应推送消息时间，并把他们传递给应用。
+这两个 API 都是建立在在 Service Worker API 基础上的，Service Worker 在后台响应推送消息时间，并把他们传递给应用。
 
->Notification
+> Notification
 
 #### 获取许可
 
@@ -360,7 +360,9 @@ Notification.requestPermission(function(status) {
     //status 会有三个取值default granted denied 分别代表： 默认值（每次访问页面都询问）、 允许、拒绝
 });
 ```
+
 #### 添加通知
+
 获取到用户的许可之后，就可以通过 [`showNotification()`](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/showNotification)方法来限制主应用程序的通知。
 
 ```JavaScript
@@ -373,7 +375,8 @@ function displayNotification() {
   }
 }
 ```
-要注意`showNotification`，在Service Woker注册对象上调用该方法。将在活动Service Worker上创建通知，以便监听与通知交互触发的事件。
+
+要注意`showNotification`，在 Service Woker 注册对象上调用该方法。将在活动 Service Worker 上创建通知，以便监听与通知交互触发的事件。
 
 `showNotification`方法有可选项参数`options`，用于配置通知。
 
@@ -405,7 +408,7 @@ function displayNotification() {
 
 #### 监听事件
 
-用户收到通知之后，通过对通知的操作，就会触发监听的Notifications的相关事件，比如在关闭通知的时候就会有`notificationclose`事件。
+用户收到通知之后，通过对通知的操作，就会触发监听的 Notifications 的相关事件，比如在关闭通知的时候就会有`notificationclose`事件。
 
 ```JavaScript
 // service-worker.js
@@ -425,46 +428,45 @@ self.addEventListener('notificationclick', function(e) {
 
 > Push
 
-通知操作要结合push，才能实现与用户的交互，主动通知、提醒用户
+通知操作要结合 push，才能实现与用户的交互，主动通知、提醒用户
 
 #### Push service
 
-每个浏览器都有一个`push service`(推送服务),当用户授权当前网站的push权限的时候，就可以将当前网站订阅到浏览器的`push service`。这就会创建一个订约对象，其中包含推送服务的endpoint和公钥（keys）。当下发push消息的时候，就会发送到endpoint这个URL，并用公钥进行加密，`push service`就会发送到正确的客户端。
+每个浏览器都有一个`push service`(推送服务),当用户授权当前网站的 push 权限的时候，就可以将当前网站订阅到浏览器的`push service`。这就会创建一个订约对象，其中包含推送服务的 endpoint 和公钥（keys）。当下发 push 消息的时候，就会发送到 endpoint 这个 URL，并用公钥进行加密，`push service`就会发送到正确的客户端。
 
-推送服务如何知道将消息发送到哪个客户端？端点URL包含唯一标识符。此标识符用于路由您发送到正确设备的消息，并在浏览器处理时标识应处理请求的Service Worker。
+推送服务如何知道将消息发送到哪个客户端？端点 URL 包含唯一标识符。此标识符用于路由您发送到正确设备的消息，并在浏览器处理时标识应处理请求的 Service Worker。
 
-推送通知和Service Worker是匹配工作的，所以要求推送通知也必须是HTTPS，这就确保了服务器和push service之间通信是安全的，并且从push service到用户也是安全的。
+推送通知和 Service Worker 是匹配工作的，所以要求推送通知也必须是 HTTPS，这就确保了服务器和 push service 之间通信是安全的，并且从 push service 到用户也是安全的。
 
-但是，HTTPS不能确保push service本身是安全的。我们必须确保从服务器发送到客户端的数据不会被任何第三方篡改或直接检查。所以必须加密服务器上的消息。
+但是，HTTPS 不能确保 push service 本身是安全的。我们必须确保从服务器发送到客户端的数据不会被任何第三方篡改或直接检查。所以必须加密服务器上的消息。
 
 > 整个发送接收展示的过程
 >
->在客户端:
+> 在客户端:
 >
->  1.订阅推送服务
+> 1.订阅推送服务
 >
->  2.将订阅对象发送到服务器
+> 2.将订阅对象发送到服务器
 >
->在服务器:
+> 在服务器:
 >
->  1.生成给用户下发的数据
+> 1.生成给用户下发的数据
 >
->  2.使用用户的公钥加密数据
+> 2.使用用户的公钥加密数据
 >
->  3.使用加密数据的有效负载将数据发送的endpoint URL
+> 3.使用加密数据的有效负载将数据发送的 endpoint URL
 >
->消息将路由到用户的设备。唤醒浏览器，找到正确的Service Worker并调用推送事件。
+> 消息将路由到用户的设备。唤醒浏览器，找到正确的 Service Worker 并调用推送事件。
 >
->  1.在推送事件中接收消息数据(如果有)
+> 1.在推送事件中接收消息数据(如果有)
 >
->  2.在推送事件中执行自定义逻辑
+> 2.在推送事件中执行自定义逻辑
 >
->  3.显示通知
-
+> 3.显示通知
 
 #### 处理推送事件
 
-当支持推送消息的浏览器收到消息时，它会向Service Worker发送一个`push`事件。我们可以在Service Worker中创建一个       `push`事件监听器来处理消息：
+当支持推送消息的浏览器收到消息时，它会向 Service Worker 发送一个`push`事件。我们可以在 Service Worker 中创建一个 `push`事件监听器来处理消息：
 
 ```JavaScript
 // service-worker.js
@@ -490,12 +492,12 @@ self.addEventListener('push', function(e) {
   );
 });
 ```
-与之前不同的地方就是，这里监听的是push事件，之前是notification事件，并且，这里用了event.waitUntil方法来延长push事件的生命周期，到showNotification异步操作执行完成。
+
+与之前不同的地方就是，这里监听的是 push 事件，之前是 notification 事件，并且，这里用了 event.waitUntil 方法来延长 push 事件的生命周期，到 showNotification 异步操作执行完成。
 
 #### 订阅推送通知
 
-
-在发送推送消息之前，我们必须首先订阅推送服务。订阅返回订阅对象或者是一个`subscription`。它是整个过程中很关键一个部分，我们才能知道push发送到哪里。
+在发送推送消息之前，我们必须首先订阅推送服务。订阅返回订阅对象或者是一个`subscription`。它是整个过程中很关键一个部分，我们才能知道 push 发送到哪里。
 
 ```JavaScript
 // main.js
@@ -540,11 +542,11 @@ self.addEventListener('push', function(e) {
 
 ```
 
-#### Web推送协议
+#### Web 推送协议
 
-Web Push协议是发送发往浏览器的推送消息的正式标准。它描述了如何创建推送消息，加密推送消息并将其发送到推送消息传递平台的结构和流程。该协议抽象出用户具有哪个消息传递平台和浏览器的细节。
+Web Push 协议是发送发往浏览器的推送消息的正式标准。它描述了如何创建推送消息，加密推送消息并将其发送到推送消息传递平台的结构和流程。该协议抽象出用户具有哪个消息传递平台和浏览器的细节。
 
-Web Push协议很复杂，但我们不需要了解所有细节。浏览器自动负责使用推送服务订阅用户。作为开发人员，我们的工作是获取订阅令牌，提取URL并向那里发送消息。
+Web Push 协议很复杂，但我们不需要了解所有细节。浏览器自动负责使用推送服务订阅用户。作为开发人员，我们的工作是获取订阅令牌，提取 URL 并向那里发送消息。
 
 ```JSON
 {"endpoint":"https://fcm.googleapis.com/fcm/send/dpH5lCsTSSM:APA91bHqjZxM0VImWWqDRN7U0a3AycjUf4O-byuxb_wJsKRaKvV_iKw56s16ekq6FUqoCF7k2nICUpd8fHPxVTgqLunFeVeB9lLCQZyohyAztTH8ZQL9WCxKpA6dvTG_TUIhQUFq_n",
@@ -555,7 +557,7 @@ Web Push协议很复杂，但我们不需要了解所有细节。浏览器自动
 }
 ```
 
-通常用VSPID身份验证来识别身份。
+通常用 VSPID 身份验证来识别身份。
 直接上一个例子
 
 ```JavaScript
@@ -631,6 +633,7 @@ Web Push协议很复杂，但我们不需要了解所有细节。浏览器自动
     }
 
 ```
+
 ```JavaScript
 // server.js
 
@@ -736,12 +739,11 @@ app.listen(3111, function () {
 
 ```
 
-后面再详细说整个push过程。
-也可以看先Google给出的教程描述[https://developers.google.com/web/ilt/pwa/introduction-to-push-notifications#push_api](https://developers.google.com/web/ilt/pwa/introduction-to-push-notifications#push_api)
-
-
+后面再详细说整个 push 过程。
+也可以看先 Google 给出的教程描述[https://developers.google.com/web/ilt/pwa/introduction-to-push-notifications#push_api](https://developers.google.com/web/ilt/pwa/introduction-to-push-notifications#push_api)
 
 ## 参考
+
 [Progressive Web Apps Training](https://developers.google.com/web/ilt/pwa/)
 
 [App Shell](https://developers.google.cn/web/fundamentals/architecture/app-shell)
