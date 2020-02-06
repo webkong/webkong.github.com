@@ -128,7 +128,7 @@ main() {
 
     case "$1" in
         stop|s )
-            $VPN_BIN disconnect
+            kill_anyconnect_ui
             ;;
         * )
             connect
@@ -141,6 +141,15 @@ main "$*"
 把上面的内容保存到`anyconnect`文件中， 给文件加上执行权限 `chmod +x anyconnect`。现在直接执行 anyconnect 就可以连上 VPN 了。
 
 建议文件路径为: `$HOME/bin/anyconnect`。（后面结合 Alfred Workflow 优化效率）。
+
+如果有多个 URL，可以在 main 函数里面的 case 语句进行参数过滤，在此对 VPN_URL 赋值。实现连接任意的 VPN URL。
+
+```
+ params )
+    VPN_URL="vpn.url.2"
+    connect
+    ;;
+```
 
 ```
 $HOME/bin/anyconnect
