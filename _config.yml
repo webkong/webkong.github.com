@@ -3,9 +3,9 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: "WebKong"
-subtitle: "Share For Web Technology - 以分享前端知识为主，向全栈迈进"
-description: "以分享前端知识为主，向全栈迈进"
+title: "WebKong的网络日志"
+subtitle: "分享工作中的所用、所想、所感。"
+description: "以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远..."
 author: "webkong"
 language: en
 timezone: Asia/Shanghai
