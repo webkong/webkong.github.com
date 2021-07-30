@@ -14,7 +14,7 @@ timezone: Asia/Shanghai
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: https://blog.webkong.cn
-permalink: :post_title/
+permalink: :year/:title/
 permalink_defaults:
 pretty_urls:
   trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
@@ -99,11 +99,6 @@ ignore:
 ## Themes: https://hexo.io/themes/
 theme: next
 
-search:
-  path: search.xml
-  field: post
-  format: html
-  limit: 10000
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
@@ -111,3 +106,16 @@ deploy:
   # repo: https://git.coding.net/webkong/webkong.coding.me.git
   repo: git@github.com:webkong/webkong.github.com.git
   branch: master
+
+sitemap:
+  path: sitemap.xml
+
+# search:
+#   path: search.xml
+#   field: post
+#   format: html
+#   limit: 10000
+search:
+  path: search.xml
+  field: post
+  content: true
