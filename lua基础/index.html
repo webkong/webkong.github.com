@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9050474716533840"
+     crossorigin="anonymous"></script>
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs" />
+
+
+
+  <meta name="msvalidate.01" content="BABF339751DEC853F1915E4C3272192A" />
+
+
+
+  <meta name="yandex-verification" content="eceb5773d0fe4679" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/favicon.ico?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索...","hits_empty":"未发现与 ${query} 相关的内容","hits_stats":"${hits} 条相关条目，用时 ${time} 毫秒"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Lua 基础数据类型nilnil 是一种类型，Lua 将 nil 用于表示“无效值”。一个变量在第一次赋值前的默认值是 nil，将 nil 赋予给一个全局变量就等同于删除它。 12345local numprint(num)        --&amp;gt;output:nilnum = 10print(num)        --&amp;gt;output:10 boolean布尔类型，可选值 true/f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lua基础">
+<meta property="og:url" content="https//blog.webkong.cn/lua基础/index.html">
+<meta property="og:site_name" content="WebKong的网络日志">
+<meta property="og:description" content="Lua 基础数据类型nilnil 是一种类型，Lua 将 nil 用于表示“无效值”。一个变量在第一次赋值前的默认值是 nil，将 nil 赋予给一个全局变量就等同于删除它。 12345local numprint(num)        --&amp;gt;output:nilnum = 10print(num)        --&amp;gt;output:10 boolean布尔类型，可选值 true/f">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-02-03T09:32:30.315Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lua基础">
+<meta name="twitter:description" content="Lua 基础数据类型nilnil 是一种类型，Lua 将 nil 用于表示“无效值”。一个变量在第一次赋值前的默认值是 nil，将 nil 赋予给一个全局变量就等同于删除它。 12345local numprint(num)        --&amp;gt;output:nilnum = 10print(num)        --&amp;gt;output:10 boolean布尔类型，可选值 true/f">
+
+
+
+
+
+
+  <link rel="canonical" href="https//blog.webkong.cn/lua基础/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Lua基础 | WebKong的网络日志</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-93765710-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-93765710-1');
+</script>
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">WebKong的网络日志</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">分享工作中的所用、所想、所感。</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags<span class="badge">85</span></a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">16</span></a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">72</span></a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https//blog.webkong.cn/lua基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="webkong">
+      <meta itemprop="description" content="以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WebKong的网络日志">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Lua基础
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-09-28 11:46:00" itemprop="dateCreated datePublished" datetime="2016-09-28T11:46:00+08:00">2016-09-28</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-02-03 17:32:30" itemprop="dateModified" datetime="2020-02-03T17:32:30+08:00">2020-02-03</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Lua/" itemprop="url" rel="index"><span itemprop="name">Lua</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/lua基础/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">Comments: </span> <span class="post-comments-count gitment-comments-count" data-xid="/lua基础/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Lua-基础数据类型"><a href="#Lua-基础数据类型" class="headerlink" title="Lua 基础数据类型"></a>Lua 基础数据类型</h3><h4 id="nil"><a href="#nil" class="headerlink" title="nil"></a>nil</h4><p>nil 是一种类型，Lua 将 nil 用于表示“无效值”。一个变量在第一次赋值前的默认值是 nil，将 nil 赋予给一个全局变量就等同于删除它。</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">local num</span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(num)</span>        --&gt;</span>output:nil</span><br><span class="line"></span><br><span class="line">num = <span class="number">10</span></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(num)</span>        --&gt;</span>output:<span class="number">10</span></span><br></pre></td></tr></table></figure>
+<h4 id="boolean"><a href="#boolean" class="headerlink" title="boolean"></a>boolean</h4><p>布尔类型，可选值 true/false；Lua 中 nil 和 false 为“假”，其它所有值均为“真”。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> a = <span class="literal">true</span></span><br><span class="line"><span class="keyword">local</span> b = <span class="number">0</span></span><br><span class="line"><span class="keyword">local</span> c = <span class="literal">nil</span></span><br><span class="line"><span class="keyword">if</span> a <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"a"</span>)        <span class="comment">--&gt;output:a</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"not a"</span>)    <span class="comment">--这个没有执行</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> b <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"b"</span>)        <span class="comment">--&gt;output:b</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"not b"</span>)    <span class="comment">--这个没有执行</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> c <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"c"</span>)        <span class="comment">--这个没有执行</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"not c"</span>)    <span class="comment">--&gt;output:not c</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h4 id="number（数字）"><a href="#number（数字）" class="headerlink" title="number（数字）"></a>number（数字）</h4><p>Number 类型用于表示实数，和 C/C++ 里面的 double 类型很类似。可以使用数学函数 <code>math.floor</code>（向下取整）和 <code>math.ceil</code>（向上取整）进行取整操作。</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">local order = <span class="number">3.99</span></span><br><span class="line">local score = <span class="number">98.01</span></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(math.floor(order))</span>   --&gt;</span>output:<span class="number">3</span></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(math.ceil(score))</span>    --&gt;</span>output:<span class="number">99</span></span><br></pre></td></tr></table></figure>
+<p>一般地，Lua 的 number 类型就是用双精度浮点数来实现的。值得一提的是，LuaJIT 支持所谓的“dual-number”（双数）模式，即 LuaJIT 会根据上下文用整型来存储整数，而用双精度浮点数来存放浮点数。+</p>
+<p>另外，LuaJIT 还支持“长长整型”的大整数（在 x86_64 体系结构上则是 64 位整数）。例如<br><code>print(9223372036854775807LL - 1) --&gt;output:9223372036854775806LL</code></p>
+<h4 id="String-字符串"><a href="#String-字符串" class="headerlink" title="String (字符串)"></a>String (字符串)</h4><p>Lua 中有三种方式表示字符串:<br>1、使用一对匹配的单引号。例：’hello’。<br>2、使用一对匹配的双引号。例：”abclua”。<br>3、字符串还可以用一种长括号（即<code>[[ ]]）</code>括起来的方式定义。 我们把两个正的方括号（即<code>[[</code> ）间插入 n 个等号定义为第 n 级正长括号。 就是说，0 级正的长括号写作 <code>[[</code> ， 一级正的长括号写作 <code>[=[</code> ，如此等等。 反的长括号也作类似定义； 举个例子，4 级反的长括号写作 <code>]====]</code> 。 一个长字符串可以由任何一级的正的长括号开始，而由第一个碰到的同级反的长括号结束。 整个词法分析过程将不受分行限制，不处理任何转义符，并且忽略掉任何不同级别的长括号。 这种方式描述的字符串可以包含任何东西，当然本级别的反长括号除外。 例：<code>[[abc\nbc]]</code>，里面的 <code>&quot;\n&quot;</code> 不会被转义。<br>另外，Lua 的字符串是不可改变的值，不能像在 c 语言中那样直接修改字符串的某个字符，而是根据修改要求来创建一个新的字符串。Lua 也不能通过下标来访问字符串的某个字符。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> str1 = <span class="string">'hello world'</span></span><br><span class="line"><span class="keyword">local</span> str2 = <span class="string">"hello lua"</span></span><br><span class="line"><span class="keyword">local</span> str3 = <span class="string">[["add\name",'hello']]</span></span><br><span class="line"><span class="keyword">local</span> str4 = <span class="string">[=[string have a [[]].]=]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(str1)    <span class="comment">--&gt;output:hello world</span></span><br><span class="line"><span class="built_in">print</span>(str2)    <span class="comment">--&gt;output:hello lua</span></span><br><span class="line"><span class="built_in">print</span>(str3)    <span class="comment">--&gt;output:"add\name",'hello'</span></span><br><span class="line"><span class="built_in">print</span>(str4)    <span class="comment">--&gt;output:string have a [[]].</span></span><br></pre></td></tr></table></figure>
+<p>在 Lua 实现中，Lua 字符串一般都会经历一个“内化”（intern）的过程，即两个完全一样的 Lua 字符串在 Lua 虚拟机中只会存储一份。每一个 Lua 字符串在创建时都会插入到 Lua 虚拟机内部的一个全局的哈希表中。 这意味着</p>
+<ol>
+<li>创建相同的 Lua 字符串并不会引入新的动态内存分配操作，所以相对便宜（但仍有全局哈希表查询的开销），</li>
+<li>内容相同的 Lua 字符串不会占用多份存储空间，</li>
+<li>已经创建好的 Lua 字符串之间进行相等性比较时是 O(1) 时间度的开销，而不是通常见到的 O(n).</li>
+</ol>
+<h4 id="table-表"><a href="#table-表" class="headerlink" title="table(表)"></a>table(表)</h4><p>Table 类型实现了一种抽象的“关联数组”。“关联数组” 是一种具有特殊索引方式的数组，索引通常是字符串（string）或者 number 类型，但也可以是除 nil 以外的任意类型的值。</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">local corp = &#123;</span><br><span class="line">    web = <span class="string">"www.google.com"</span>,   --索引为字符串，key = <span class="string">"web"</span>,</span><br><span class="line">                              --            value = <span class="string">"www.google.com"</span></span><br><span class="line">    telephone = <span class="string">"12345678"</span>,   --索引为字符串</span><br><span class="line">    staff = &#123;<span class="string">"Jack"</span>, <span class="string">"Scott"</span>, <span class="string">"Gary"</span>&#125;, --索引为字符串，值也是一个表</span><br><span class="line">    <span class="number">100876</span>,              --相当于 [<span class="number">1</span>] = <span class="number">100876</span>，此时索引为数字</span><br><span class="line">                         --      key = <span class="number">1</span>, value = <span class="number">100876</span></span><br><span class="line">    <span class="number">100191</span>,              --相当于 [<span class="number">2</span>] = <span class="number">100191</span>，此时索引为数字</span><br><span class="line">    [<span class="number">10</span>] = <span class="number">360</span>,          --直接把数字索引给出</span><br><span class="line">    [<span class="string">"city"</span>] = <span class="string">"Beijing"</span> --索引为字符串</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(corp.web)</span>               --&gt;</span>output:www.google.com</span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(corp[<span class="string">"telephone"</span>])</span>      --&gt;</span>output:<span class="number">12345678</span></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(corp[<span class="number">2</span>])</span>                --&gt;</span>output:<span class="number">100191</span></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(corp[<span class="string">"city"</span>])</span>           --&gt;</span>output:<span class="string">"Beijing"</span></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(corp.staff[<span class="number">1</span>])</span>          --&gt;</span>output:Jack</span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(corp[<span class="number">10</span>])</span>               --&gt;</span>output:<span class="number">360</span></span><br></pre></td></tr></table></figure>
+<p>在内部实现上，table 通常实现为一个哈希表、一个数组、或者两者的混合。具体的实现为何种形式，动态依赖于具体的 table 的键分布特点。</p>
+<h4 id="function-函数"><a href="#function-函数" class="headerlink" title="function (函数)"></a>function (函数)</h4><p>在 Lua 中，函数 也是一种数据类型，函数可以存储在变量中，可以通过参数传递给其他函数，还可以作为其他函数的返回值。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"in the function"</span>)</span><br><span class="line">    <span class="comment">--dosomething()</span></span><br><span class="line">    <span class="keyword">local</span> x = <span class="number">10</span></span><br><span class="line">    <span class="keyword">local</span> y = <span class="number">20</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> a = foo    <span class="comment">--把函数赋给变量</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(a())</span><br><span class="line"></span><br><span class="line"><span class="comment">--output:</span></span><br><span class="line"><span class="keyword">in</span> the <span class="function"><span class="keyword">function</span></span></span><br><span class="line"><span class="function">30</span></span><br><span class="line"><span class="function">有名函数的定义本质上是匿名函数对变量的赋值。为说明这一点，考虑</span></span><br><span class="line"><span class="function"><span class="title">function</span> <span class="title">foo</span><span class="params">()</span></span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">等价于</span><br><span class="line"></span><br><span class="line">foo = <span class="function"><span class="keyword">function</span> <span class="params">()</span></span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">类似地，</span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">等价于</span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> foo = <span class="function"><span class="keyword">function</span> <span class="params">()</span></span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h3 id="Lua-表达式"><a href="#Lua-表达式" class="headerlink" title="Lua 表达式"></a>Lua 表达式</h3><h4 id="算数表达式"><a href="#算数表达式" class="headerlink" title="算数表达式"></a>算数表达式</h4><p><code>+ - * / % ^</code> ^指数</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(<span class="number">1</span> + <span class="number">2</span>)</span>       --&gt;</span>打印 <span class="number">3</span></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(<span class="number">5</span> / <span class="number">10</span>)</span>      --&gt;</span>打印 <span class="number">0.5</span>。 这是Lua不同于c语言的</span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(<span class="number">5.0</span> / <span class="number">10</span>)</span>    --&gt;</span>打印 <span class="number">0.5</span>。 浮点数相除的结果是浮点数</span><br><span class="line">-- <span class="built_in">print</span><span class="function"><span class="params">(<span class="number">10</span> / <span class="number">0</span>)</span>   --&gt;</span>注意除数不能为<span class="number">0</span>，计算的结果会出错</span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(<span class="number">2</span> ^ <span class="number">10</span>)</span>      --&gt;</span>打印 <span class="number">1024</span>。 求<span class="number">2</span>的<span class="number">10</span>次方</span><br><span class="line"></span><br><span class="line">local num = <span class="number">1357</span></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(num % <span class="number">2</span>)</span>       --&gt;</span>打印 <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">((num % <span class="number">2</span>) == <span class="number">1</span>)</span> --&gt;</span>打印 <span class="literal">true</span>。 判断num是否为奇数</span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">((num % <span class="number">5</span>) == <span class="number">0</span>)</span>  --&gt;</span>打印 <span class="literal">false</span>。判断num是否能被<span class="number">5</span>整数</span><br></pre></td></tr></table></figure>
+<h4 id="关系运算符"><a href="#关系运算符" class="headerlink" title="关系运算符"></a>关系运算符</h4><p><code>&lt; &gt; &lt;= &gt;= == ~=</code> ~= 不等于</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(<span class="number">1</span> &lt; <span class="number">2</span>)</span>    --&gt;</span>打印 <span class="literal">true</span></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(<span class="number">1</span> == <span class="number">2</span>)</span>   --&gt;</span>打印 <span class="literal">false</span></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(<span class="number">1</span> ~= <span class="number">2</span>)</span>   --&gt;</span>打印 <span class="literal">true</span></span><br><span class="line">local a, b = <span class="literal">true</span>, <span class="literal">false</span></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(a == b)</span>  --&gt;</span>打印 <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在使用“==”做等于判断时，要注意对于 table, userdate 和函数， Lua 是作引用比较的。也就是说，只有当两个变量引用同一个对象时，才认为它们相等。可以看下面的例子：</p>
+</blockquote>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">local <span class="attr">a</span> = &#123; <span class="attr">x</span> = <span class="number">1</span>, <span class="attr">y</span> = <span class="number">0</span>&#125;</span><br><span class="line">local <span class="attr">b</span> = &#123; <span class="attr">x</span> = <span class="number">1</span>, <span class="attr">y</span> = <span class="number">0</span>&#125;</span><br><span class="line"><span class="keyword">if</span> <span class="attr">a</span> == b <span class="keyword">then</span></span><br><span class="line">  print(<span class="string">"a==b"</span>)</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  print(<span class="string">"a~=b"</span>)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">---output:</span><br><span class="line">a~=b</span><br></pre></td></tr></table></figure>
+<p>由于 Lua 字符串总是会被“内化”，即相同内容的字符串只会被保存一份，因此 Lua 字符串之间的相等性比较可以简化为其内部存储地址的比较。这意味着 Lua 字符串的相等性比较总是为 O(1). 而在其他编程语言中，字符串的相等性比较则通常为 O(n)，即需要逐个字节（或按若干个连续字节）进行比较。</p>
+<h4 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h4><p><code>and or not</code> 与 或 非</p>
+<p>Lua 中的 and 和 or 是不同于 c 语言的。在 c 语言中，and 和 or 只得到两个值 1 和 0，其中 1 表示真，0 表示假。而 Lua 中 and 的执行过程是这样的：</p>
+<p><code>a and b</code> 如果 a 为 nil，则返回 a，否则返回 b;<br><code>a or b</code>如果 a 为 nil，则返回 b，否则返回 a。</p>
+<blockquote>
+<p>所有逻辑操作符将 false 和 nil 视作假，其他任何值视作真，对于 and 和 or，“短路求值”，对于 not，永远只返回 true 或者 false。</p>
+</blockquote>
+<h4 id="字符串连接"><a href="#字符串连接" class="headerlink" title="字符串连接"></a>字符串连接</h4><p>在 Lua 中连接两个字符串，可以使用操作符“..”（两个点）。如果其任意一个操作数是数字的话，Lua 会将这个数字转换成字符串。注意，连接操作符只会创建一个新字符串，而不会改变原操作数。也可以使用 string 库函数 string.format 连接字符串。</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(<span class="string">"Hello "</span> .. <span class="string">"World"</span>)</span>    --&gt;</span>打印 Hello World</span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(<span class="number">0</span> .. <span class="number">1</span>)</span>                 --&gt;</span>打印 <span class="number">01</span></span><br><span class="line"></span><br><span class="line">str1 = string.format(<span class="string">"%s-%s"</span>,<span class="string">"hello"</span>,<span class="string">"world"</span>)</span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(str1)</span>              --&gt;</span>打印 hello-world</span><br><span class="line"></span><br><span class="line">str2 = string.format(<span class="string">"%d-%s-%.2f"</span>,<span class="number">123</span>,<span class="string">"world"</span>,<span class="number">1.21</span>)</span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(str2)</span>              --&gt;</span>打印 <span class="number">123</span>-world-<span class="number">1.21</span></span><br></pre></td></tr></table></figure>
+<p>由于 Lua 字符串本质上是只读的，因此字符串连接运算符几乎总会创建一个新的（更大的）字符串。这意味着如果有很多这样的连接操作（比如在循环中使用 .. 来拼接最终结果），则性能损耗会非常大。在这种情况下，推荐使用 table 和 table.concat() 来进行很多字符串的拼接，例如：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> pieces = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span> i, elem <span class="keyword">in</span> <span class="built_in">ipairs</span>(my_list) <span class="keyword">do</span></span><br><span class="line">    pieces[i] = my_process(elem)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">local</span> res = <span class="built_in">table</span>.<span class="built_in">concat</span>(pieces)</span><br></pre></td></tr></table></figure>
+<p>当然，上面的例子还可以使用 LuaJIT 独有的 table.new 来恰当地初始化 pieces 表的空间，以避免该表的动态生长。这个特性我们在后面还会详细讨论。</p>
+<h4 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h4><p>Lua 操作符的优先级如下表所示(从高到低)：</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">^</span><br><span class="line"><span class="keyword">not</span> <span class="comment"># -</span></span><br><span class="line">* / %</span><br><span class="line">+ -</span><br><span class="line">..</span><br><span class="line">&lt; &gt; &lt;= &gt;= == ~=</span><br><span class="line"><span class="keyword">and</span></span><br><span class="line"><span class="keyword">or</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">local a, b = <span class="number">1</span>, <span class="number">2</span></span><br><span class="line">local x, y = <span class="number">3</span>, <span class="number">4</span></span><br><span class="line">local i = <span class="number">10</span></span><br><span class="line">local res = <span class="number">0</span></span><br><span class="line">res = a + i &lt; b/<span class="number">2</span> + <span class="number">1</span>  --&gt;等价于res =  (a + i) &lt; ((b/<span class="number">2</span>) + <span class="number">1</span>)</span><br><span class="line">res = <span class="number">5</span> + x^<span class="number">2</span>*<span class="number">8</span>        --&gt;等价于res =  <span class="number">5</span> + ((x^<span class="number">2</span>) * <span class="number">8</span>)</span><br><span class="line">res = a &lt; y and y &lt;=x  --&gt;等价于res =  (a &lt; y) and (y &lt;= x)</span><br></pre></td></tr></table></figure>
+<p>若不确定某些操作符的优先级，就应显示地用括号来指定运算顺序。这样做还可以提高代码的可读性。</p>
+<h3 id="Lua-的控制结构"><a href="#Lua-的控制结构" class="headerlink" title="Lua 的控制结构"></a>Lua 的控制结构</h3><p>流程控制语句对于程序设计来说特别重要，它可以用于设定程序的逻辑结构。一般需要与条件判断语句结合使用。Lua 语言提供的控制结构有 if，while，repeat，for，并提供 break 关键字来满足更丰富的需求。本章主要介绍 Lua 语言的控制结构的使用。</p>
+<h4 id="if-else"><a href="#if-else" class="headerlink" title="if/else"></a>if/else</h4><p>if-else 是我们熟知的一种控制结构。Lua 跟其他语言一样，提供了 if-else 的控制结构。因为是大家熟悉的语法，本节只简单介绍一下它的使用方法。</p>
+<h5 id="单个-if-分支"><a href="#单个-if-分支" class="headerlink" title="单个 if 分支"></a>单个 if 分支</h5><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> x = <span class="number">10</span></span><br><span class="line"><span class="keyword">if</span> x &gt; <span class="number">0</span> <span class="keyword">then</span></span><br><span class="line">  print('x <span class="keyword">is</span> a positive <span class="built_in">number</span>')</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h5 id="两个分支-if-else-型"><a href="#两个分支-if-else-型" class="headerlink" title="两个分支 if-else 型"></a>两个分支 if-else 型</h5><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">10</span></span><br><span class="line"><span class="keyword">if</span> x &gt; <span class="number">0</span> <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"x is a positive number"</span>)</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"x is a non-positive number"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h5 id="多个分支-if-elseif-else"><a href="#多个分支-if-elseif-else" class="headerlink" title="多个分支 if-elseif-else"></a>多个分支 if-elseif-else</h5><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> score = <span class="number">90</span></span><br><span class="line"><span class="keyword">if</span> score == <span class="number">100</span> <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Very good!Your score is 100"</span>)</span><br><span class="line"><span class="keyword">elseif</span> score &gt;= <span class="number">60</span> <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Congratulations, you have passed it,your score greater or equal to 60"</span>)</span><br><span class="line"><span class="comment">--此处可以添加多个elseif</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Sorry, you do not pass the exam! "</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>与 C 语言的不同之处是 else 与 if 是连在一起的，若将 else 与 if 写成 “else if” 则相当于在 else 里嵌套另一个 if 语句，如下代码：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">score = <span class="number">0</span></span><br><span class="line"><span class="keyword">if</span> score == <span class="number">100</span> <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Very good!Your score is 100"</span>)</span><br><span class="line"><span class="keyword">elseif</span> score &gt;= <span class="number">60</span> <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Congratulations, you have passed it,your score greater or equal to 60"</span>)</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="keyword">if</span> score &gt; <span class="number">0</span> <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Your score is better than 0"</span>)</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"My God, your score turned out to be 0"</span>)</span><br><span class="line">    <span class="keyword">end</span> <span class="comment">--与上一示例代码不同的是，此处要添加一个end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h4 id="while"><a href="#while" class="headerlink" title="while"></a>while</h4><p>Lua 跟其他常见语言一样，提供了 while 控制结构，语法上也没有什么特别的。但是没有提供 do-while 型的控制结构，但是提供了功能相当的 repeat。+</p>
+<p>while 型控制结构语法如下，当表达式值为假（即 false 或 nil）时结束循环。也可以使用 break 语言提前跳出循环。</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> 表达式 <span class="keyword">do</span></span><br><span class="line"><span class="comment">--body</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>示例代码，求 1 + 2 + 3 + 4 + 5 的结果</p>
+</blockquote>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">1</span></span><br><span class="line"><span class="built_in">sum</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> x &lt;= <span class="number">5</span> <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">sum</span> = <span class="built_in">sum</span> + x</span><br><span class="line">    x = x + <span class="number">1</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">sum</span>)  --&gt;output <span class="number">15</span></span><br></pre></td></tr></table></figure>
+<p>值得一提的是，Lua 并没有像许多其他语言那样提供类似 continue 这样的控制语句用来立即进入下一个循环迭代（如果有的话）。因此，我们需要仔细地安排循环体里的分支，以避免这样的需求。<br>没有提供 continue ，却也提供了另外一个标准控制语句 break ，可以跳出当前循环。例如我们遍历 table ，查找值为 11 的数组下标索引：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> t = &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">11</span>, <span class="number">18</span>, <span class="number">21</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> i</span><br><span class="line"><span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">ipairs</span>(t) <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> <span class="number">11</span> == v <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"index["</span> .. i .. <span class="string">"] have right value[11]"</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h4 id="repeat"><a href="#repeat" class="headerlink" title="repeat"></a>repeat</h4><p>Lua 中的 repeat 控制结构类似于其他语言（如：C++语言）中的 do-while，但是控制方式是刚好相反的。简单点说，执行 repeat 循环体后，直到 until 的条件为真时才结束，而其他语言（如：C++语言）的 do-while 则是当条件为假时就结束循环。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">10</span></span><br><span class="line"><span class="keyword">repeat</span></span><br><span class="line">  <span class="built_in">print</span>(x)</span><br><span class="line"><span class="keyword">until</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>除此之外，repeat 与其他语言的 do-while 基本是一样的。同样，Lua 中的 repeat 也可以在使用 break 退出。</p>
+<h4 id="for"><a href="#for" class="headerlink" title="for"></a>for</h4><h5 id="for-数字型"><a href="#for-数字型" class="headerlink" title="for 数字型"></a>for 数字型</h5><blockquote>
+<p>for 语句有两种形式：数字 for（numeric for）和范型 for（generic for）。</p>
+</blockquote>
+<p>数字型 for 的语法如下：</p>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> <span class="keyword">var</span> = <span class="keyword">begin</span>, finish, <span class="keyword">step</span> <span class="keyword">do</span></span><br><span class="line">    --body</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>关于数字 for 需要关注以下几点：</p>
+<ol>
+<li>var 从 begin 变化到 finish，每次变化都以 step 作为步长递增 var</li>
+<li>begin、 finish、 step 三个表达式只会在循环开始时执行一次</li>
+<li>第三个表达式 step 是可选的， 默认为 1</li>
+<li>控制变量 var 的作用域仅在 for 循环内，需要在外面控制，则需将值赋给一个新的变量</li>
+<li>循环过程中不要改变控制变量的值，那样会带来不可预知的影响</li>
+</ol>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i = <span class="number">1</span>, <span class="number">5</span> <span class="keyword">do</span></span><br><span class="line">  <span class="keyword">print</span>(i)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">-- <span class="keyword">output</span>:</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br></pre></td></tr></table></figure>
+<p>如果不想给循环设置上限的话，可以使用常量 math.huge：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i = <span class="number">1</span>, <span class="built_in">math</span>.<span class="built_in">huge</span> <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="number">0.3</span>*i^<span class="number">3</span> - <span class="number">20</span>*i^<span class="number">2</span> - <span class="number">500</span> &gt;=<span class="number">0</span>) <span class="keyword">then</span></span><br><span class="line">      <span class="built_in">print</span>(i)</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h5 id="for-泛型"><a href="#for-泛型" class="headerlink" title="for 泛型"></a>for 泛型</h5><p>泛型 for 循环通过一个迭代器（iterator）函数来遍历所有值：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-- 打印数组a的所有值</span><br><span class="line">local a = &#123;<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>, <span class="string">"d"</span>&#125;</span><br><span class="line"><span class="keyword">for</span> i, v <span class="keyword">in</span> ipairs(a) do</span><br><span class="line">  print(<span class="string">"index:"</span>, i, <span class="string">" value:"</span>, v)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">-- <span class="string">output:</span></span><br><span class="line"><span class="string">index:</span>  <span class="number">1</span>  <span class="string">value:</span> a</span><br><span class="line"><span class="string">index:</span>  <span class="number">2</span>  <span class="string">value:</span> b</span><br><span class="line"><span class="string">index:</span>  <span class="number">3</span>  <span class="string">value:</span> c</span><br><span class="line"><span class="string">index:</span>  <span class="number">4</span>  <span class="string">value:</span> d</span><br></pre></td></tr></table></figure>
+<p>Lua 的基础库提供了 <code>ipairs</code>，这是一个用于遍历数组的迭代器函数。在每次循环中，i 会被赋予一个索引值，同时 v 被赋予一个对应于该索引的数组元素值。<br>下面是另一个类似的示例，演示了如何遍历一个 table 中所有的 key</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 打印table t中所有的key</span></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">pairs</span>(t) <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">print</span>(k)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>从外观上看泛型 for 比较简单，但其实它是非常强大的。通过不同的迭代器，几乎可以遍历所有的东西， 而且写出的代码极具可读性。标准库提供了几种迭代器，包括用于迭代文件中每行的（<code>io.lines</code>）、 迭代 table 元素的（<code>pairs</code>）、迭代数组元素的（<code>ipairs</code>）、迭代字符串中单词的（<code>string.gmatch</code>）等。<br>泛型 for 循环与数字型 for 循环有两个相同点：<br>（1）循环变量是循环体的局部变量；<br>（2）决不应该对循环变量作任何赋值。</p>
+<p>对于泛型 for 的使用，再来看一个更具体的示例。假设有这样一个 table，它的内容是一周中每天的名称：</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> days = &#123;</span><br><span class="line">  <span class="string">"Sunday"</span>, <span class="string">"Monday"</span>, <span class="string">"Tuesday"</span>, <span class="string">"Wednesday"</span>,</span><br><span class="line">  <span class="string">"Thursday"</span>, <span class="string">"Friday"</span>, <span class="string">"Saturday"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在要将一个名称转换成它在一周中的位置。为此，需要根据给定的名称来搜索这个 table。然而 在 Lua 中，通常更有效的方法是创建一个“逆向 table”。例如这个逆向 table 叫 revDays，它以 一周中每天的名称作为索引，位置数字作为值：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">local revDays = &#123;</span><br><span class="line">   [<span class="meta"><span class="meta-string">"Sunday"</span></span>] = <span class="number">1</span>,</span><br><span class="line">   [<span class="meta"><span class="meta-string">"Monday"</span></span>] = <span class="number">2</span>,</span><br><span class="line">   [<span class="meta"><span class="meta-string">"Tuesday"</span></span>] = <span class="number">3</span>,</span><br><span class="line">   [<span class="meta"><span class="meta-string">"Wednesday"</span></span>] = <span class="number">4</span>,</span><br><span class="line">   [<span class="meta"><span class="meta-string">"Thursday"</span></span>] = <span class="number">5</span>,</span><br><span class="line">   [<span class="meta"><span class="meta-string">"Friday"</span></span>] = <span class="number">6</span>,</span><br><span class="line">   [<span class="meta"><span class="meta-string">"Saturday"</span></span>] = <span class="number">7</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>接下来，要找出一个名称所对应的需要，只需用名字来索引这个 reverse table 即可：</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">local x = <span class="string">"Tuesday"</span></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(revDays[x])</span>  --&gt;</span><span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>当然，不必手动声明这个逆向 table，而是通过原来的 table 自动地构造出这个逆向 table：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">local days = &#123;</span><br><span class="line">   <span class="string">"Monday"</span>, <span class="string">"Tuesday"</span>, <span class="string">"Wednesday"</span>, <span class="string">"Thursday"</span>,</span><br><span class="line">   <span class="string">"Friday"</span>, <span class="string">"Saturday"</span>,<span class="string">"Sunday"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">local revDays = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> pairs(days) do</span><br><span class="line">  revDays[v] = k</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">-- print value</span><br><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> pairs(revDays) do</span><br><span class="line">  print(<span class="string">"k:"</span>, k, <span class="string">" v:"</span>, v)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">-- <span class="string">output:</span></span><br><span class="line"><span class="string">k:</span>  Tuesday   <span class="string">v:</span> <span class="number">2</span></span><br><span class="line"><span class="string">k:</span>  Monday    <span class="string">v:</span> <span class="number">1</span></span><br><span class="line"><span class="string">k:</span>  Sunday    <span class="string">v:</span> <span class="number">7</span></span><br><span class="line"><span class="string">k:</span>  Thursday  <span class="string">v:</span> <span class="number">4</span></span><br><span class="line"><span class="string">k:</span>  Friday    <span class="string">v:</span> <span class="number">5</span></span><br><span class="line"><span class="string">k:</span>  Wednesday <span class="string">v:</span> <span class="number">3</span></span><br><span class="line"><span class="string">k:</span>  Saturday  <span class="string">v:</span> <span class="number">6</span></span><br></pre></td></tr></table></figure>
+<p>这个循环会为每个元素进行赋值，其中变量 k 为 key(1、2、…)，变量 v 为 value(“Sunday”、”Monday”、…)。<br>值得一提的是，在 LuaJIT 2.1 中，ipairs() 内建函数是可以被 JIT 编译的，而 pairs() 则只能被解释执行。因此在性能敏感的场景，应当合理安排数据结构，避免对哈希表进行遍历。事实上，即使未来 pairs 可以被 JIT 编译，哈希表的遍历本身也不会有数组遍历那么高效，毕竟哈希表就不是为遍历而设计的数据结构。</p>
+<h5 id="break-return"><a href="#break-return" class="headerlink" title="break/return"></a>break/return</h5><p><strong>break</strong></p>
+<p>语句 break 用来终止 while、repeat 和 for 三种循环的执行，并跳出当前循环体， 继续执行当前循环之后的语句。下面举一个 while 循环中的 break 的例子来说明：</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sum</span> = <span class="number">0</span></span><br><span class="line">i = <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span> <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">sum</span> = <span class="built_in">sum</span> + i</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">sum</span> &gt; <span class="number">100</span> <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">break</span></span><br><span class="line">    end</span><br><span class="line">    i = i + <span class="number">1</span></span><br><span class="line">end</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"The result is "</span> .. i)  --&gt;output:The result <span class="built_in">is</span> <span class="number">14</span></span><br></pre></td></tr></table></figure>
+<p>在实际应用中，break 经常用于嵌套循环中。</p>
+<p><strong>return</strong></p>
+<p>return 主要用于从函数中返回结果，或者用于简单的结束一个函数的执行。</p>
+<h3 id="Lua-函数"><a href="#Lua-函数" class="headerlink" title="Lua 函数"></a>Lua 函数</h3><p>在 Lua 中，函数是一种对语句和表达式进行抽象的主要机制。函数既可以完成某项特定的任务，也可以只做一些计算并返回结果。在第一种情况中，一句函数调用被视为一条语句；而在第二种情况中，则将其视为一句表达式。<br>示例代码：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">"hello world!"</span>)        <span class="comment">-- 用 print() 函数输出 hello world！</span></span><br><span class="line"><span class="keyword">local</span> m = <span class="built_in">math</span>.<span class="built_in">max</span>(<span class="number">1</span>, <span class="number">5</span>)     <span class="comment">-- 调用数学库函数 max，</span></span><br><span class="line">                             <span class="comment">-- 用来求 1,5 中的最大值，并返回赋给变量 m</span></span><br></pre></td></tr></table></figure>
+<p>使用函数的好处：</p>
+<p>降低程序的复杂性：把函数作为一个独立的模块，写完函数后，只关心它的功能，而不再考虑函数里面的细节。<br>增加程序的可读性：当我们调用 math.max() 函数时，很明显函数是用于求最大值的，实现细节就不关心了。<br>避免重复代码：当程序中有相同的代码部分时，可以把这部分写成一个函数，通过调用函数来实现这部分代码的功能，节约空间，减少代码长度。<br>隐含局部变量：在函数中使用局部变量，变量的作用范围不会超出函数，这样它就不会给外界带来干扰。</p>
+<h4 id="函数的定义"><a href="#函数的定义" class="headerlink" title="函数的定义"></a>函数的定义</h4><p>Lua 使用关键字 function 定义函数，语法如下：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">function_name</span> <span class="params">(arc)</span></span>  <span class="comment">-- arc 表示参数列表，函数的参数列表可以为空</span></span><br><span class="line">   <span class="comment">-- body</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>上面的语法定义了一个全局函数，名为 function_name. 全局函数本质上就是函数类型的值赋给了一个全局变量，即上面的语法等价于</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function_name = <span class="function"><span class="keyword">function</span> <span class="params">(arc)</span></span></span><br><span class="line">  <span class="comment">-- body</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>由于全局变量一般会污染全局名字空间，同时也有性能损耗（即查询全局环境表的开销），因此我们应当尽量使用“局部函数”，其记法是类似的，只是开头加上 local 修饰符：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">function_name</span> <span class="params">(arc)</span></span></span><br><span class="line">  <span class="comment">-- body</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>由于函数定义本质上就是变量赋值，而变量的定义总是应放置在变量使用之前，所以函数的定义也需要放置在函数调用之前。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">max</span><span class="params">(a, b)</span></span>  <span class="comment">--定义函数 max，用来求两个数的最大值，并返回</span></span><br><span class="line">   <span class="keyword">local</span> temp = <span class="literal">nil</span>       <span class="comment">--使用局部变量 temp，保存最大值</span></span><br><span class="line">   <span class="keyword">if</span>(a &gt; b) <span class="keyword">then</span></span><br><span class="line">      temp = a</span><br><span class="line">   <span class="keyword">else</span></span><br><span class="line">      temp = b</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line">   <span class="keyword">return</span> temp            <span class="comment">--返回最大值</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> m = <span class="built_in">max</span>(<span class="number">-12</span>, <span class="number">20</span>)    <span class="comment">--调用函数 max，找去 -12 和 20 中的最大值</span></span><br><span class="line"><span class="built_in">print</span>(m)                  <span class="comment">--&gt; output 20</span></span><br></pre></td></tr></table></figure>
+<p>如果参数列表为空，必须使用 () 表明是函数调用。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">func</span><span class="params">()</span></span>   <span class="comment">--形参为空</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"no parameter"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">func()                  <span class="comment">--函数调用，圆扩号不能省</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--&gt; output：</span></span><br><span class="line">no parameter</span><br></pre></td></tr></table></figure>
+<p>在定义函数要注意几点：</p>
+<ol>
+<li>利用名字来解释函数、变量的目的，使人通过名字就能看出来函数、变量的作用。</li>
+<li>每个函数的长度要尽量控制在一个屏幕内，一眼可以看明白。</li>
+<li>让代码自己说话，不需要注释最好。</li>
+</ol>
+<p>由于函数定义等价于变量赋值，我们也可以把函数名替换为某个 Lua 表的某个字段，例如</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo.bar</span><span class="params">(a, b, c)</span></span></span><br><span class="line">    <span class="comment">-- body ...</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>此时我们是把一个函数类型的值赋给了 foo 表的 bar 字段。换言之，上面的定义等价于</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foo.bar = <span class="function"><span class="keyword">function</span> <span class="params">(a, b, c)</span></span></span><br><span class="line">    <span class="built_in">print</span>(a, b, c)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>对于此种形式的函数定义，不能再使用 local 修饰符了，因为不存在定义新的局部变量了。</p>
+<h4 id="函数的参数"><a href="#函数的参数" class="headerlink" title="函数的参数"></a>函数的参数</h4><h5 id="按值传递"><a href="#按值传递" class="headerlink" title="按值传递"></a>按值传递</h5><p>Lua 函数的参数大部分是按值传递的。值传递就是调用函数时，实参把它的值通过赋值运算传递给形参，然后形参的改变和实参就没有关系了。在这个过程中，实参是通过它在参数表中的位置与形参匹配起来的。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">swap</span><span class="params">(a, b)</span></span> <span class="comment">--定义函数swap,函数内部进行交换两个变量的值</span></span><br><span class="line">   <span class="keyword">local</span> temp = a</span><br><span class="line">   a = b</span><br><span class="line">   b = temp</span><br><span class="line">   <span class="built_in">print</span>(a, b)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> x = <span class="string">"hello"</span></span><br><span class="line"><span class="keyword">local</span> y = <span class="number">20</span></span><br><span class="line"><span class="built_in">print</span>(x, y)</span><br><span class="line">swap(x, y)    <span class="comment">--调用swap函数</span></span><br><span class="line"><span class="built_in">print</span>(x, y)   <span class="comment">--调用swap函数后，x和y的值并没有交换</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--&gt;output</span></span><br><span class="line">hello <span class="number">20</span></span><br><span class="line"><span class="number">20</span>  hello</span><br><span class="line">hello <span class="number">20</span></span><br></pre></td></tr></table></figure>
+<p>在调用函数的时候，若形参个数和实参个数不同时，Lua 会自动调整实参个数。调整规则：若实参个数大于形参个数，从左向右，多余的实参被忽略；若实参个数小于形参个数，从左向右，没有被实参初始化的形参会被初始化为 nil。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">fun1</span><span class="params">(a, b)</span></span>       <span class="comment">--两个形参，多余的实参被忽略掉</span></span><br><span class="line">   <span class="built_in">print</span>(a, b)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">fun2</span><span class="params">(a, b, c, d)</span></span> <span class="comment">--四个形参，没有被实参初始化的形参，用nil初始化</span></span><br><span class="line">   <span class="built_in">print</span>(a, b, c, d)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> x = <span class="number">1</span></span><br><span class="line"><span class="keyword">local</span> y = <span class="number">2</span></span><br><span class="line"><span class="keyword">local</span> z = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">fun1(x, y, z)         <span class="comment">-- z被函数fun1忽略掉了，参数变成 x, y</span></span><br><span class="line">fun2(x, y, z)         <span class="comment">-- 后面自动加上一个nil，参数变成 x, y, z, nil</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--&gt;output</span></span><br><span class="line"><span class="number">1</span>   <span class="number">2</span></span><br><span class="line"><span class="number">1</span>   <span class="number">2</span>   <span class="number">3</span>   <span class="literal">nil</span></span><br></pre></td></tr></table></figure>
+<h5 id="变长参数"><a href="#变长参数" class="headerlink" title="变长参数"></a>变长参数</h5><p>上面函数的参数都是固定的，其实 Lua 还支持变长参数。若形参为 … ,示该函数可以接收不同长度的参数。访问参数的时候也要使用 …</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">func</span><span class="params">( ... )</span></span>                <span class="comment">-- 形参为 ... ,表示函数采用变长参数</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">local</span> temp = &#123;...&#125;                     <span class="comment">-- 访问的时候也要使用 ...</span></span><br><span class="line">   <span class="keyword">local</span> ans = <span class="built_in">table</span>.<span class="built_in">concat</span>(temp, <span class="string">" "</span>)    <span class="comment">-- 使用 table.concat 库函数对数</span></span><br><span class="line">                                          <span class="comment">-- 组内容使用 " " 拼接成字符串。</span></span><br><span class="line">   <span class="built_in">print</span>(ans)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">func(<span class="number">1</span>, <span class="number">2</span>)        <span class="comment">-- 传递了两个参数</span></span><br><span class="line">func(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)  <span class="comment">-- 传递了四个参数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--&gt;output</span></span><br><span class="line"><span class="number">1</span> <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span></span><br></pre></td></tr></table></figure>
+<p>值得一提的是，LuaJIT 2 尚不能 JIT 编译这种变长参数的用法，只能解释执行。所以对性能敏感的代码，应当避免使用此种形式。</p>
+<h5 id="具名参数-参数是一个-table"><a href="#具名参数-参数是一个-table" class="headerlink" title="具名参数(参数是一个 table)"></a>具名参数(参数是一个 table)</h5><p>Lua 还支持通过名称来指定实参，这时候要把所有的实参组织到一个 table 中，并将这个 table 作为唯一的实参传给函数。</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">local</span> function change(arg) -- change 函数，改变长方形的长和宽，使其各增长一倍</span><br><span class="line">  arg.<span class="built_in">width</span> = arg.<span class="built_in">width</span> * <span class="number">2</span></span><br><span class="line">  arg.<span class="built_in">height</span> = arg.<span class="built_in">height</span> * <span class="number">2</span></span><br><span class="line">  <span class="built_in">return</span> arg</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"><span class="built_in">local</span> <span class="built_in">rectangle</span> = &#123; <span class="built_in">width</span> = <span class="number">20</span>, <span class="built_in">height</span> = <span class="number">15</span> &#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"before change:"</span>, <span class="string">"width  ="</span>, <span class="built_in">rectangle</span>.<span class="built_in">width</span>,</span><br><span class="line">                        <span class="string">"height ="</span>, <span class="built_in">rectangle</span>.<span class="built_in">height</span>)</span><br><span class="line"><span class="built_in">rectangle</span> = change(<span class="built_in">rectangle</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"after  change:"</span>, <span class="string">"width  ="</span>, <span class="built_in">rectangle</span>.<span class="built_in">width</span>,</span><br><span class="line">                        <span class="string">"height ="</span>, <span class="built_in">rectangle</span>.<span class="built_in">height</span>)</span><br><span class="line"></span><br><span class="line">--&gt;output</span><br><span class="line">before change: <span class="built_in">width</span> = <span class="number">20</span>  <span class="built_in">height</span> =  <span class="number">15</span></span><br><span class="line">after  change: <span class="built_in">width</span> = <span class="number">40</span>  <span class="built_in">height</span> =  <span class="number">30</span></span><br></pre></td></tr></table></figure>
+<h5 id="按引用传递"><a href="#按引用传递" class="headerlink" title="按引用传递"></a>按引用传递</h5><p>当函数参数是 table 类型时，传递进来的是 实际参数的引用，此时在函数内部对该 table 所做的修改，会直接对调用者所传递的实际参数生效，而无需自己返回结果和让调用者进行赋值。 我们把上面改变长方形长和宽的例子修改一下。</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function change(arg) --change函数，改变长方形的长和宽，使其各增长一倍</span><br><span class="line">  arg.<span class="built_in">width</span> = arg.<span class="built_in">width</span> * <span class="number">2</span>  --表arg不是表<span class="built_in">rectangle</span>的拷贝，他们是同一个表</span><br><span class="line">  arg.<span class="built_in">height</span> = arg.<span class="built_in">height</span> * <span class="number">2</span></span><br><span class="line">end                  -- 没有<span class="built_in">return</span>语句了</span><br><span class="line"></span><br><span class="line"><span class="built_in">local</span> <span class="built_in">rectangle</span> = &#123; <span class="built_in">width</span> = <span class="number">20</span>, <span class="built_in">height</span> = <span class="number">15</span> &#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"before change:"</span>, <span class="string">"width = "</span>, <span class="built_in">rectangle</span>.<span class="built_in">width</span>,</span><br><span class="line">                        <span class="string">" height = "</span>, <span class="built_in">rectangle</span>.<span class="built_in">height</span>)</span><br><span class="line">change(<span class="built_in">rectangle</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"after change:"</span>, <span class="string">"width = "</span>, <span class="built_in">rectangle</span>.<span class="built_in">width</span>,</span><br><span class="line">                       <span class="string">" height ="</span>, <span class="built_in">rectangle</span>.<span class="built_in">height</span>)</span><br><span class="line"></span><br><span class="line">--&gt; output</span><br><span class="line">before change: <span class="built_in">width</span> = <span class="number">20</span>  <span class="built_in">height</span> = <span class="number">15</span></span><br><span class="line">after  change: <span class="built_in">width</span> = <span class="number">40</span>  <span class="built_in">height</span> = <span class="number">30</span></span><br></pre></td></tr></table></figure>
+<p>在常用基本类型中，除了 table 是按址传递类型外，其它的都是按值传递参数。 用全局变量来代替函数参数的不好编程习惯应该被抵制，良好的编程习惯应该是减少全局变量的使用。</p>
+<h4 id="函数返回值"><a href="#函数返回值" class="headerlink" title="函数返回值"></a>函数返回值</h4><p>Lua 具有一项与众不同的特性，允许函数返回多个值。Lua 的库函数中，有一些就是返回多个值。</p>
+<blockquote>
+<p>示例代码：使用库函数 string.find，在源字符串中查找目标字符串，若查找成功，则返回目标字符串在源字符串中的起始位置和结束位置的下标。</p>
+</blockquote>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> s, e = <span class="built_in">string</span>.<span class="built_in">find</span>(<span class="string">"hello world"</span>, <span class="string">"llo"</span>)</span><br><span class="line"><span class="built_in">print</span>(s, e)  <span class="comment">--&gt;output 3  5</span></span><br></pre></td></tr></table></figure>
+<p>返回多个值时，值之间用 “,” 隔开。</p>
+<blockquote>
+<p>示例代码：定义一个函数，实现两个变量交换值</p>
+</blockquote>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">swap</span><span class="params">(a, b)</span></span>   <span class="comment">-- 定义函数 swap，实现两个变量交换值</span></span><br><span class="line">   <span class="keyword">return</span> b, a              <span class="comment">-- 按相反顺序返回变量的值</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> x = <span class="number">1</span></span><br><span class="line"><span class="keyword">local</span> y = <span class="number">20</span></span><br><span class="line">x, y = swap(x, y)           <span class="comment">-- 调用 swap 函数</span></span><br><span class="line"><span class="built_in">print</span>(x, y)                 <span class="comment">--&gt; output   20     1</span></span><br></pre></td></tr></table></figure>
+<p>当函数返回值的个数和接收返回值的变量的个数不一致时，Lua 也会自动调整参数个数。</p>
+<p>调整规则： 若返回值个数大于接收变量的个数，多余的返回值会被忽略掉； 若返回值个数小于参数个数，从左向右，没有被返回值初始化的变量会被初始化为 nil。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">init</span><span class="params">()</span></span>             <span class="comment">--init 函数 返回两个值 1 和 "lua"</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>, <span class="string">"lua"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">x = init()</span><br><span class="line"><span class="built_in">print</span>(x)</span><br><span class="line"></span><br><span class="line">x, y, z = init()</span><br><span class="line"><span class="built_in">print</span>(x, y, z)</span><br><span class="line"></span><br><span class="line"><span class="comment">--output</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">1</span> lua <span class="literal">nil</span></span><br></pre></td></tr></table></figure>
+<p>当一个函数有一个以上返回值，且函数调用不是一个列表表达式的最后一个元素，那么函数调用只会产生一个返回值,也就是第一个返回值。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">init</span><span class="params">()</span></span>       <span class="comment">-- init 函数 返回两个值 1 和 "lua"</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>, <span class="string">"lua"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> x, y, z = init(), <span class="number">2</span>   <span class="comment">-- init 函数的位置不在最后，此时只返回 1</span></span><br><span class="line"><span class="built_in">print</span>(x, y, z)              <span class="comment">--&gt;output  1  2  nil</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> a, b, c = <span class="number">2</span>, init()   <span class="comment">-- init 函数的位置在最后，此时返回 1 和 "lua"</span></span><br><span class="line"><span class="built_in">print</span>(a, b, c)              <span class="comment">--&gt;output  2  1  lua</span></span><br></pre></td></tr></table></figure>
+<p>函数调用的实参列表也是一个列表表达式。考虑下面的例子：</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">local <span class="keyword">function</span> init()</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>, <span class="string">"lua"</span></span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(init(), <span class="number">2</span>)</span>   --&gt;</span>output  <span class="number">1</span>  <span class="number">2</span></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(<span class="number">2</span>, init())</span>   --&gt;</span>output  <span class="number">2</span>  <span class="number">1</span>  lua</span><br></pre></td></tr></table></figure>
+<p>如果你确保只取函数返回值的第一个值，可以使用括号运算符，例如</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">local <span class="keyword">function</span> init()</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>, <span class="string">"lua"</span></span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">((init()), <span class="number">2</span>)</span>   --&gt;</span>output  <span class="number">1</span>  <span class="number">2</span></span><br><span class="line"><span class="built_in">print</span><span class="function"><span class="params">(<span class="number">2</span>, (init()))</span>   --&gt;</span>output  <span class="number">2</span>  <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>值得一提的是，如果实参列表中某个函数会返回多个值，同时调用者又没有显式地使用括号运算符来筛选和过滤，则这样的表达式是不能被 LuaJIT 2 所 JIT 编译的，而只能被解释执行。</p>
+<h4 id="全动态函数调用"><a href="#全动态函数调用" class="headerlink" title="全动态函数调用"></a>全动态函数调用</h4><p>调用回调函数，并把一个数组参数作为回调函数的参数。</p>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">local args = <span class="meta">&#123;...&#125;</span> <span class="keyword">or</span> &#123;&#125;</span><br><span class="line">method_name(unpack(args, <span class="number">1</span>, table.maxn(args)))</span><br></pre></td></tr></table></figure>
+<h5 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h5><p>如果你的实参 table 中确定没有 nil 空洞，则可以简化为</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">method_name(<span class="name">unpack</span>(<span class="name">args</span>))</span><br></pre></td></tr></table></figure>
+<ol>
+<li>你要调用的函数参数是未知的；</li>
+<li>函数的实际参数的类型和数目也都是未知的。</li>
+</ol>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">add_task(end_time, callback, params)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">os</span>.<span class="built_in">time</span>() &gt;= endTime <span class="keyword">then</span></span><br><span class="line">    callback(<span class="built_in">unpack</span>(params, <span class="number">1</span>, <span class="built_in">table</span>.<span class="built_in">maxn</span>(params)))</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>值得一提的是，unpack 内建函数还不能为 LuaJIT 所 JIT 编译，因此这种用法总是会被解释执行。对性能敏感的代码路径应避免这种用法。</p>
+<h5 id="小试牛刀"><a href="#小试牛刀" class="headerlink" title="小试牛刀"></a>小试牛刀</h5><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">run</span><span class="params">(x, y)</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">'run'</span>, x, y)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">attack</span><span class="params">(targetId)</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">'targetId'</span>, targetId)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">do_action</span><span class="params">(method, ...)</span></span></span><br><span class="line">    <span class="keyword">local</span> args = &#123;...&#125; <span class="keyword">or</span> &#123;&#125;</span><br><span class="line">    method(<span class="built_in">unpack</span>(args, <span class="number">1</span>, <span class="built_in">table</span>.<span class="built_in">maxn</span>(args)))</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">do_action(run, <span class="number">1</span>, <span class="number">2</span>)         <span class="comment">-- output: run 1 2</span></span><br><span class="line">do_action(attack, <span class="number">1111</span>)      <span class="comment">-- output: targetId    1111</span></span><br></pre></td></tr></table></figure>
+<p>来源<br><a href="https://moonbingbing.gitbooks.io/openresty-best-practices/content/lua/class.html" target="_blank" rel="noopener">https://moonbingbing.gitbooks.io/openresty-best-practices/content/lua/class.html</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>webkong</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="https//blog.webkong.cn/lua基础/" title="Lua基础">https//blog.webkong.cn/lua基础/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+            
+               <div id="needsharebutton-postbottom">
+                 <span class="btn">
+                    <i class="fa fa-share-alt" aria-hidden="true"></i>
+                 </span>
+               </div>
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/es6-箭头函数/" rel="next" title="ES6-箭头函数">
+                <i class="fa fa-chevron-left"></i> ES6-箭头函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/lua基础-模块/" rel="prev" title="Lua基础-模块">
+                Lua基础-模块 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="webkong" />
+            
+              <p class="site-author-name" itemprop="name">webkong</p>
+              <p class="site-description motion-element" itemprop="description">以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">72</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">85</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/webkong" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://www.zhihu.com/people/webkong" target="_blank" title="知乎" rel="external nofollow"><i class="fa fa-fw fa-globe"></i>知乎</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.hcharts.cn/" title="Hcharts中文网" target="_blank">Hcharts中文网</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://bbs.hcharts.cn/" title="Hcharts论坛" target="_blank">Hcharts论坛</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Lua-基础数据类型"><span class="nav-number">1.</span> <span class="nav-text">Lua 基础数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#nil"><span class="nav-number">1.1.</span> <span class="nav-text">nil</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#boolean"><span class="nav-number">1.2.</span> <span class="nav-text">boolean</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#number（数字）"><span class="nav-number">1.3.</span> <span class="nav-text">number（数字）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#String-字符串"><span class="nav-number">1.4.</span> <span class="nav-text">String (字符串)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#table-表"><span class="nav-number">1.5.</span> <span class="nav-text">table(表)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#function-函数"><span class="nav-number">1.6.</span> <span class="nav-text">function (函数)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lua-表达式"><span class="nav-number">2.</span> <span class="nav-text">Lua 表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算数表达式"><span class="nav-number">2.1.</span> <span class="nav-text">算数表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关系运算符"><span class="nav-number">2.2.</span> <span class="nav-text">关系运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#逻辑运算符"><span class="nav-number">2.3.</span> <span class="nav-text">逻辑运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串连接"><span class="nav-number">2.4.</span> <span class="nav-text">字符串连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优先级"><span class="nav-number">2.5.</span> <span class="nav-text">优先级</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lua-的控制结构"><span class="nav-number">3.</span> <span class="nav-text">Lua 的控制结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#if-else"><span class="nav-number">3.1.</span> <span class="nav-text">if/else</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#单个-if-分支"><span class="nav-number">3.1.1.</span> <span class="nav-text">单个 if 分支</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#两个分支-if-else-型"><span class="nav-number">3.1.2.</span> <span class="nav-text">两个分支 if-else 型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#多个分支-if-elseif-else"><span class="nav-number">3.1.3.</span> <span class="nav-text">多个分支 if-elseif-else</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#while"><span class="nav-number">3.2.</span> <span class="nav-text">while</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#repeat"><span class="nav-number">3.3.</span> <span class="nav-text">repeat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#for"><span class="nav-number">3.4.</span> <span class="nav-text">for</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#for-数字型"><span class="nav-number">3.4.1.</span> <span class="nav-text">for 数字型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#for-泛型"><span class="nav-number">3.4.2.</span> <span class="nav-text">for 泛型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#break-return"><span class="nav-number">3.4.3.</span> <span class="nav-text">break/return</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lua-函数"><span class="nav-number">4.</span> <span class="nav-text">Lua 函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#函数的定义"><span class="nav-number">4.1.</span> <span class="nav-text">函数的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数的参数"><span class="nav-number">4.2.</span> <span class="nav-text">函数的参数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#按值传递"><span class="nav-number">4.2.1.</span> <span class="nav-text">按值传递</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#变长参数"><span class="nav-number">4.2.2.</span> <span class="nav-text">变长参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#具名参数-参数是一个-table"><span class="nav-number">4.2.3.</span> <span class="nav-text">具名参数(参数是一个 table)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#按引用传递"><span class="nav-number">4.2.4.</span> <span class="nav-text">按引用传递</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数返回值"><span class="nav-number">4.3.</span> <span class="nav-text">函数返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全动态函数调用"><span class="nav-number">4.4.</span> <span class="nav-text">全动态函数调用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用场景"><span class="nav-number">4.4.1.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#小试牛刀"><span class="nav-number">4.4.2.</span> <span class="nav-text">小试牛刀</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">webkong</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a class="theme-link" target="_blank" rel="external nofollow" href="https://theme-next.org">NexT.Gemini</a></div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+      <style>
+        a.gitment-editor-footer-tip { display: none; }
+        .gitment-container.gitment-footer-container { display: none; }
+      </style>
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'webkong',
+            repo: 'blog-gitment',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '7fc721167bf96eb27e9edc7307a50fa3a7d12d4a',
+            
+                client_id: '54ecf778fa1a619ba5f7'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
