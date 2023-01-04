@@ -6,6 +6,11 @@
   "hexo": {
     "version": "3.7.1"
   },
+  "scripts": {
+    "build":"hexo generate",
+    "dev":"hexo server",
+    "deploy": "hexo deploy"
+  },
   "dependencies": {
     "circular-json": "^0.5.5",
     "fsevents": "^2.1.2",

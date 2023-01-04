@@ -13,7 +13,8 @@
 {% if theme.motion.enable %}
   {% set html_class = html_class + ' use-motion' %}
 {% endif %}
-
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9050474716533840"
+     crossorigin="anonymous"></script>
 <html class="{{ html_class | lower }}" lang="{{ config.language }}">
 <head>
   {{ partial('_partials/head/head.swig', {}, {cache: theme.cache.enable}) }}
