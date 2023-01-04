@@ -7,9 +7,10 @@
     "version": "3.7.1"
   },
   "scripts": {
-    "build":"hexo generate",
-    "dev":"hexo server",
-    "deploy": "hexo deploy"
+    "build": "hexo generate",
+    "dev": "hexo server",
+    "deploy": "hexo deploy",
+    "clean": "hexo clean"
   },
   "dependencies": {
     "circular-json": "^0.5.5",
