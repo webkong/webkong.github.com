@@ -1,0 +1,169 @@
+# NexT v8 theme customizations.
+# Ported from the legacy themes/_config-wangsw.yml (NexT v6 schema).
+# See: https://theme-next.js.org/docs/getting-started/configuration
+
+# ---------------------------------------------------------------
+# Site Information
+# ---------------------------------------------------------------
+
+favicon:
+  small: /favicon.ico
+  medium: /favicon.ico
+  apple_touch_icon: /favicon.ico
+  safari_pinned_tab: /favicon.ico
+
+# ---------------------------------------------------------------
+# Scheme
+# ---------------------------------------------------------------
+
+scheme: Gemini
+
+# ---------------------------------------------------------------
+# Menu
+# ---------------------------------------------------------------
+
+menu:
+  home: / || fa fa-home
+  about: /about/ || fa fa-user
+  tags: /tags/ || fa fa-tags
+  categories: /categories/ || fa fa-th
+  archives: /archives/ || fa fa-archive
+
+menu_settings:
+  icons: true
+  badges: true
+
+# ---------------------------------------------------------------
+# Sidebar
+# ---------------------------------------------------------------
+
+sidebar:
+  position: left
+  display: post
+  offset: 12
+
+avatar:
+  url: /uploads/avatar.jpg
+  rounded: true
+
+site_state: true
+
+social:
+  GitHub: https://github.com/webkong || fab fa-github
+  知乎: https://www.zhihu.com/people/webkong || fab fa-zhihu
+
+social_icons:
+  enable: true
+  icons_only: false
+  transition: false
+
+links_settings:
+  icon: fa fa-link
+  title: 友情链接
+  layout: inline
+
+links:
+  Hcharts中文网: http://www.hcharts.cn/
+  Hcharts论坛: http://bbs.hcharts.cn/
+
+toc:
+  enable: true
+  number: true
+
+# ---------------------------------------------------------------
+# Footer
+# ---------------------------------------------------------------
+
+footer:
+  icon:
+    name: fa fa-user
+    animated: true
+    color: "#808080"
+  powered: true
+
+# ---------------------------------------------------------------
+# Post
+# ---------------------------------------------------------------
+
+post_meta:
+  item_text: true
+  created_at: true
+  updated_at:
+    enable: true
+    another_day: true
+  categories: true
+
+index_with_subtitle: true
+
+creative_commons:
+  license: by-nc-sa
+  size: small
+  sidebar: false
+  post: true
+
+codeblock:
+  copy_button:
+    enable: false
+
+back2top:
+  enable: true
+  sidebar: true
+  scrollpercent: false
+
+reading_progress:
+  enable: false
+
+# ---------------------------------------------------------------
+# SEO
+# ---------------------------------------------------------------
+
+google_site_verification: 97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs
+bing_site_verification: BABF339751DEC853F1915E4C3272192A
+yandex_site_verification: eceb5773d0fe4679
+
+# ---------------------------------------------------------------
+# Statistics
+# ---------------------------------------------------------------
+
+google_analytics:
+  tracking_id: UA-93765710-1
+
+busuanzi_count:
+  enable: true
+  total_visitors: true
+  total_visitors_icon: fa fa-user
+  total_views: true
+  total_views_icon: fa fa-eye
+  post_views: true
+  post_views_icon: far fa-eye
+
+# ---------------------------------------------------------------
+# Search
+# ---------------------------------------------------------------
+
+local_search:
+  enable: true
+  trigger: auto
+  top_n_per_article: 1
+  unescape: false
+
+# ---------------------------------------------------------------
+# Comments
+# Legacy Gitment config replaced with Gitalk (same GitHub App / repo).
+# ---------------------------------------------------------------
+
+comments:
+  style: tabs
+  active: gitalk
+  storage: true
+  lazyload: false
+
+gitalk:
+  enable: true
+  github_id: webkong
+  repo: blog-gitment
+  client_id: 54ecf778fa1a619ba5f7
+  client_secret: 7fc721167bf96eb27e9edc7307a50fa3a7d12d4a
+  admin_user: webkong
+  distraction_free_mode: true
+  language: zh-CN
