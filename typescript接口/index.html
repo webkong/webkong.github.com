@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs">
+  <meta name="msvalidate.01" content="BABF339751DEC853F1915E4C3272192A">
+  <meta name="yandex-verification" content="eceb5773d0fe4679">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="接口介绍TypeScript的核心原则之一是对值所具有的shape进行类型检查。 它有时被称做“鸭式辨型法”或“结构性子类型化”。 在TypeScript里，接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。 接口初探下面通过一个简单示例来观察接口是如何工作的： 123456function printLabel(labelledObj: &amp;#123; label: string &amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TypeScript接口">
+<meta property="og:url" content="https://blog.webkong.cn/typescript%E6%8E%A5%E5%8F%A3/index.html">
+<meta property="og:site_name" content="WebKong的网络日志">
+<meta property="og:description" content="接口介绍TypeScript的核心原则之一是对值所具有的shape进行类型检查。 它有时被称做“鸭式辨型法”或“结构性子类型化”。 在TypeScript里，接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。 接口初探下面通过一个简单示例来观察接口是如何工作的： 123456function printLabel(labelledObj: &amp;#123; label: string &amp;#">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-09-21T08:13:00.000Z">
+<meta property="article:modified_time" content="2026-09-07T03:09:04.793Z">
+<meta property="article:author" content="webkong">
+<meta property="article:tag" content="接口">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.webkong.cn/typescript%E6%8E%A5%E5%8F%A3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/typescript%E6%8E%A5%E5%8F%A3/","path":"typescript接口/","title":"TypeScript接口"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>TypeScript接口 | WebKong的网络日志</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93765710-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-93765710-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WebKong的网络日志</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享工作中的所用、所想、所感。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">95</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.</span> <span class="nav-text">接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E5%88%9D%E6%8E%A2"><span class="nav-number">1.2.</span> <span class="nav-text">接口初探</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E9%80%89%E5%B1%9E%E6%80%A7"><span class="nav-number">1.3.</span> <span class="nav-text">可选属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AA%E8%AF%BB%E5%B1%9E%E6%80%A7"><span class="nav-number">1.4.</span> <span class="nav-text">只读属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#readonly-vs-const"><span class="nav-number">1.4.1.</span> <span class="nav-text">readonly vs const</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%9D%E5%A4%96%E7%9A%84%E5%B1%9E%E6%80%A7%E6%A3%80%E6%9F%A5"><span class="nav-number">1.5.</span> <span class="nav-text">额外的属性检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.6.</span> <span class="nav-text">函数类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E7%B4%A2%E5%BC%95%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.7.</span> <span class="nav-text">可索引的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.8.</span> <span class="nav-text">类类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.8.1.</span> <span class="nav-text">实现接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E9%9D%99%E6%80%81%E9%83%A8%E5%88%86%E4%B8%8E%E5%AE%9E%E4%BE%8B%E9%83%A8%E5%88%86%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.8.2.</span> <span class="nav-text">类静态部分与实例部分的区别</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="webkong"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">webkong</p>
+  <div class="site-description" itemprop="description">以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/webkong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/webkong" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.hcharts.cn/" title="http:&#x2F;&#x2F;www.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts中文网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://bbs.hcharts.cn/" title="http:&#x2F;&#x2F;bbs.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts论坛</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/typescript%E6%8E%A5%E5%8F%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="webkong">
+      <meta itemprop="description" content="以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WebKong的网络日志">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TypeScript接口
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-09-21 16:13:00" itemprop="dateCreated datePublished" datetime="2016-09-21T16:13:00+08:00">2016-09-21</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2026-09-07 11:09:04" itemprop="dateModified" datetime="2026-09-07T11:09:04+08:00">2026-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/TypeScript/" itemprop="url" rel="index"><span itemprop="name">TypeScript</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>TypeScript的核心原则之一是对值所具有的shape进行类型检查。 它有时被称做“鸭式辨型法”或“结构性子类型化”。 在TypeScript里，接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。</p>
+<h3 id="接口初探"><a href="#接口初探" class="headerlink" title="接口初探"></a>接口初探</h3><p>下面通过一个简单示例来观察接口是如何工作的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function printLabel(labelledObj: &#123; label: string &#125;) &#123;</span><br><span class="line">  console.log(labelledObj.label);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let myObj = &#123; size: 10, label: &quot;Size 10 Object&quot; &#125;;</span><br><span class="line">printLabel(myObj);</span><br></pre></td></tr></table></figure>
+<p>类型检查器会查看<code>printLabel</code>的调用。 <code>printLabel</code>有一个参数，并要求这个对象参数有一个名为<code>label</code>类型为·的属性。 需要注意的是，我们传入的对象参数实际上会包含很多属性，但是编译器只会检查那些必需的属性是否存在，并且其类型是否匹配。 然而，有些时候TypeScript却并不会这么宽松，我们下面会稍做讲解。</p>
+<p>下面我们重写上面的例子，这次使用接口来描述：必须包含一个label属性且类型为string：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">interface LabelledValue &#123;</span><br><span class="line">  label: string;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function printLabel(labelledObj: LabelledValue) &#123;</span><br><span class="line">  console.log(labelledObj.label);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let myObj = &#123;size: 10, label: &quot;Size 10 Object&quot;&#125;;</span><br><span class="line">printLabel(myObj);</span><br></pre></td></tr></table></figure>
+<p><code>LabelledValue</code>接口就好比一个名字，用来描述上面例子里的要求。 它代表了有一个 <code>label</code>属性且类型为<code>string</code>的对象。 需要注意的是，我们在这里并不能像在其它语言里一样，说传给 <code>printLabel</code>的对象实现了这个接口。我们只会去关注值的外形。 只要传入的对象满足上面提到的必要条件，那么它就是被允许的。</p>
+<p>还有一点值得提的是，类型检查器不会去检查属性的顺序，只要相应的属性存在并且类型也是对的就可以。</p>
+<h3 id="可选属性"><a href="#可选属性" class="headerlink" title="可选属性"></a>可选属性</h3><p>接口里的属性不全都是必需的。 有些是只在某些条件下存在，或者根本不存在。 可选属性在应用“option bags”模式时很常用，即给函数传入的参数对象中只有部分属性赋值了。</p>
+<p>下面是应用了“option bags”的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">interface SquareConfig &#123;</span><br><span class="line">  color?: string;</span><br><span class="line">  width?: number;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function createSquare(config: SquareConfig): &#123;color: string; area: number&#125; &#123;</span><br><span class="line">  let newSquare = &#123;color: &quot;white&quot;, area: 100&#125;;</span><br><span class="line">  if (config.color) &#123;</span><br><span class="line">    newSquare.color = config.color;</span><br><span class="line">  &#125;</span><br><span class="line">  if (config.width) &#123;</span><br><span class="line">    newSquare.area = config.width * config.width;</span><br><span class="line">  &#125;</span><br><span class="line">  return newSquare;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let mySquare = createSquare(&#123;color: &quot;black&quot;&#125;);</span><br></pre></td></tr></table></figure>
+<p>带有可选属性的接口与普通的接口定义差不多，只是在可选属性名字定义的后面加一个?符号。</p>
+<p>可选属性的好处之一是可以对可能存在的属性进行预定义，好处之二是可以捕获引用了不存在的属性时的错误。 比如，我们故意将 createSquare里的color属性名拼错，就会得到一个错误提示：</p>
+<h3 id="只读属性"><a href="#只读属性" class="headerlink" title="只读属性"></a>只读属性</h3><p>一些对象属性只能在对象刚刚创建的时候修改其值。 你可以在属性名前用 readonly来指定只读属性:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">interface Point &#123;</span><br><span class="line">    readonly x: number;</span><br><span class="line">    readonly y: number;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你可以通过赋值一个对象字面量来构造一个Point。 赋值后， x和y再也不能被改变了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let p1: Point = &#123; x: 10, y: 20 &#125;;</span><br><span class="line">p1.x = 5; // error!</span><br></pre></td></tr></table></figure>
+<p>TypeScript具有<code>ReadonlyArray&lt;T&gt;</code>类型，它与<code>Array&lt;T&gt;</code>相似，只是把怕有可变方法去掉了，因此可以确保数组创建后再也不能被修改：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let a: number[] = [1, 2, 3, 4];</span><br><span class="line">let ro: ReadonlyArray&lt;number&gt; = a;</span><br><span class="line">ro[0] = 12; // error!</span><br><span class="line">ro.push(5); // error!</span><br><span class="line">ro.length = 100; // error!</span><br><span class="line">a = ro; // error!</span><br></pre></td></tr></table></figure>
+
+<p>上面代码的最后一行，可以看到就算把整个ReadonlyArray赋值到一个普通数组也是不可以的。 但是你可以用类型断言重写：</p>
+<p><code>a = ro as number[];</code></p>
+<h4 id="readonly-vs-const"><a href="#readonly-vs-const" class="headerlink" title="readonly vs const"></a>readonly vs const</h4><p>最简单判断该用readonly还是const的方法是看要把它做为变量使用还是做为一个属性。 做为变量使用的话用 const，若做为属性则使用readonly。</p>
+<h3 id="额外的属性检查"><a href="#额外的属性检查" class="headerlink" title="额外的属性检查"></a>额外的属性检查</h3><p>我们在第一个例子里使用了接口，TypeScript让我们传入{ size: number; label: string; }到仅期望得到{ label: string; }的函数里。 我们已经学过了可选属性，并且知道他们在“option bags”模式里很有用。</p>
+<p>然而，天真地将这两者结合的话就会像在JavaScript里那样搬起石头砸自己的脚。 比如，拿 createSquare例子来说：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">interface SquareConfig &#123;</span><br><span class="line">    color?: string;</span><br><span class="line">    width?: number;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function createSquare(config: SquareConfig): &#123; color: string; area: number &#125; &#123;</span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let mySquare = createSquare(&#123; colour: &quot;red&quot;, width: 100 &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>注意传入createSquare的参数拼写为<em>colour</em>而不是color。 在JavaScript里，这会默默地失败。</p>
+<p>你可能会争辩这个程序已经正确地类型化了，因为width属性是兼容的，不存在color属性，而且额外的colour属性是无意义的。</p>
+<p>然而，TypeScript会认为这段代码可能存在bug。 对象字面量会被特殊对待而且会经过 额外属性检查，当将它们赋值给变量或作为参数传递的时候。 如果一个对象字面量存在任何“目标类型”不包含的属性时，你会得到一个错误。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// error: &#x27;colour&#x27; not expected in type &#x27;SquareConfig&#x27;</span><br><span class="line">let mySquare = createSquare(&#123; colour: &quot;red&quot;, width: 100 &#125;);</span><br></pre></td></tr></table></figure>
+<p>绕开这些检查非常简单。 最简便的方法是使用类型断言：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let mySquare = createSquare(&#123; width: 100, opacity: 0.5 &#125; as SquareConfig);</span><br></pre></td></tr></table></figure>
+<p>然而，最佳的方式是能够添加一个字符串索引签名，前提是你能够确定这个对象可能具有某些做为特殊用途使用的额外属性。 如果 SquareConfig带有上面定义的类型的color和width属性，并且还会带有任意数量的其它属性，那么我们可以这样定义它：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">interface SquareConfig &#123;</span><br><span class="line">    color?: string;</span><br><span class="line">    width?: number;</span><br><span class="line">    [propName: string]: any;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们稍后会讲到索引签名，但在这我们要表示的是SquareConfig可以有任意数量的属性，并且只要它们不是color和width，那么就无所谓它们的类型是什么。</p>
+<p>还有最后一种跳过这些检查的方式，这可能会让你感到惊讶，它就是将这个对象赋值给一个另一个变量： 因为 <code>squareOptions</code>不会经过额外属性检查，所以编译器不会报错。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let squareOptions = &#123; colour: &quot;red&quot;, width: 100 &#125;;</span><br><span class="line">let mySquare = createSquare(squareOptions);</span><br></pre></td></tr></table></figure>
+<p>要留意，在像上面一样的简单代码里，你可能不应该去绕开这些检查。 对于包含方法和内部状态的复杂对象字面量来讲，你可能需要使用这些技巧，但是大部额外属性检查错误是真正的bug。 就是说你遇到了额外类型检查出的错误，比如选择包，你应该去审查一下你的类型声明。 在这里，如果支持传入 color或colour属性到createSquare，你应该修改SquareConfig定义来体现出这一点。</p>
+<h3 id="函数类型"><a href="#函数类型" class="headerlink" title="函数类型"></a>函数类型</h3><p>接口能够描述JavaScript中对象拥有的各种各样的外形。 除了描述带有属性的普通对象外，接口也可以描述函数类型。</p>
+<p>为了使用接口表示函数类型，我们需要给接口定义一个调用签名。 它就像是一个只有参数列表和返回值类型的函数定义。参数列表里的每个参数都需要名字和类型。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">interface SearchFunc &#123;</span><br><span class="line">  (source: string, subString: string): boolean;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样定义后，我们可以像使用其它接口一样使用这个函数类型的接口。 下例展示了如何创建一个函数类型的变量，并将一个同类型的函数赋值给这个变量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let mySearch: SearchFunc;</span><br><span class="line">mySearch = function(source: string, subString: string) &#123;</span><br><span class="line">  let result = source.search(subString);</span><br><span class="line">  if (result == -1) &#123;</span><br><span class="line">    return false;</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    return true;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数的参数会逐个进行检查，要求对应位置上的参数类型是兼容的。 如果你不想指定类型，Typescript的类型系统会推断出参数类型，因为函数直接赋值给了 SearchFunc类型变量。 函数的返回值类型是通过其返回值推断出来的（此例是 false和true）。 如果让这个函数返回数字或字符串，类型检查器会警告我们函数的返回值类型与 SearchFunc接口中的定义不匹配。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let mySearch: SearchFunc;</span><br><span class="line">mySearch = function(src, sub) &#123;</span><br><span class="line">    let result = src.search(sub);</span><br><span class="line">    if (result == -1) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="可索引的类型"><a href="#可索引的类型" class="headerlink" title="可索引的类型"></a>可索引的类型</h3><p>与使用接口描述函数类型差不多，我们也可以描述那些能够“通过索引得到”的类型，比如<code>a[10]</code>或<code>ageMap[&quot;daniel&quot;]</code>。 可索引类型具有一个 索引签名，它描述了对象索引的类型，还有相应的索引返回值类型。 让我们看一个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">interface StringArray &#123;</span><br><span class="line">  [index: number]: string;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let myArray: StringArray;</span><br><span class="line">myArray = [&quot;Bob&quot;, &quot;Fred&quot;];</span><br><span class="line"></span><br><span class="line">let myStr: string = myArray[0];</span><br></pre></td></tr></table></figure>
+
+<p>上面例子里，我们定义了StringArray接口，它具有索引签名。 这个索引签名表示了当用 number去索引StringArray时会得到string类型的返回值。</p>
+<p>共有支持两种索引签名：字符串和数字。 可以同时使用两种类型的索引，但是数字索引的返回值必须是字符串索引返回值类型的子类型。 这是因为当使用 number来索引时，JavaScript会将它转换成string然后再去索引对象。 也就是说用 100（一个number）去索引等同于使用”100”（一个string）去索引，因此两者需要保持一致。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Animal &#123;</span><br><span class="line">    name: string;</span><br><span class="line">&#125;</span><br><span class="line">class Dog extends Animal &#123;</span><br><span class="line">    breed: string;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Error: indexing with a &#x27;string&#x27; will sometimes get you a Dog!</span><br><span class="line">interface NotOkay &#123;</span><br><span class="line">    [x: number]: Animal;</span><br><span class="line">    [x: string]: Dog;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>字符串索引签名能够很好的描述dictionary模式，并且它们也会确保所有属性与其返回值类型相匹配。 因为字符串索引声明了 <code>obj.property</code>和<code>obj[&quot;property&quot;]</code>两种形式都可以。 下面的例子里， name的类型与字符串索引类型不匹配，所以类型检查器给出一个错误提示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">interface NumberDictionary &#123;</span><br><span class="line">  [index: string]: number;</span><br><span class="line">  length: number;    // 可以，length是number类型</span><br><span class="line">  name: string       // 错误，`name`的类型不是索引类型的子类型</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后，你可以将索引签名设置为只读，这样就防止了给索引赋值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">interface ReadonlyStringArray &#123;</span><br><span class="line">    readonly [index: number]: string;</span><br><span class="line">&#125;</span><br><span class="line">let myArray: ReadonlyStringArray = [&quot;Alice&quot;, &quot;Bob&quot;];</span><br><span class="line">myArray[2] = &quot;Mallory&quot;; // error!</span><br></pre></td></tr></table></figure>
+<p>你不能设置<code>myArray[2]</code>，因为索引签名是只读的。</p>
+<h3 id="类类型"><a href="#类类型" class="headerlink" title="类类型"></a>类类型</h3><h4 id="实现接口"><a href="#实现接口" class="headerlink" title="实现接口"></a>实现接口</h4><p>与C#或Java里接口的基本作用一样，TypeScript也能够用它来明确的强制一个类去符合某种契约。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">interface ClockInterface &#123;</span><br><span class="line">    currentTime: Date;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Clock implements ClockInterface &#123;</span><br><span class="line">    currentTime: Date;</span><br><span class="line">    constructor(h: number, m: number) &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你也可以在接口中描述一个方法，在类里实现它，如同下面的setTime方法一样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">interface ClockInterface &#123;</span><br><span class="line">    currentTime: Date;</span><br><span class="line">    setTime(d: Date);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Clock implements ClockInterface &#123;</span><br><span class="line">    currentTime: Date;</span><br><span class="line">    setTime(d: Date) &#123;</span><br><span class="line">        this.currentTime = d;</span><br><span class="line">    &#125;</span><br><span class="line">    constructor(h: number, m: number) &#123; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>接口描述了类的公共部分，而不是公共和私有两部分。 它不会帮你检查类是否具有某些私有成员。</p>
+<h4 id="类静态部分与实例部分的区别"><a href="#类静态部分与实例部分的区别" class="headerlink" title="类静态部分与实例部分的区别"></a>类静态部分与实例部分的区别</h4><p>当你操作类和接口的时候，你要知道类是具有两个类型的：静态部分的类型和实例的类型。 你会注意到，当你用构造器签名去定义一个接口并试图定义一个类去实现这个接口时会得到一个错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">interface ClockConstructor &#123;</span><br><span class="line">    new (hour: number, minute: number);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Clock implements ClockConstructor &#123;</span><br><span class="line">    currentTime: Date;</span><br><span class="line">    constructor(h: number, m: number) &#123; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这里因为当一个类实现了一个接口时，只对其实例部分进行类型检查。 <code>constructor</code>存在于类的静态部分，所以不在检查的范围内。</p>
+<p>因此，我们应该直接操作类的静态部分。 看下面的例子，我们定义了两个接口， <code>ClockConstructor</code>为构造函数所用和<code>ClockInterface</code>为实例方法所用。 为了方便我们定义一个构造函数 <code>createClock</code>，它用传入的类型创建实例。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>webkong
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.webkong.cn/typescript%E6%8E%A5%E5%8F%A3/" title="TypeScript接口">https://blog.webkong.cn/typescript接口/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%8E%A5%E5%8F%A3/" rel="tag"># 接口</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/typescript%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E/" rel="prev" title="TypeScript变量声明">
+                  <i class="fa fa-chevron-left"></i> TypeScript变量声明
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/typescript%E5%87%BD%E6%95%B0/" rel="next" title="TypeScript函数">
+                  TypeScript函数 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">webkong</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"webkong","repo":"blog-gitment","client_id":"54ecf778fa1a619ba5f7","client_secret":"7fc721167bf96eb27e9edc7307a50fa3a7d12d4a","admin_user":"webkong","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"1201232f09eca81aac28ae28dcd3bf2a"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

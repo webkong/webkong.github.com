@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs">
+  <meta name="msvalidate.01" content="BABF339751DEC853F1915E4C3272192A">
+  <meta name="yandex-verification" content="eceb5773d0fe4679">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="上一篇动手写出了第一个 dsh 工具。这篇往回退一步，讲透插件之间的「对话方式」：什么是服务、inject 到底如何决定启动顺序、事件系统为什么能解耦插件，以及 tools 执行时那一层层流水线（pre-execute &#x2F; guards &#x2F; execute &#x2F; post-execute &#x2F; result）各自干什么。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DeepSeek Harness 插件机制深层：服务注入、事件与 tools 流水线">
+<meta property="og:url" content="https://blog.webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%B1%82%EF%BC%9A%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%85%A5%E3%80%81%E4%BA%8B%E4%BB%B6%E4%B8%8E-tools-%E6%B5%81%E6%B0%B4%E7%BA%BF/index.html">
+<meta property="og:site_name" content="WebKong的网络日志">
+<meta property="og:description" content="上一篇动手写出了第一个 dsh 工具。这篇往回退一步，讲透插件之间的「对话方式」：什么是服务、inject 到底如何决定启动顺序、事件系统为什么能解耦插件，以及 tools 执行时那一层层流水线（pre-execute &#x2F; guards &#x2F; execute &#x2F; post-execute &#x2F; result）各自干什么。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-09-07T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-07T12:04:20.232Z">
+<meta property="article:author" content="webkong">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="DeepSeek">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="dsh">
+<meta property="article:tag" content="Cordis">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%B1%82%EF%BC%9A%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%85%A5%E3%80%81%E4%BA%8B%E4%BB%B6%E4%B8%8E-tools-%E6%B5%81%E6%B0%B4%E7%BA%BF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%B1%82%EF%BC%9A%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%85%A5%E3%80%81%E4%BA%8B%E4%BB%B6%E4%B8%8E-tools-%E6%B5%81%E6%B0%B4%E7%BA%BF/","path":"deepseek-harness-插件机制深层：服务注入、事件与-tools-流水线/","title":"DeepSeek Harness 插件机制深层：服务注入、事件与 tools 流水线"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>DeepSeek Harness 插件机制深层：服务注入、事件与 tools 流水线 | WebKong的网络日志</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93765710-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-93765710-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WebKong的网络日志</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享工作中的所用、所想、所感。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">95</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E3%80%81Service-%E4%B8%8E%E4%BA%8B%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">插件、Service 与事件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E3%80%8C%E5%8F%AF%E9%80%86%E5%89%AF%E4%BD%9C%E7%94%A8%E3%80%8D%E5%A6%82%E6%AD%A4%E9%87%8D%E8%A6%81"><span class="nav-number">2.</span> <span class="nav-text">为什么「可逆副作用」如此重要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%EF%BC%9A%E4%BA%94%E7%A7%8D%E5%88%86%E5%8F%91%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">事件：五种分发模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#waterfall%EF%BC%9Adsh-%E6%8B%A6%E6%88%AA%E7%9A%84%E7%9C%9F%E7%9B%B8"><span class="nav-number">4.</span> <span class="nav-text">waterfall：dsh 拦截的真相</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tools-%E6%B5%81%E6%B0%B4%E7%BA%BF%EF%BC%9A%E4%B8%80%E6%AC%A1%E8%B0%83%E7%94%A8%E7%9A%84%E5%B1%82%E5%B1%82%E5%85%B3%E5%8D%A1"><span class="nav-number">5.</span> <span class="nav-text">tools 流水线：一次调用的层层关卡</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8E%E3%80%8C%E4%BC%9A%E5%86%99%E3%80%8D%E5%88%B0%E3%80%8C%E7%9C%8B%E6%87%82%E3%80%8D"><span class="nav-number">6.</span> <span class="nav-text">从「会写」到「看懂」</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">一些思考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="webkong"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">webkong</p>
+  <div class="site-description" itemprop="description">以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/webkong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/webkong" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.hcharts.cn/" title="http:&#x2F;&#x2F;www.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts中文网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://bbs.hcharts.cn/" title="http:&#x2F;&#x2F;bbs.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts论坛</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%B1%82%EF%BC%9A%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%85%A5%E3%80%81%E4%BA%8B%E4%BB%B6%E4%B8%8E-tools-%E6%B5%81%E6%B0%B4%E7%BA%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="webkong">
+      <meta itemprop="description" content="以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WebKong的网络日志">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DeepSeek Harness 插件机制深层：服务注入、事件与 tools 流水线
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-09-07 12:00:00 / 修改时间：20:04:20" itemprop="dateCreated datePublished" datetime="2026-09-07T12:00:00+08:00">2026-09-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>上一篇动手写出了第一个 dsh 工具。这篇往回退一步，讲透插件之间的「对话方式」：什么是服务、<code>inject</code> 到底如何决定启动顺序、事件系统为什么能解耦插件，以及 <code>tools</code> 执行时那一层层流水线（pre-execute / guards / execute / post-execute / result）各自干什么。</p>
+</blockquote>
+<span id="more"></span>
+
+<p><a href="https://blog.webkong.cn/deepseek-harness-plugin-hello/">上一篇</a>我们写出了 <code>greet</code> 工具，但它是「照葫芦画瓢」。为什么插件要 <code>inject: [&#39;tools&#39;]</code>？为什么 <code>ctx.tools.register(...)</code> 卸载时会自动注销？为什么观察者插件能靠一个 <code>tools/result</code> 事件跟工具插件勾搭上？</p>
+<p>答案都藏在 dsh 底层的插件系统 <strong>Cordis</strong> 里。这篇把它讲透。</p>
+<h1 id="插件、Service-与事件"><a href="#插件、Service-与事件" class="headerlink" title="插件、Service 与事件"></a>插件、Service 与事件</h1><p>dsh 里有两套插件协作的机制，对应两句话：</p>
+<ul>
+<li><strong>服务（Service）</strong> 让一个插件把「能力」提供给别的插件用，是<strong>直接调用</strong>。</li>
+<li><strong>事件（Event）</strong> 让一个插件发出通知，但<strong>无需知道</strong>谁在监听，是<strong>广播</strong>。</li>
+</ul>
+<p><code>ctx.tools</code>、<code>ctx.llm</code>、<code>ctx.agents</code>，都是服务。消费方只写 <code>&#39;tools&#39;</code> 这个名字，而不导入其提供方——所以配置可以在不改消费方的前提下换掉提供方。</p>
+<p>服务的「提供」和「消费」各有一步。先看提供方（一个 <code>GreeterService</code>）：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Service, <span class="keyword">type</span> Context &#125; <span class="keyword">from</span> <span class="string">&#x27;@deepseek-ai/cordis&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> <span class="built_in">module</span> <span class="string">&#x27;@deepseek-ai/cordis&#x27;</span> &#123;</span><br><span class="line">  <span class="keyword">interface</span> Context &#123;</span><br><span class="line">    <span class="attr">greeter</span>: GreeterService</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">GreeterService</span> <span class="keyword">extends</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">ctx: Context</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>(ctx, <span class="string">&#x27;greeter&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">greet</span>(<span class="params">who: <span class="built_in">string</span></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`Hello, <span class="subst">$&#123;who&#125;</span>!`</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> name = <span class="string">&#x27;greeter&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">apply</span>(<span class="params">ctx: Context</span>) </span>&#123;</span><br><span class="line">  ctx.plugin(GreeterService)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这代码有两层意思：</p>
+<ul>
+<li><strong>运行时</strong>：<code>super(ctx, &#39;greeter&#39;)</code> 把该实例以 <code>greeter</code> 这个名称注册。此后任何插件都能通过 <code>ctx.greeter</code> 访问它。</li>
+<li><strong>编译时</strong>：<code>declare module &#39;@deepseek-ai/cordis&#39;</code> 用 TypeScript 声明合并，把 <code>greeter</code> 加进 <code>Context</code> 接口，让 <code>ctx.greeter</code> 处处能通过类型检查。它不生成任何代码；没有它服务照常能用，只是消费方失去类型安全。</li>
+</ul>
+<p>注意：**<code>Service</code> 子类本身就是插件**（也就是插件三种形态里的「类形态」），所以 <code>ctx.plugin(GreeterService)</code> 和挂载普通插件一样。</p>
+<p>再看消费方：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> name = <span class="string">&#x27;consumer&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> inject = [<span class="string">&#x27;greeter&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">apply</span>(<span class="params">ctx: Context</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(ctx.greeter.greet(<span class="string">&#x27;world&#x27;</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>inject</code> 列出这个插件需要的服务。Cordis 会让插件保持 <strong><code>PENDING</code></strong> 状态，直到列出的每一项服务都存在，所以在 <code>apply</code> 里 <code>ctx.greeter</code> 必然就绪。</p>
+<p>这引出一个反直觉但极重要的结论：**<code>cordis.yml</code> 里的加载顺序无关紧要。决定插件何时启动的是依赖关系，不是文件顺序。**</p>
+<blockquote>
+<p>把 <code>cordis.yml</code> 里两行换个顺序，输出还是 <code>Hello, world!</code>。真要删掉 <code>./greeter.ts</code>，消费方会默默保持 PENDING，不输出、不崩溃，进程静默以状态码 0 退出。这就是为什么「我的插件怎么没输出」的答案，往往是：它依赖的服务还没到场。</p>
+</blockquote>
+<h1 id="为什么「可逆副作用」如此重要"><a href="#为什么「可逆副作用」如此重要" class="headerlink" title="为什么「可逆副作用」如此重要"></a>为什么「可逆副作用」如此重要</h1><p>上一章说 <code>ctx.tools.register(...)</code> 卸载时会自动注销工具。秘密在于 <strong>effect（副作用）</strong>。</p>
+<p>Cordis 插件会因为四种原因被卸载：修改配置、热重载、显式 dispose、所依赖的服务消失。通过 Cordis API 建立的注册都属于 <strong>effect</strong>，插件卸载时自动撤销。所以：</p>
+<ul>
+<li><code>ctx.on(event, listener)</code> —— 监听器随插件一起移除；</li>
+<li><code>ctx.plugin(child)</code> —— 子插件随父插件一起 dispose；</li>
+<li>服务注册、<code>ctx.tools.register(...)</code> —— 同样自动撤销。</li>
+</ul>
+<p>对 Cordis 没管理的资源（定时器、连接、watcher），你要手动包在 <code>ctx.effect()</code> 里并返回 disposer：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ctx.effect(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> timer = <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="string">&#x27;tick&#x27;</span>), <span class="number">200</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">clearInterval</span>(timer)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;heartbeat cleaned up&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>effect 主体在加载时运行，它返回的 disposer 在卸载时运行。与你插件生命周期一致的资源，你永远不需要自己调 disposer。</p>
+<p>每个加载的插件实例都有一个 <strong>fiber（运行时句柄）</strong>，状态转化如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PENDING → LOADING → ACTIVE → UNLOADING → DISPOSED</span><br><span class="line">                 ↘ FAILED</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>PENDING</code>：已声明，但所需服务未就绪。</li>
+<li><code>FAILED</code>：<code>apply</code> 或配置校验抛了异常。</li>
+<li><code>UNLOADING</code> / <code>DISPOSED</code>：disposer 运行中 / 已拆除。</li>
+</ul>
+<p><code>fiber.dispose()</code> 会等该插件所有异步清理完成，并递归卸载它挂载的所有子插件。</p>
+<blockquote>
+<p>dsh 这套「一切回归可撤销」的哲学非常硬核：运行时不存在需要打补丁的特权内核，每一项能力注册都是可逆副作用。这意味着你可以热替换任何插件——卸载旧的 <code>shell</code> 提供方，挂上新的，所有注入 <code>&#39;shell&#39;</code> 的插件都会自动重启用新实现。</p>
+</blockquote>
+<h1 id="事件：五种分发模式"><a href="#事件：五种分发模式" class="headerlink" title="事件：五种分发模式"></a>事件：五种分发模式</h1><p>服务适合直接调用，事件适合解耦。dsh 的事件系统尤有意思——它不只有一种「广播」。</p>
+<p>先看一个典型事件：一个服务发出通知，另一个插件监听。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="built_in">module</span> <span class="string">&#x27;@deepseek-ai/cordis&#x27;</span> &#123;</span><br><span class="line">  <span class="keyword">interface</span> Context &#123;</span><br><span class="line">    <span class="attr">stats</span>: StatsService</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">interface</span> Events &#123;</span><br><span class="line">    <span class="string">&#x27;stats/report&#x27;</span>(name: <span class="built_in">string</span>, <span class="attr">count</span>: <span class="built_in">number</span>): <span class="built_in">void</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">StatsService</span> <span class="keyword">extends</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> counts = <span class="keyword">new</span> <span class="built_in">Map</span>&lt;<span class="built_in">string</span>, <span class="built_in">number</span>&gt;()</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">ctx: Context</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>(ctx, <span class="string">&#x27;stats&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">bump</span>(<span class="params">name: <span class="built_in">string</span></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> next = (<span class="built_in">this</span>.counts.get(name) ?? <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">    <span class="built_in">this</span>.counts.set(name, next)</span><br><span class="line">    <span class="built_in">this</span>.ctx.emit(<span class="string">&#x27;stats/report&#x27;</span>, name, next)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>interface Context</code> 和 <code>interface Events</code> 两个声明合并是配套的：前者声明服务，后者声明事件名及监听器签名，让 <code>ctx.emit</code> 和 <code>ctx.on</code> 都有完整类型。事件名用 <code>namespace/action</code> 约定，比如 <code>tools/result</code>、<code>session/event</code>。</p>
+<p><code>ctx.on()</code> 也是 effect，监听器随插件消失，所以<strong>绝不需要手动 removeListener</strong>。</p>
+<p><code>emit</code> 只是五种分发模式之一。事件用哪种模式，是它约定的一部分：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>调用</th>
+<th>语义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>emit</code></td>
+<td><code>ctx.emit(...)</code></td>
+<td>同步广播，不等待、不收集返回值</td>
+</tr>
+<tr>
+<td><code>parallel</code></td>
+<td><code>await ctx.parallel(...)</code></td>
+<td>所有监听器并发运行并一起等待</td>
+</tr>
+<tr>
+<td><code>serial</code></td>
+<td><code>await ctx.serial(...)</code></td>
+<td>按序运行，第一个非 <code>null</code>/<code>false</code>/<code>undefined</code> 返回值胜出并截断</td>
+</tr>
+<tr>
+<td><code>bail</code></td>
+<td><code>ctx.bail(...)</code></td>
+<td><code>serial</code> 的同步版本</td>
+</tr>
+<tr>
+<td><code>waterfall</code></td>
+<td><code>ctx.waterfall(..., next)</code></td>
+<td>环绕中间件，可转换或短路</td>
+</tr>
+</tbody></table>
+<p>每个 harness 事件都在其子系统页面的参考文档里标注了各自模式。<code>tools/result</code> 就是同步 <code>emit</code>，所以观察者能拿到不可变的最终结果。</p>
+<h1 id="waterfall：dsh-拦截的真相"><a href="#waterfall：dsh-拦截的真相" class="headerlink" title="waterfall：dsh 拦截的真相"></a>waterfall：dsh 拦截的真相</h1><p>上面五种模式里，<code>waterfall</code> 是理解 dsh「策略与钩子」的关键。它是实现「拦截」的模式：每个监听器收到参数和一个 <code>next()</code> continuation，可以转换 <code>next()</code> 的返回值，也可以<strong>不调用 <code>next()</code> 直接返回</strong>，从而短路后续的链条——Cordis 把后者叫「否决」。</p>
+<p>看个例子：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">apply</span>(<span class="params">ctx: Context</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 监听器 1：包裹下游结果。</span></span><br><span class="line">  ctx.on(<span class="string">&#x27;demo/transform&#x27;</span>, <span class="keyword">async</span> (input, next) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> downstream = <span class="keyword">await</span> next()</span><br><span class="line">    <span class="keyword">return</span> downstream.toUpperCase()</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 监听器 2：看到 blocked 就短路。</span></span><br><span class="line">  ctx.on(<span class="string">&#x27;demo/transform&#x27;</span>, <span class="keyword">async</span> (input, next) =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (input.includes(<span class="string">&#x27;blocked&#x27;</span>)) <span class="keyword">return</span> <span class="string">&#x27;** blocked **&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> next()</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="built_in">void</span> (<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">await</span> ctx.waterfall(<span class="string">&#x27;demo/transform&#x27;</span>, <span class="string">&#x27;hello&#x27;</span>, <span class="keyword">async</span> () =&gt; <span class="string">&#x27;hello&#x27;</span>))</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">await</span> ctx.waterfall(<span class="string">&#x27;demo/transform&#x27;</span>, <span class="string">&#x27;blocked words&#x27;</span>, <span class="keyword">async</span> () =&gt; <span class="string">&#x27;blocked words&#x27;</span>))</span><br><span class="line">  &#125;)()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HELLO</span><br><span class="line">** BLOCKED **</span><br></pre></td></tr></table></figure>
+
+<p>第二行怎么来的：监听器 1 先跑，调用 <code>next()</code> 从而进入监听器 2；监听器 2 看到 <code>blocked</code>，不调 <code>next()</code> 直接返回，所以最内层默认逻辑从未运行；返回途中，监听器 1 再把替换文本转成大写。</p>
+<p>由此得出 dsh 一条<strong>常设纪律</strong>：</p>
+<blockquote>
+<p><strong>只负责观察或只做标注的 waterfall 监听器，必须调用 <code>next()</code>。</strong> 不调用 <code>next()</code> 直接返回，代表有意短路。如果日志监听器忘了调用 <code>next()</code>，会悄无声息地吞掉下游所有默认行为。</p>
+</blockquote>
+<p>harness 用 waterfall 处理那些「协作插件可以包装或作答」的决策：<code>agent/request</code> 允许插件替换模型调用配置，<code>approval/request</code> 允许策略代替用户作答。</p>
+<h1 id="tools-流水线：一次调用的层层关卡"><a href="#tools-流水线：一次调用的层层关卡" class="headerlink" title="tools 流水线：一次调用的层层关卡"></a><code>tools</code> 流水线：一次调用的层层关卡</h1><p>理解了服务、事件、effect 和 waterfall，<code>tools</code> 的执行流水线就一目了然了。dsh 里一次工具调用不是「直接执行」，而是要过一整套关卡。看这张官方流程图（文字版）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">模型消息含 tool-call</span><br><span class="line">   → tool/call（执行前落日志）</span><br><span class="line">   → presentCall（UI pending 卡片）</span><br><span class="line">   → tools/pre-execute waterfall（钩子 / 权限 / 沙箱）</span><br><span class="line">   → 单调守卫（deny 或 abstain）</span><br><span class="line">   → tools/execute waterfall（超时 / 重试 / 指标，环绕分发）</span><br><span class="line">   → 工具 execute() 主体</span><br><span class="line">   → fs/write-intent 或 fs/edit-intent（仅 tool-fs 变更类）</span><br><span class="line">   → tools/post-execute waterfall（accept / block / replace / add context）</span><br><span class="line">   → 注册表外层规范化（快照失败 → isError）</span><br><span class="line">   → ToolDefinition.finalizeContent（仅内容不变式）</span><br><span class="line">   → tools/result（同步通知，冻结的最终结果）</span><br><span class="line">   → tool/result（落日志的模型可执行结果）</span><br><span class="line">   → presentResult（UI 完成卡片）</span><br></pre></td></tr></table></figure>
+
+<p>这些关卡各司其职，又互相独立：</p>
+<ul>
+<li><strong><code>tools/pre-execute</code></strong> 是 <strong>waterfall</strong>，承载通用的前置策略。钩子、权限、沙箱、plan-mode 都挂在这里，返回类型化决策（<code>allow</code> / <code>ask</code> / <code>deny</code>）。这是「可重排的策略层」。</li>
+<li><strong>单调守卫</strong> 用 <code>ctx.tools.guard()</code> 设置，是<strong>最终拒绝</strong>，后面的监听器无法把它撤销。需要「严格到不可更改」的拒绝就用它。</li>
+<li><strong><code>tools/execute</code></strong> 也是 <strong>waterfall</strong>，专门做<strong>环绕分发</strong>——加超时、重试、指标。只有它能让 <code>exec.signal</code> 被替换。</li>
+<li><strong><code>tools/post-execute</code></strong> 做<strong>显式结果变换</strong>：接受、替换、屏蔽返回内容、附加模型可见上下文。</li>
+<li><strong><code>tools/result</code></strong> 只是<strong>观察</strong>不可变、已归一化的最终结果，不改动它。观测用这个，要改结果才用 post-execute。</li>
+</ul>
+<p>这套设计的好处——<strong>钩子可以跨越不同工具家族，而工具本身不必与某个策略服务耦合</strong>。权限策略不用写进每个工具里，它们是挂在 <code>pre-execute</code> 上的独立插件。</p>
+<h1 id="从「会写」到「看懂」"><a href="#从「会写」到「看懂」" class="headerlink" title="从「会写」到「看懂」"></a>从「会写」到「看懂」</h1><p>现在回头看上一篇那个 <code>greet</code> 工具，一切都清楚了：</p>
+<ul>
+<li><code>inject: [&#39;tools&#39;]</code> 让 Cordis 等工具注册表就绪；</li>
+<li><code>ctx.tools.register(...)</code> 注册即副作用，卸载自动撤销；</li>
+<li>观察者靠 <code>tools/result</code>（同步 emit）拿到冻结结果；</li>
+<li>想加权限？挂一个 <code>tools/pre-execute</code> waterfall 监听器，返回 <code>deny</code> 或 <code>ask</code>，工具一行都不用改。</li>
+</ul>
+<p>这就是为什么我说 dsh 是「元框架」而非「产品」：它把扩展点、分发模式、生命周期全部显式化，你往里组装自己的规则，而不是被一个成品框住。</p>
+<h1 id="一些思考"><a href="#一些思考" class="headerlink" title="一些思考"></a>一些思考</h1><ul>
+<li><strong>启动顺序不是「代码顺序」，是「依赖拓扑」。</strong> 我第一次写组合时，以为 YAML 里谁先谁后很重要，结果发现真正决定时序的是 <code>inject</code>。这个心智模型的转变，是打开 dsh 大门的第一把钥匙。</li>
+<li><strong>waterfall 的「忘记调 next」是隐性炸弹。</strong> 事件系统越优雅，越要在纪律上小心——一个记日志的监听器忘调 <code>next()</code>，就可能静默吞掉所有下游行为。文档里把它列为常设规则，不是没道理。</li>
+<li><strong>每一层都可独立替换。</strong> 从 pre-execute 到 result，每一关都是独立的扩展点。想换权限策略、换渲染、加指标，都在对应那一层加插件，不用碰工具本身。模块化做到这份上，是 dsh 最让我佩服的地方。</li>
+</ul>
+<p>下一篇聊聊最实用的进阶：钩子与权限门禁实战。我会用 <code>tools/pre-execute</code> 写一个允许 / 拒绝 / 询问的审批策略插件，让工具按你的规则运行。欢迎留言交流。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>原作者： </strong>webkong
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%B1%82%EF%BC%9A%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%85%A5%E3%80%81%E4%BA%8B%E4%BB%B6%E4%B8%8E-tools-%E6%B5%81%E6%B0%B4%E7%BA%BF/" title="DeepSeek Harness 插件机制深层：服务注入、事件与 tools 流水线">https://blog.webkong.cn/deepseek-harness-插件机制深层：服务注入、事件与-tools-流水线/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+              <a href="/tags/DeepSeek/" rel="tag"># DeepSeek</a>
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/dsh/" rel="tag"># dsh</a>
+              <a href="/tags/Cordis/" rel="tag"># Cordis</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/deepseek-harness-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E-hello-%E5%88%B0%E9%9D%A2%E5%90%91%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B7%A5%E5%85%B7/" rel="prev" title="DeepSeek Harness 插件开发实战：从 hello 到面向模型的工具">
+                  <i class="fa fa-chevron-left"></i> DeepSeek Harness 插件开发实战：从 hello 到面向模型的工具
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/deepseek-harness-%E9%92%A9%E5%AD%90%E4%B8%8E%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%A9%E5%B7%A5%E5%85%B7%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99%E8%BF%90%E8%A1%8C/" rel="next" title="DeepSeek Harness 钩子与权限门禁实战：让工具按你的规则运行">
+                  DeepSeek Harness 钩子与权限门禁实战：让工具按你的规则运行 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">webkong</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"webkong","repo":"blog-gitment","client_id":"54ecf778fa1a619ba5f7","client_secret":"7fc721167bf96eb27e9edc7307a50fa3a7d12d4a","admin_user":"webkong","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"b68ab45ab7d9c192aa9c9e1eab539daa"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

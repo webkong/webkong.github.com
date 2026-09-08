@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs">
+  <meta name="msvalidate.01" content="BABF339751DEC853F1915E4C3272192A">
+  <meta name="yandex-verification" content="eceb5773d0fe4679">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Javascript的变量是松散类型的，它可以存储Javascript支持的任何数据类型，其变量的类型可以在运行时被动态改变。 正因为Javascript中变量类型具有动态性，在程序实际执行的过程中就需要用到类型转换的概念。类型转换可以分为隐式转换和显式转换，所谓隐 式转换即程序在运行时进行的自动转换，显式转换则是人为的对类型进行强制转换。  Javascript提供了以下转型函数：转换为数值类型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript强制类型转换">
+<meta property="og:url" content="https://blog.webkong.cn/javascript%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/index.html">
+<meta property="og:site_name" content="WebKong的网络日志">
+<meta property="og:description" content="Javascript的变量是松散类型的，它可以存储Javascript支持的任何数据类型，其变量的类型可以在运行时被动态改变。 正因为Javascript中变量类型具有动态性，在程序实际执行的过程中就需要用到类型转换的概念。类型转换可以分为隐式转换和显式转换，所谓隐 式转换即程序在运行时进行的自动转换，显式转换则是人为的对类型进行强制转换。  Javascript提供了以下转型函数：转换为数值类型">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-01-24T03:46:55.000Z">
+<meta property="article:modified_time" content="2026-09-07T03:09:04.789Z">
+<meta property="article:author" content="webkong">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="原创">
+<meta property="article:tag" content="类型转换">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.webkong.cn/javascript%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/javascript%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/","path":"javascript强制类型转换/","title":"JavaScript强制类型转换"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaScript强制类型转换 | WebKong的网络日志</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93765710-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-93765710-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WebKong的网络日志</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享工作中的所用、所想、所感。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">95</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="webkong"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">webkong</p>
+  <div class="site-description" itemprop="description">以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/webkong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/webkong" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.hcharts.cn/" title="http:&#x2F;&#x2F;www.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts中文网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://bbs.hcharts.cn/" title="http:&#x2F;&#x2F;bbs.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts论坛</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/javascript%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="webkong">
+      <meta itemprop="description" content="以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WebKong的网络日志">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript强制类型转换
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-01-24 11:46:55" itemprop="dateCreated datePublished" datetime="2016-01-24T11:46:55+08:00">2016-01-24</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2026-09-07 11:09:04" itemprop="dateModified" datetime="2026-09-07T11:09:04+08:00">2026-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Javascript的变量是松散类型的，它可以存储Javascript支持的任何数据类型，其变量的类型可以在运行时被动态改变。</p>
+<p>正因为Javascript中变量类型具有动态性，在程序实际执行的过程中就需要用到类型转换的概念。类型转换可以分为隐式转换和显式转换，所谓隐 式转换即程序在运行时进行的自动转换，显式转换则是人为的对类型进行强制转换。</p>
+<blockquote>
+<p>Javascript提供了以下转型函数：<br>转换为数值类型：Number(mix)、parseInt(string,radix)、parseFloat(string)<br>转换为字符串类型：toString(radix)、String(mix)<br>转换为布尔类型：Boolean(mix)</p>
+</blockquote>
+<ul>
+<li><p>Number(mix)函数，可以将任意类型的参数mix转换为数值类型。其规则为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Boolean-&gt;Number : true,false --&gt; 1,0</span><br><span class="line">Number-&gt;Number : 返回其本身</span><br><span class="line">undefined-&gt;Number : undefined --&gt; NaN</span><br><span class="line">String-&gt;Number :</span><br><span class="line">  + 如果字符串中只包含数字，则将其转换为十进制（忽略前导0）</span><br><span class="line">  + 如果字符串中包含有效的浮点格式，将其转换为浮点数值（忽略前导0）</span><br><span class="line">  + 如果是空字符串，将其转换为0</span><br><span class="line">  + 如果字符串中包含非以上格式，则将其转换为NaN</span><br><span class="line">  + 如果是对象，则调用对象的valueOf()方法，然后依据前面的规则转换返回的值。如果转换的结果是NaN，则调用对象的toString()方法，再次依照前面的规则转换返回的字符串值。</span><br></pre></td></tr></table></figure>
+
+<p>  下表列出了对象的valueOf()的返回值：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>对象</th>
+<th align="center">返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Array</td>
+<td align="center">数组的元素被转换为字符串，这些字符串由逗号分隔，连接在一起。其操作与 Array.toString 和 Array.join 方法相同。</td>
+</tr>
+<tr>
+<td>Boolean</td>
+<td align="center">Boolean 值。</td>
+</tr>
+<tr>
+<td>Date</td>
+<td align="center">存储的时间是从 1970 年 1 月 1 日午夜开始计的毫秒数 UTC。</td>
+</tr>
+<tr>
+<td>Function</td>
+<td align="center">函数本身。</td>
+</tr>
+<tr>
+<td>Number</td>
+<td align="center">数字值。</td>
+</tr>
+<tr>
+<td>Object</td>
+<td align="center">对象本身。这是默认情况。</td>
+</tr>
+<tr>
+<td>String</td>
+<td align="center">字符串值。</td>
+</tr>
+</tbody></table>
+<ul>
+<li>parseInt(string, radix)函数，将字符串转换为整数类型的数值。它也有一定的规则：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">忽略字符串前面的空格，直至找到第一个非空字符</span><br><span class="line">如果第一个字符不是数字符号或者负号，返回NaN</span><br><span class="line">如果第一个字符是数字，则继续解析直至字符串解析完毕或者遇到一个非数字符号为止</span><br><span class="line">如果上步解析的结果以0开头，则将其当作八进制来解析；如果以0x开头，则将其当作十六进制来解析</span><br><span class="line">如果指定radix参数，则以radix为基数进行解析</span><br></pre></td></tr></table></figure></li>
+<li>parseFloat(string)函数，将字符串转换为浮点数类型的数值。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">它的规则与parseInt基本相同，但也有点区别：</span><br><span class="line">字符串中第一个小数点符号是有效的，另外parseFloat会忽略所有前导0，如果字符串包含一个可解析为整数的数，则返回整数值而不是浮点数值。</span><br></pre></td></tr></table></figure></li>
+<li>toString(radix)方法。除undefined和null之外的所有类型的值都具有toString()方法，其作用是返回对象的字符串表示。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>对象</th>
+<th align="center">操作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Array</td>
+<td align="center">将 Array 的元素转换为字符串。结果字符串由逗号分隔，且连接起来。</td>
+</tr>
+<tr>
+<td>Boolean</td>
+<td align="center">如果 Boolean 值是 true，则返回 “true”。否则，返回 “false”。</td>
+</tr>
+<tr>
+<td>Date</td>
+<td align="center">返回日期的文字表示法。</td>
+</tr>
+<tr>
+<td>Error</td>
+<td align="center">返回一个包含相关错误信息的字符串。</td>
+</tr>
+<tr>
+<td>Function</td>
+<td align="center">返回如下格式的字符串，其中 functionname 是被调用 toString 方法函数的名称：</td>
+</tr>
+<tr>
+<td>function</td>
+<td align="center">functionname( ) { [native code] }</td>
+</tr>
+<tr>
+<td>Number</td>
+<td align="center">返回数字的文字表示。</td>
+</tr>
+<tr>
+<td>String</td>
+<td align="center">返回 String 对象的值。</td>
+</tr>
+</tbody></table>
+<p>默认    返回 “[object objectname]”，其中 objectname 是对象类型的名称。</p>
+<ul>
+<li>String(mix)函数，将任何类型的值转换为字符串，其规则为：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">如果有toString()方法，则调用该方法（不传递radix参数）并返回结果</span><br><span class="line">如果是null，返回”null”</span><br><span class="line">如果是undefined，返回”undefined”</span><br></pre></td></tr></table></figure></li>
+<li>Boolean(mix)函数，将任何类型的值转换为布尔值。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">以下值会被转换为false：fals* ”&quot;、0、NaN、null、undefined，其余任何值都会被转换为true。</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>webkong
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.webkong.cn/javascript%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" title="JavaScript强制类型转换">https://blog.webkong.cn/javascript强制类型转换/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+              <a href="/tags/%E5%8E%9F%E5%88%9B/" rel="tag"># 原创</a>
+              <a href="/tags/%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" rel="tag"># 类型转换</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/javascript%E5%AE%9E%E7%8E%B0base64%E7%BC%96%E7%A0%81/" rel="prev" title="JavaScript实现Base64编码">
+                  <i class="fa fa-chevron-left"></i> JavaScript实现Base64编码
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/javascript%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2/" rel="next" title="JavaScript隐式转换">
+                  JavaScript隐式转换 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">webkong</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"webkong","repo":"blog-gitment","client_id":"54ecf778fa1a619ba5f7","client_secret":"7fc721167bf96eb27e9edc7307a50fa3a7d12d4a","admin_user":"webkong","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"07ddfe2294bd6d3d8e4a17a11aa59b18"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

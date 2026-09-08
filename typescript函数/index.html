@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs">
+  <meta name="msvalidate.01" content="BABF339751DEC853F1915E4C3272192A">
+  <meta name="yandex-verification" content="eceb5773d0fe4679">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="函数介绍函数是JavaScript应用程序的基础。 它帮助你实现抽象层，模拟类，信息隐藏和模块。 在TypeScript里，虽然已经支持类，命名空间和模块，但函数仍然是主要的定义 行为的地方。 TypeScript为JavaScript函数添加了额外的功能，让我们可以更容易地使用。 函数和JavaScript一样，TypeScript函数可以创建有名字的函数和匿名函数。 你可以随意选择适合应用程序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TypeScript函数">
+<meta property="og:url" content="https://blog.webkong.cn/typescript%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="WebKong的网络日志">
+<meta property="og:description" content="函数介绍函数是JavaScript应用程序的基础。 它帮助你实现抽象层，模拟类，信息隐藏和模块。 在TypeScript里，虽然已经支持类，命名空间和模块，但函数仍然是主要的定义 行为的地方。 TypeScript为JavaScript函数添加了额外的功能，让我们可以更容易地使用。 函数和JavaScript一样，TypeScript函数可以创建有名字的函数和匿名函数。 你可以随意选择适合应用程序">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-09-21T08:25:00.000Z">
+<meta property="article:modified_time" content="2026-09-07T03:09:04.792Z">
+<meta property="article:author" content="webkong">
+<meta property="article:tag" content="函数">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.webkong.cn/typescript%E5%87%BD%E6%95%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/typescript%E5%87%BD%E6%95%B0/","path":"typescript函数/","title":"TypeScript函数"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>TypeScript函数 | WebKong的网络日志</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93765710-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-93765710-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WebKong的网络日志</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享工作中的所用、所想、所感。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">95</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0-1"><span class="nav-number">1.2.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.</span> <span class="nav-text">函数类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.1.</span> <span class="nav-text">为函数定义类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B9%A6%E5%86%99%E5%AE%8C%E6%95%B4%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.2.</span> <span class="nav-text">书写完整函数类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A8%E6%96%AD%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.3.</span> <span class="nav-text">推断类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E9%80%89%E5%8F%82%E6%95%B0%E5%92%8C%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0"><span class="nav-number">1.4.</span> <span class="nav-text">可选参数和默认参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%A9%E4%BD%99%E5%8F%82%E6%95%B0"><span class="nav-number">1.5.</span> <span class="nav-text">剩余参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this"><span class="nav-number">1.6.</span> <span class="nav-text">this</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#this%E5%92%8C%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0"><span class="nav-number">1.6.1.</span> <span class="nav-text">this和箭头函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#this%E5%8F%82%E6%95%B0"><span class="nav-number">1.6.2.</span> <span class="nav-text">this参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#this%E5%8F%82%E6%95%B0%E5%9C%A8%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0%E9%87%8C"><span class="nav-number">1.6.3.</span> <span class="nav-text">this参数在回调函数里</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E8%BD%BD"><span class="nav-number">1.7.</span> <span class="nav-text">重载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="webkong"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">webkong</p>
+  <div class="site-description" itemprop="description">以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/webkong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/webkong" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.hcharts.cn/" title="http:&#x2F;&#x2F;www.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts中文网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://bbs.hcharts.cn/" title="http:&#x2F;&#x2F;bbs.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts论坛</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/typescript%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="webkong">
+      <meta itemprop="description" content="以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WebKong的网络日志">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TypeScript函数
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-09-21 16:25:00" itemprop="dateCreated datePublished" datetime="2016-09-21T16:25:00+08:00">2016-09-21</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2026-09-07 11:09:04" itemprop="dateModified" datetime="2026-09-07T11:09:04+08:00">2026-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/TypeScript/" itemprop="url" rel="index"><span itemprop="name">TypeScript</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>函数是JavaScript应用程序的基础。 它帮助你实现抽象层，模拟类，信息隐藏和模块。 在TypeScript里，虽然已经支持类，命名空间和模块，但函数仍然是主要的定义 行为的地方。 TypeScript为JavaScript函数添加了额外的功能，让我们可以更容易地使用。</p>
+<h3 id="函数-1"><a href="#函数-1" class="headerlink" title="函数"></a>函数</h3><p>和JavaScript一样，TypeScript函数可以创建有名字的函数和匿名函数。 你可以随意选择适合应用程序的方式，不论是定义一系列API函数还是只使用一次的函数。</p>
+<p>通过下面的例子可以迅速回想起这两种JavaScript中的函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// Named function 命名函数</span><br><span class="line">function add(x, y) &#123;</span><br><span class="line">    return x + y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Anonymous function 匿名函数</span><br><span class="line">let myAdd = function(x, y) &#123; return x + y; &#125;;</span><br></pre></td></tr></table></figure>
+<p>在JavaScript里，函数可以使用函数体外部的变量。 当函数这么做时，我们说它‘捕获’了这些变量。 至于为什么可以这样做以及其中的利弊超出了本文的范围，但是深刻理解这个机制对学习JavaScript和TypeScript会很有帮助。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let z = 100;</span><br><span class="line"></span><br><span class="line">function addToZ(x, y) &#123;</span><br><span class="line">    return x + y + z;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="函数类型"><a href="#函数类型" class="headerlink" title="函数类型"></a>函数类型</h3><h4 id="为函数定义类型"><a href="#为函数定义类型" class="headerlink" title="为函数定义类型"></a>为函数定义类型</h4><p>让我们为上面那个函数添加类型：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function add(x: number, y: number): number &#123;</span><br><span class="line">    return x + y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let myAdd = function(x: number, y: number): number &#123; return x+y; &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以给每个参数添加类型之后再为函数本身添加返回值类型。 TypeScript能够根据返回语句自动推断出返回值类型，因此我们通常省略它。</p>
+<h4 id="书写完整函数类型"><a href="#书写完整函数类型" class="headerlink" title="书写完整函数类型"></a>书写完整函数类型</h4><p>现在我们已经为函数指定了类型，下面让我们写出函数的完整类型。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let myAdd: (x:number, y:number)=&gt;number =</span><br><span class="line">    function(x: number, y: number): number &#123; return x+y; &#125;;</span><br></pre></td></tr></table></figure>
+<p>函数类型包含两部分：参数类型和返回值类型。 当写出完整函数类型的时候，这两部分都是需要的。 我们以参数列表的形式写出参数类型，为每个参数指定一个名字和类型。 这个名字只是为了增加可读性。 我们也可以这么写：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let myAdd: (baseValue:number, increment:number) =&gt; number =</span><br><span class="line">    function(x: number, y: number): number &#123; return x + y; &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>只要参数类型是匹配的，那么就认为它是有效的函数类型，而不在乎参数名是否正确。</p>
+<p>第二部分是返回值类型。 对于返回值，我们在函数和返回值类型之前使用( <code>=&gt;</code> )符号，使之清晰明了。 如之前提到的，返回值类型是函数类型的必要部分，如果函数没有返回任何值，你也必须指定返回值类型为 <code>void</code>而不能留空。</p>
+<p>函数的类型只是由参数类型和返回值组成的。 函数中使用的捕获变量不会体现在类型里。 实际上，这些变量是函数的隐藏状态并不是组成API的一部分。</p>
+<h4 id="推断类型"><a href="#推断类型" class="headerlink" title="推断类型"></a>推断类型</h4><p>尝试这个例子的时候，你会发现如果你在赋值语句的一边指定了类型但是另一边没有类型的话，TypeScript编译器会自动识别出类型：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// myAdd has the full function type</span><br><span class="line">let myAdd = function(x: number, y: number): number &#123; return x + y; &#125;;</span><br><span class="line"></span><br><span class="line">// The parameters `x` and `y` have the type number</span><br><span class="line">let myAdd: (baseValue:number, increment:number) =&gt; number =</span><br><span class="line">    function(x, y) &#123; return x + y; &#125;;</span><br></pre></td></tr></table></figure>
+<p>这叫做“按上下文归类”，是类型推论的一种。 它帮助我们更好地为程序指定类型。</p>
+<h3 id="可选参数和默认参数"><a href="#可选参数和默认参数" class="headerlink" title="可选参数和默认参数"></a>可选参数和默认参数</h3><p>TypeScript里的每个函数参数都是必须的。 这不是指不能传递 <code>null</code>或<code>undefined</code>作为参数，而是说编译器检查用户是否为每个参数都传入了值。 编译器还会假设只有这些参数会被传递进函数。 简短地说，传递给一个函数的参数个数必须与函数期望的参数个数一致。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function buildName(firstName: string, lastName: string) &#123;</span><br><span class="line">    return firstName + &quot; &quot; + lastName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let result1 = buildName(&quot;Bob&quot;);                  // error, too few parameters</span><br><span class="line">let result2 = buildName(&quot;Bob&quot;, &quot;Adams&quot;, &quot;Sr.&quot;);  // error, too many parameters</span><br><span class="line">let result3 = buildName(&quot;Bob&quot;, &quot;Adams&quot;);         // ah, just right</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>JavaScript里，每个参数都是可选的，可传可不传。 没传参的时候，它的值就是<code>undefined</code>。 在TypeScript里我们可以在参数名旁使用 <code>?</code>实现可选参数的功能。 比如，我们想让<code>last name</code>是可选的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function buildName(firstName: string, lastName?: string) &#123;</span><br><span class="line">    if (lastName)</span><br><span class="line">        return firstName + &quot; &quot; + lastName;</span><br><span class="line">    else</span><br><span class="line">        return firstName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let result1 = buildName(&quot;Bob&quot;);  // works correctly now</span><br><span class="line">let result2 = buildName(&quot;Bob&quot;, &quot;Adams&quot;, &quot;Sr.&quot;);  // error, too many parameters</span><br><span class="line">let result3 = buildName(&quot;Bob&quot;, &quot;Adams&quot;);  // ah, just right</span><br></pre></td></tr></table></figure>
+
+<p>可选参数必须跟在<code>必须参数后面</code>。 如果上例我们想让first name是可选的，那么就必须调整它们的位置，把first name放在后面。</p>
+<p>在TypeScript里，我们也可以为参数提供一个默认值当用户没有传递这个参数或传递的值是undefined时。 它们叫做有默认初始化值的参数。 让我们修改上例，把last name的默认值设置为”Smith”。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function buildName(firstName: string, lastName = &quot;Smith&quot;) &#123;</span><br><span class="line">    return firstName + &quot; &quot; + lastName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let result1 = buildName(&quot;Bob&quot;);                  // works correctly now, returns &quot;Bob Smith&quot;</span><br><span class="line">let result2 = buildName(&quot;Bob&quot;, undefined);       // still works, also returns &quot;Bob Smith&quot;</span><br><span class="line">let result3 = buildName(&quot;Bob&quot;, &quot;Adams&quot;, &quot;Sr.&quot;);  // error, too many parameters</span><br><span class="line">let result4 = buildName(&quot;Bob&quot;, &quot;Adams&quot;);         // ah, just right</span><br></pre></td></tr></table></figure>
+<p>在所有必须参数后面的带默认初始化的参数都是可选的，与可选参数一样，在调用函数的时候可以省略。 也就是说可选参数与末尾的默认参数共享参数类型。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function buildName(firstName: string, lastName?: string) &#123;</span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>和</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function buildName(firstName: string, lastName = &quot;Smith&quot;) &#123;</span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>共享同样的类型<code>(firstName: string, lastName?: string) =&gt; string</code>。 默认参数的默认值消失了，只保留了它是一个可选参数的信息。</p>
+<p>与普通可选参数不同的是，带默认值的参数不需要放在必须参数的后面。 如果带默认值的参数出现在必须参数前面，用户必须明确的传入 undefined值来获得默认值。 例如，我们重写最后一个例子，让 <code>firstName</code>是带默认值的参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function buildName(firstName = &quot;Will&quot;, lastName: string) &#123;</span><br><span class="line">    return firstName + &quot; &quot; + lastName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let result1 = buildName(&quot;Bob&quot;);                  // error, too few parameters</span><br><span class="line">let result2 = buildName(&quot;Bob&quot;, &quot;Adams&quot;, &quot;Sr.&quot;);  // error, too many parameters</span><br><span class="line">let result3 = buildName(&quot;Bob&quot;, &quot;Adams&quot;);         // okay and returns &quot;Bob Adams&quot;</span><br><span class="line">let result4 = buildName(undefined, &quot;Adams&quot;);     // okay and returns &quot;Will Adams&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="剩余参数"><a href="#剩余参数" class="headerlink" title="剩余参数"></a>剩余参数</h3><p>必要参数，默认参数和可选参数有个共同点：它们表示某一个参数。 有时，你想同时操作多个参数，或者你并不知道会有多少参数传递进来。 在JavaScript里，你可以使用 <code>arguments</code>来访问所有传入的参数。</p>
+<p>在TypeScript里，你可以把所有参数收集到一个变量里：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function buildName(firstName: string, ...restOfName: string[]) &#123;</span><br><span class="line">  return firstName + &quot; &quot; + restOfName.join(&quot; &quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let employeeName = buildName(&quot;Joseph&quot;, &quot;Samuel&quot;, &quot;Lucas&quot;, &quot;MacKinzie&quot;);</span><br></pre></td></tr></table></figure>
+<p>剩余参数会被当做个数不限的可选参数。 可以一个都没有，同样也可以有任意个。 编译器创建参数数组，名字是你在省略号（ <code>...</code>）后面给定的名字，你可以在函数体内使用这个数组。</p>
+<p>这个省略号也会在带有剩余参数的函数类型定义上使用到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function buildName(firstName: string, ...restOfName: string[]) &#123;</span><br><span class="line">  return firstName + &quot; &quot; + restOfName.join(&quot; &quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let buildNameFun: (fname: string, ...rest: string[]) =&gt; string = buildName;</span><br></pre></td></tr></table></figure>
+<h3 id="this"><a href="#this" class="headerlink" title="this"></a><code>this</code></h3><p>学习使用JavaScript里·就好比一场成年礼。 由于TypeScript是JavaScript的超集，TypeScript程序员也需要弄清 this工作机制并且当有bug的时候能够找出错误所在。 幸运的是，TypeScript能通知你错误地使用了 this的地方。 如果你想了解JavaScript里的 this是如何工作的，那么首先阅读Yehuda Katz写的<a target="_blank" rel="noopener" href="http://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/">Understanding JavaScript Function Invocation and “this”</a>。 Yehuda的文章详细的阐述了 this的内部工作原理，因此我们这里只做简单介绍。</p>
+<h4 id="this和箭头函数"><a href="#this和箭头函数" class="headerlink" title="this和箭头函数"></a>this和箭头函数</h4><p>JavaScript里，<code>this</code>的值在函数被调用的时候才会指定。 这是个既强大又灵活的特点，但是你需要花点时间弄清楚函数调用的上下文是什么。 但众所周知，这不是一件很简单的事，尤其是在返回一个函数或将函数当做参数传递的时候。<br>下面看一个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">let deck = &#123;</span><br><span class="line">    suits: [&quot;hearts&quot;, &quot;spades&quot;, &quot;clubs&quot;, &quot;diamonds&quot;],</span><br><span class="line">    cards: Array(52),</span><br><span class="line">    createCardPicker: function() &#123;</span><br><span class="line">        return function() &#123;</span><br><span class="line">            let pickedCard = Math.floor(Math.random() * 52);</span><br><span class="line">            let pickedSuit = Math.floor(pickedCard / 13);</span><br><span class="line"></span><br><span class="line">            return &#123;suit: this.suits[pickedSuit], card: pickedCard % 13&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let cardPicker = deck.createCardPicker();</span><br><span class="line">let pickedCard = cardPicker();</span><br><span class="line"></span><br><span class="line">alert(&quot;card: &quot; + pickedCard.card + &quot; of &quot; + pickedCard.suit);</span><br></pre></td></tr></table></figure>
+<p>可以看到<code>createCardPicker</code>是个函数，并且它又返回了一个函数。 如果我们尝试运行这个程序，会发现它并没有弹出对话框而是报错了。 因为 <code>createCardPicker</code>返回的函数里的<code>this</code>被设置成了<code>window</code>而不是<code>deck</code>对象。 因为我们只是独立的调用了 <code>cardPicker()</code>。 顶级的非方法式调用会将 <code>this</code>视为<code>window</code>。 （注意：在严格模式下， this为undefined而不是window）。</p>
+<p>为了解决这个问题，我们可以在函数被返回时就绑好正确的this。 这样的话，无论之后怎么使用它，都会引用绑定的‘deck’对象。 我们需要改变函数表达式来使用ECMAScript 6<code>箭头语法</code>。 箭头函数能保存函数创建时的 this值，而不是调用时的值：</p>
+<p>我们把函数表达式变为使用lambda表达式（ () =&gt; {} ）。 这样就会在函数创建的时候就指定了‘this’值，而不是在函数调用的时候。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">let deck = &#123;</span><br><span class="line">    suits: [&quot;hearts&quot;, &quot;spades&quot;, &quot;clubs&quot;, &quot;diamonds&quot;],</span><br><span class="line">    cards: Array(52),</span><br><span class="line">    createCardPicker: function() &#123;</span><br><span class="line">        // NOTE: the line below is now an arrow function, allowing us to capture &#x27;this&#x27; right here</span><br><span class="line">        return () =&gt; &#123;</span><br><span class="line">            let pickedCard = Math.floor(Math.random() * 52);</span><br><span class="line">            let pickedSuit = Math.floor(pickedCard / 13);</span><br><span class="line"></span><br><span class="line">            return &#123;suit: this.suits[pickedSuit], card: pickedCard % 13&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let cardPicker = deck.createCardPicker();</span><br><span class="line">let pickedCard = cardPicker();</span><br><span class="line"></span><br><span class="line">alert(&quot;card: &quot; + pickedCard.card + &quot; of &quot; + pickedCard.suit);</span><br></pre></td></tr></table></figure>
+<p>更好事情是，TypeScript会警告你犯了一个错误，如果你给编译器设置了<code>--noImplicitThis</code>标记。 它会指出 <code>this.suits[pickedSuit]</code>里的this的类型为any。</p>
+<h4 id="this参数"><a href="#this参数" class="headerlink" title="this参数"></a>this参数</h4><p>不幸的是，<code>this.suits[pickedSuit]</code>的类型依旧为any。 这是因为 <code>this</code>来自对象字面量里的函数表达式。 修改的方法是，提供一个显示的 <code>this</code>参数。 <code>this</code>参数是个假的参数，它出现在参数列表的最前面：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function f(this: void) &#123;</span><br><span class="line">    // make sure `this` is unusable in this standalone function</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>让我们往例子里添加一些接口，Card 和 Deck，让类型重用能够变得清晰简单些：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">interface Card &#123;</span><br><span class="line">    suit: string;</span><br><span class="line">    card: number;</span><br><span class="line">&#125;</span><br><span class="line">interface Deck &#123;</span><br><span class="line">    suits: string[];</span><br><span class="line">    cards: number[];</span><br><span class="line">    createCardPicker(this: Deck): () =&gt; Card;</span><br><span class="line">&#125;</span><br><span class="line">let deck: Deck = &#123;</span><br><span class="line">    suits: [&quot;hearts&quot;, &quot;spades&quot;, &quot;clubs&quot;, &quot;diamonds&quot;],</span><br><span class="line">    cards: Array(52),</span><br><span class="line">    // NOTE: The function now explicitly specifies that its callee must be of type Deck</span><br><span class="line">    createCardPicker: function(this: Deck) &#123;</span><br><span class="line">        return () =&gt; &#123;</span><br><span class="line">            let pickedCard = Math.floor(Math.random() * 52);</span><br><span class="line">            let pickedSuit = Math.floor(pickedCard / 13);</span><br><span class="line"></span><br><span class="line">            return &#123;suit: this.suits[pickedSuit], card: pickedCard % 13&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let cardPicker = deck.createCardPicker();</span><br><span class="line">let pickedCard = cardPicker();</span><br><span class="line"></span><br><span class="line">alert(&quot;card: &quot; + pickedCard.card + &quot; of &quot; + pickedCard.suit);</span><br></pre></td></tr></table></figure>
+
+<p>现在TypeScript知道<code>createCardPicker</code>期望在某个Deck对象上调用。 也就是说 this是Deck类型的，而非any，因此<code>--noImplicitThis</code>不会报错了。</p>
+<h4 id="this参数在回调函数里"><a href="#this参数在回调函数里" class="headerlink" title="this参数在回调函数里"></a>this参数在回调函数里</h4><p>你可以也看到过在回调函数里的this报错，当你将一个函数传递到某个库函数里稍后会被调用时。 因为当回调被调用的时候，它们会被当成一个普通函数调用， this将为undefined。 稍做改动，你就可以通过 this参数来避免错误。 首先，库函数的作者要指定 this的类型：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">interface UIElement &#123;</span><br><span class="line">    addClickListener(onclick: (this: void, e: Event) =&gt; void): void;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>this: void means that addClickListener expects onclick to be a function that does not require a this type. Second, annotate your calling code with this:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Handler &#123;</span><br><span class="line">    info: string;</span><br><span class="line">    onClickBad(this: Handler, e: Event) &#123;</span><br><span class="line">        // oops, used this here. using this callback would crash at runtime</span><br><span class="line">        this.info = e.message;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line">let h = new Handler();</span><br><span class="line">uiElement.addClickListener(h.onClickBad); // error!</span><br></pre></td></tr></table></figure>
+<p>指定了this类型后，你显示声明onClickBad必须在Handler的实例上调用。 然后TypeScript会检测到 addClickListener要求函数带有this: void。 改变 this类型来修复这个错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Handler &#123;</span><br><span class="line">    info: string;</span><br><span class="line">    onClickGood(this: void, e: Event) &#123;</span><br><span class="line">        // can&#x27;t use this here because it&#x27;s of type void!</span><br><span class="line">        console.log(&#x27;clicked!&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">let h = new Handler();</span><br><span class="line">uiElement.addClickListener(h.onClickGood);</span><br></pre></td></tr></table></figure>
+<p>因为onClickGood指定了this类型为void，因此传递addClickListener是合法的。 当然了，这也意味着不能使用 this.info. 如果你两者都想要，你不得不使用箭头函数了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class Handler &#123;</span><br><span class="line">    info: string;</span><br><span class="line">    onClickGood = (e: Event) =&gt; &#123; this.info = e.message &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是可行的因为箭头函数不会捕获this，所以你总是可以把它们传给期望this: void的函数。 缺点是每个 Handler对象都会创建一个箭头函数。 另一方面，方法只会被创建一次，添加到 Handler的原型链上。 它们在不同 Handler对象间是共享的。</p>
+<h3 id="重载"><a href="#重载" class="headerlink" title="重载"></a>重载</h3><p>JavaScript本身是个动态语言。 JavaScript里函数根据传入不同的参数而返回不同类型的数据是很常见的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">let suits = [&quot;hearts&quot;, &quot;spades&quot;, &quot;clubs&quot;, &quot;diamonds&quot;];</span><br><span class="line"></span><br><span class="line">function pickCard(x): any &#123;</span><br><span class="line">    // Check to see if we&#x27;re working with an object/array</span><br><span class="line">    // if so, they gave us the deck and we&#x27;ll pick the card</span><br><span class="line">    if (typeof x == &quot;object&quot;) &#123;</span><br><span class="line">        let pickedCard = Math.floor(Math.random() * x.length);</span><br><span class="line">        return pickedCard;</span><br><span class="line">    &#125;</span><br><span class="line">    // Otherwise just let them pick the card</span><br><span class="line">    else if (typeof x == &quot;number&quot;) &#123;</span><br><span class="line">        let pickedSuit = Math.floor(x / 13);</span><br><span class="line">        return &#123; suit: suits[pickedSuit], card: x % 13 &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let myDeck = [&#123; suit: &quot;diamonds&quot;, card: 2 &#125;, &#123; suit: &quot;spades&quot;, card: 10 &#125;, &#123; suit: &quot;hearts&quot;, card: 4 &#125;];</span><br><span class="line">let pickedCard1 = myDeck[pickCard(myDeck)];</span><br><span class="line">alert(&quot;card: &quot; + pickedCard1.card + &quot; of &quot; + pickedCard1.suit);</span><br><span class="line"></span><br><span class="line">let pickedCard2 = pickCard(15);</span><br><span class="line">alert(&quot;card: &quot; + pickedCard2.card + &quot; of &quot; + pickedCard2.suit);</span><br></pre></td></tr></table></figure>
+
+<p><code>pickCard</code>方法根据传入参数的不同会返回两种不同的类型。 如果传入的是代表纸牌的对象，函数作用是从中抓一张牌。 如果用户想抓牌，我们告诉他抓到了什么牌。 但是这怎么在类型系统里表示呢。</p>
+<p>方法是为同一个函数提供多个函数类型定义来进行函数重载。 编译器会根据这个列表去处理函数的调用。 下面我们来重载 <code>pickCard</code>函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">let suits = [&quot;hearts&quot;, &quot;spades&quot;, &quot;clubs&quot;, &quot;diamonds&quot;];</span><br><span class="line"></span><br><span class="line">function pickCard(x: &#123;suit: string; card: number; &#125;[]): number;</span><br><span class="line">function pickCard(x: number): &#123;suit: string; card: number; &#125;;</span><br><span class="line">function pickCard(x): any &#123;</span><br><span class="line">    // Check to see if we&#x27;re working with an object/array</span><br><span class="line">    // if so, they gave us the deck and we&#x27;ll pick the card</span><br><span class="line">    if (typeof x == &quot;object&quot;) &#123;</span><br><span class="line">        let pickedCard = Math.floor(Math.random() * x.length);</span><br><span class="line">        return pickedCard;</span><br><span class="line">    &#125;</span><br><span class="line">    // Otherwise just let them pick the card</span><br><span class="line">    else if (typeof x == &quot;number&quot;) &#123;</span><br><span class="line">        let pickedSuit = Math.floor(x / 13);</span><br><span class="line">        return &#123; suit: suits[pickedSuit], card: x % 13 &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let myDeck = [&#123; suit: &quot;diamonds&quot;, card: 2 &#125;, &#123; suit: &quot;spades&quot;, card: 10 &#125;, &#123; suit: &quot;hearts&quot;, card: 4 &#125;];</span><br><span class="line">let pickedCard1 = myDeck[pickCard(myDeck)];</span><br><span class="line">alert(&quot;card: &quot; + pickedCard1.card + &quot; of &quot; + pickedCard1.suit);</span><br><span class="line"></span><br><span class="line">let pickedCard2 = pickCard(15);</span><br><span class="line">alert(&quot;card: &quot; + pickedCard2.card + &quot; of &quot; + pickedCard2.suit);</span><br></pre></td></tr></table></figure>
+
+<p>这样改变后，重载的pickCard函数在调用的时候会进行正确的类型检查。</p>
+<p>为了让编译器能够选择正确的检查类型，它与JavaScript里的处理流程相似。 它查找重载列表，尝试使用第一个重载定义。 如果匹配的话就使用这个。 因此，在定义重载的时候，一定要把最精确的定义放在最前面。</p>
+<p>注意，<code>function pickCard(x): any</code>并不是重载列表的一部分，因此这里只有两个重载：一个是接收对象另一个接收数字。 以其它参数调用 <code>pickCard</code>会产生错误。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="http://www.tslang.cn/docs/handbook/functions.html">TypeScript中文网</a></p>
+<p><a target="_blank" rel="noopener" href="http://es6.ruanyifeng.com/#docs/number">阮一峰老师–ECMAScript 6 入门</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>webkong
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.webkong.cn/typescript%E5%87%BD%E6%95%B0/" title="TypeScript函数">https://blog.webkong.cn/typescript函数/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%87%BD%E6%95%B0/" rel="tag"># 函数</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/typescript%E6%8E%A5%E5%8F%A3/" rel="prev" title="TypeScript接口">
+                  <i class="fa fa-chevron-left"></i> TypeScript接口
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/reviewboard%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" rel="next" title="ReviewBoard常用命令">
+                  ReviewBoard常用命令 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">webkong</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"webkong","repo":"blog-gitment","client_id":"54ecf778fa1a619ba5f7","client_secret":"7fc721167bf96eb27e9edc7307a50fa3a7d12d4a","admin_user":"webkong","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"8e6fff7c107330b48fbfd8f5d88da68f"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

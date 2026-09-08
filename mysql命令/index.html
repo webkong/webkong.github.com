@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs">
+  <meta name="msvalidate.01" content="BABF339751DEC853F1915E4C3272192A">
+  <meta name="yandex-verification" content="eceb5773d0fe4679">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="MySQL SQL语句 方便查找，备忘虽趣舍万殊，静躁不同。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql命令">
+<meta property="og:url" content="https://blog.webkong.cn/mysql%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="WebKong的网络日志">
+<meta property="og:description" content="MySQL SQL语句 方便查找，备忘虽趣舍万殊，静躁不同。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-04-25T03:19:00.000Z">
+<meta property="article:modified_time" content="2026-09-07T03:09:04.796Z">
+<meta property="article:author" content="webkong">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.webkong.cn/mysql%E5%91%BD%E4%BB%A4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/mysql%E5%91%BD%E4%BB%A4/","path":"mysql命令/","title":"mysql命令"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>mysql命令 | WebKong的网络日志</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93765710-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-93765710-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WebKong的网络日志</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享工作中的所用、所想、所感。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">95</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-SQL%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.</span> <span class="nav-text">MySQL SQL语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%92%8C%E7%99%BB%E5%BD%95"><span class="nav-number">1.1.</span> <span class="nav-text">启动和登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%8A%B6%E6%80%81"><span class="nav-number">1.2.</span> <span class="nav-text">数据库状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.3.</span> <span class="nav-text">操作数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E7%8A%B6%E6%80%81"><span class="nav-number">1.4.</span> <span class="nav-text">表状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E8%A1%A8"><span class="nav-number">1.5.</span> <span class="nav-text">新建表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%96%B0%E8%A1%A8"><span class="nav-number">1.6.</span> <span class="nav-text">删除新表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A2%9E%E5%8A%A0%E4%B8%80%E4%B8%AA%E5%88%97"><span class="nav-number">1.7.</span> <span class="nav-text">增加一个列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E4%B8%BB%E9%94%AE"><span class="nav-number">1.8.</span> <span class="nav-text">添加主键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="nav-number">1.9.</span> <span class="nav-text">创建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%A7%86%E5%9B%BE"><span class="nav-number">1.10.</span> <span class="nav-text">创建视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%A0%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%B8%B8%E7%94%A8sql%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.11.</span> <span class="nav-text">几个简单的常用sql语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E6%9F%A5%E8%AF%A2%E8%BF%90%E7%AE%97%E8%AF%8D"><span class="nav-number">1.12.</span> <span class="nav-text">高级查询运算词</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UNION-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.12.1.</span> <span class="nav-text">UNION 运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EXCEPT-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.12.2.</span> <span class="nav-text">EXCEPT 运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#INTERSECT-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.12.3.</span> <span class="nav-text">INTERSECT 运算符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%A4%96%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.13.</span> <span class="nav-text">使用外连接</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#left-%EF%BC%88outer%EF%BC%89-join"><span class="nav-number">1.13.1.</span> <span class="nav-text">left （outer） join</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#right-%EF%BC%88outer%EF%BC%89-join"><span class="nav-number">1.13.2.</span> <span class="nav-text">right （outer） join:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#full-cross-%EF%BC%88outer%EF%BC%89-join"><span class="nav-number">1.13.3.</span> <span class="nav-text">full&#x2F;cross （outer） join</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E7%BB%84-Group-by"><span class="nav-number">1.13.4.</span> <span class="nav-text">分组:Group by</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9B%E8%A1%8C%E6%93%8D%E4%BD%9C"><span class="nav-number">1.13.5.</span> <span class="nav-text">对数据库进行操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%90%8D%E7%A7%B0"><span class="nav-number">1.13.6.</span> <span class="nav-text">如何修改数据库的名称</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E5%8D%87"><span class="nav-number">2.</span> <span class="nav-text">提升</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E8%A1%A8"><span class="nav-number">2.1.</span> <span class="nav-text">复制表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E8%A1%A8"><span class="nav-number">2.2.</span> <span class="nav-text">拷贝表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B9%8B%E9%97%B4%E8%A1%A8%E7%9A%84%E6%8B%B7%E8%B4%9D-%E5%85%B7%E4%BD%93%E6%95%B0%E6%8D%AE%E4%BD%BF%E7%94%A8%E7%BB%9D%E5%AF%B9%E8%B7%AF%E5%BE%84"><span class="nav-number">2.3.</span> <span class="nav-text">跨数据库之间表的拷贝(具体数据使用绝对路径)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.4.</span> <span class="nav-text">子查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E6%96%87%E7%AB%A0%E3%80%81%E6%8F%90%E4%BA%A4%E4%BA%BA%E5%92%8C%E6%9C%80%E5%90%8E%E5%9B%9E%E5%A4%8D%E6%97%B6%E9%97%B4"><span class="nav-number">2.5.</span> <span class="nav-text">显示文章、提交人和最后回复时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%96%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.6.</span> <span class="nav-text">外连接查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E7%BA%BF%E8%A7%86%E5%9B%BE%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.7.</span> <span class="nav-text">在线视图查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#between%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-number">2.8.</span> <span class="nav-text">between的用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#in-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">2.9.</span> <span class="nav-text">in 的使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#not-exists"><span class="nav-number">2.10.</span> <span class="nav-text">not exists</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E8%A1%A8%E8%81%94%E6%9F%A5%E9%97%AE%E9%A2%98"><span class="nav-number">2.11.</span> <span class="nav-text">四表联查问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A5%E7%A8%8B%E5%AE%89%E6%8E%92%E6%8F%90%E5%89%8D%E4%BA%94%E5%88%86%E9%92%9F%E6%8F%90%E9%86%92"><span class="nav-number">2.12.</span> <span class="nav-text">日程安排提前五分钟提醒</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E6%9D%A1sql-%E8%AF%AD%E5%8F%A5%E6%90%9E%E5%AE%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%86%E9%A1%B5"><span class="nav-number">2.13.</span> <span class="nav-text">一条sql 语句搞定数据库分页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D10%E6%9D%A1%E8%AE%B0%E5%BD%95"><span class="nav-number">2.14.</span> <span class="nav-text">前10条记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%9C%A8%E6%AF%8F%E4%B8%80%E7%BB%84b%E5%80%BC%E7%9B%B8%E5%90%8C%E7%9A%84%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%AF%B9%E5%BA%94%E7%9A%84a%E6%9C%80%E5%A4%A7%E7%9A%84%E8%AE%B0%E5%BD%95%E7%9A%84%E6%89%80%E6%9C%89%E4%BF%A1%E6%81%AF-%E7%B1%BB%E4%BC%BC%E8%BF%99%E6%A0%B7%E7%9A%84%E7%94%A8%E6%B3%95%E5%8F%AF%E4%BB%A5%E7%94%A8%E4%BA%8E%E8%AE%BA%E5%9D%9B%E6%AF%8F%E6%9C%88%E6%8E%92%E8%A1%8C%E6%A6%9C-%E6%AF%8F%E6%9C%88%E7%83%AD%E9%94%80%E4%BA%A7%E5%93%81%E5%88%86%E6%9E%90-%E6%8C%89%E7%A7%91%E7%9B%AE%E6%88%90%E7%BB%A9%E6%8E%92%E5%90%8D-%E7%AD%89%E7%AD%89"><span class="nav-number">2.15.</span> <span class="nav-text">选择在每一组b值相同的数据中对应的a最大的记录的所有信息(类似这样的用法可以用于论坛每月排行榜,每月热销产品分析,按科目成绩排名,等等.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%85%E6%8B%AC%E6%89%80%E6%9C%89%E5%9C%A8-TableA-%E4%B8%AD%E4%BD%86%E4%B8%8D%E5%9C%A8-TableB%E5%92%8CTableC-%E4%B8%AD%E7%9A%84%E8%A1%8C%E5%B9%B6%E6%B6%88%E9%99%A4%E6%89%80%E6%9C%89%E9%87%8D%E5%A4%8D%E8%A1%8C%E8%80%8C%E6%B4%BE%E7%94%9F%E5%87%BA%E4%B8%80%E4%B8%AA%E7%BB%93%E6%9E%9C%E8%A1%A8"><span class="nav-number">2.16.</span> <span class="nav-text">包括所有在 TableA 中但不在 TableB和TableC 中的行并消除所有重复行而派生出一个结果表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E5%8F%96%E5%87%BA10%E6%9D%A1%E6%95%B0%E6%8D%AE"><span class="nav-number">2.17.</span> <span class="nav-text">随机取出10条数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E9%80%89%E6%8B%A9%E8%AE%B0%E5%BD%95"><span class="nav-number">2.18.</span> <span class="nav-text">随机选择记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95"><span class="nav-number">2.19.</span> <span class="nav-text">删除重复记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E5%87%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E9%87%8C%E6%89%80%E6%9C%89%E7%9A%84%E8%A1%A8%E5%90%8D"><span class="nav-number">2.20.</span> <span class="nav-text">列出数据库里所有的表名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E5%87%BA%E8%A1%A8%E9%87%8C%E7%9A%84%E6%89%80%E6%9C%89%E7%9A%84%E5%88%97%E5%90%8D"><span class="nav-number">2.21.</span> <span class="nav-text">列出表里的所有的列名</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="webkong"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">webkong</p>
+  <div class="site-description" itemprop="description">以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/webkong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/webkong" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.hcharts.cn/" title="http:&#x2F;&#x2F;www.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts中文网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://bbs.hcharts.cn/" title="http:&#x2F;&#x2F;bbs.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts论坛</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/mysql%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="webkong">
+      <meta itemprop="description" content="以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WebKong的网络日志">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mysql命令
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-04-25 11:19:00" itemprop="dateCreated datePublished" datetime="2017-04-25T11:19:00+08:00">2017-04-25</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2026-09-07 11:09:04" itemprop="dateModified" datetime="2026-09-07T11:09:04+08:00">2026-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="MySQL-SQL语句"><a href="#MySQL-SQL语句" class="headerlink" title="MySQL SQL语句"></a>MySQL SQL语句</h2><blockquote>
+<p>方便查找，备忘<br>虽趣舍万殊，静躁不同。</p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="启动和登录"><a href="#启动和登录" class="headerlink" title="启动和登录"></a>启动和登录</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql.server start/stop</span><br><span class="line"></span><br><span class="line">mysql -u root -p</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="数据库状态"><a href="#数据库状态" class="headerlink" title="数据库状态"></a>数据库状态</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">查看数据库  show databases;</span><br><span class="line">使用数据库  use databeseName;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="操作数据库"><a href="#操作数据库" class="headerlink" title="操作数据库"></a>操作数据库</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">新建数据库  create database;</span><br><span class="line">删除数据库  drop database databaseName; commit;</span><br><span class="line">使用数据库  use databeseName;</span><br></pre></td></tr></table></figure>
+<h3 id="表状态"><a href="#表状态" class="headerlink" title="表状态"></a>表状态</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">显示数据库有多少表  show tabels;</span><br><span class="line">显示表结构  describe tableName;</span><br></pre></td></tr></table></figure>
+<h3 id="新建表"><a href="#新建表" class="headerlink" title="新建表"></a>新建表</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">创建新表 create table tabname(col1 type1 [not null] [primary key],col2 type2 [not null],..)</span><br><span class="line">根据已有的表创建新表：</span><br><span class="line">A：create table tab_new like tab_old (使用旧表创建新表)</span><br><span class="line">B：create table tab_new as select col1,col2… from tab_old definition only</span><br></pre></td></tr></table></figure>
+<h3 id="删除新表"><a href="#删除新表" class="headerlink" title="删除新表"></a>删除新表</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop table tabname</span><br></pre></td></tr></table></figure>
+<h3 id="增加一个列"><a href="#增加一个列" class="headerlink" title="增加一个列"></a>增加一个列</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Alter table tabname add column col type</span><br><span class="line">注：列增加后将不能删除。DB2中列加上后数据类型也不能改变，唯一能改变的是增加varchar类型的长度。</span><br></pre></td></tr></table></figure>
+<h3 id="添加主键"><a href="#添加主键" class="headerlink" title="添加主键"></a>添加主键</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Alter table tabname add primary key(col)</span><br><span class="line">说明：删除主键： Alter table tabname drop primary key(col)</span><br></pre></td></tr></table></figure>
+<h3 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">create [unique] index idxname on tabname(col….)</span><br><span class="line">删除索引：drop index idxname</span><br><span class="line">注：索引是不可更改的，想更改必须删除重新建。</span><br></pre></td></tr></table></figure>
+<h3 id="创建视图"><a href="#创建视图" class="headerlink" title="创建视图"></a>创建视图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">create view viewname as select statement</span><br><span class="line">删除视图：drop view viewname</span><br></pre></td></tr></table></figure>
+<h3 id="几个简单的常用sql语句"><a href="#几个简单的常用sql语句" class="headerlink" title="几个简单的常用sql语句"></a>几个简单的常用sql语句</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">选择：select * from table1 where 范围</span><br><span class="line">插入：insert into table1(field1,field2) values(value1,value2)</span><br><span class="line">删除：delete from table1 where 范围</span><br><span class="line">更新：update table1 set field1=value1 where 范围</span><br><span class="line">查找：select * from table1 where field1 like ’%value1%’ ---like的语法很精妙，查资料!</span><br><span class="line">排序：select * from table1 order by field1,field2 [desc]</span><br><span class="line">总数：select count as totalcount from table1</span><br><span class="line">求和：select sum(field1) as sumvalue from table1</span><br><span class="line">平均：select avg(field1) as avgvalue from table1</span><br><span class="line">最大：select max(field1) as maxvalue from table1</span><br><span class="line">最小：select min(field1) as minvalue from table1</span><br></pre></td></tr></table></figure>
+<h3 id="高级查询运算词"><a href="#高级查询运算词" class="headerlink" title="高级查询运算词"></a>高级查询运算词</h3><h4 id="UNION-运算符"><a href="#UNION-运算符" class="headerlink" title="UNION 运算符"></a>UNION 运算符</h4><p>UNION 运算符通过组合其他两个结果表（例如 TABLE1 和 TABLE2）并消去表中任何重复行而派生出一个结果表。当 ALL 随 UNION 一起使用时（即 UNION ALL），不消除重复行。两种情况下，派生表的每一行不是来自 TABLE1 就是来自 TABLE2。</p>
+<h4 id="EXCEPT-运算符"><a href="#EXCEPT-运算符" class="headerlink" title="EXCEPT 运算符"></a>EXCEPT 运算符</h4><p>EXCEPT 运算符通过包括所有在 TABLE1 中但不在 TABLE2 中的行并消除所有重复行而派生出一个结果表。当 ALL 随 EXCEPT 一起使用时 (EXCEPT ALL)，不消除重复行。</p>
+<h4 id="INTERSECT-运算符"><a href="#INTERSECT-运算符" class="headerlink" title="INTERSECT 运算符"></a>INTERSECT 运算符</h4><p>INTERSECT 运算符通过只包括 TABLE1 和 TABLE2 中都有的行并消除所有重复行而派生出一个结果表。当 ALL 随 INTERSECT 一起使用时 (INTERSECT ALL)，不消除重复行。<br>注：使用运算词的几个查询结果行必须是一致的。</p>
+<h3 id="使用外连接"><a href="#使用外连接" class="headerlink" title="使用外连接"></a>使用外连接</h3><h4 id="left-（outer）-join"><a href="#left-（outer）-join" class="headerlink" title="left （outer） join"></a>left （outer） join</h4><p>左外连接（左连接）：结果集几包括连接表的匹配行，也包括左连接表的所有行。<br>SQL: select a.a, a.b, a.c, b.c, b.d, b.f from a LEFT OUT JOIN b ON a.a = b.c</p>
+<h4 id="right-（outer）-join"><a href="#right-（outer）-join" class="headerlink" title="right （outer） join:"></a>right （outer） join:</h4><p>右外连接(右连接)：结果集既包括连接表的匹配连接行，也包括右连接表的所有行。</p>
+<h4 id="full-cross-（outer）-join"><a href="#full-cross-（outer）-join" class="headerlink" title="full/cross （outer） join"></a>full/cross （outer） join</h4><p>全外连接：不仅包括符号连接表的匹配行，还包括两个连接表中的所有记录。</p>
+<h4 id="分组-Group-by"><a href="#分组-Group-by" class="headerlink" title="分组:Group by"></a>分组:Group by</h4><p>  一张表，一旦分组完成后，查询后只能得到组相关的信息。<br> 组相关的信息：（统计信息） count,sum,max,min,avg  分组的标准)<br>    在SQLServer中分组时：不能以text,ntext,image类型的字段作为分组依据<br> 在selecte统计函数中的字段，不能和普通的字段放在一起；</p>
+<h4 id="对数据库进行操作"><a href="#对数据库进行操作" class="headerlink" title="对数据库进行操作"></a>对数据库进行操作</h4><p> 分离数据库： sp_detach_db;<br> 附加数据库：sp_attach_db 后接表明，附加需要完整的路径名</p>
+<h4 id="如何修改数据库的名称"><a href="#如何修改数据库的名称" class="headerlink" title="如何修改数据库的名称"></a>如何修改数据库的名称</h4><p>sp_renamedb ‘old_name’, ‘new_name’</p>
+<h2 id="提升"><a href="#提升" class="headerlink" title="提升"></a>提升</h2><h3 id="复制表"><a href="#复制表" class="headerlink" title="复制表"></a>复制表</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(只复制结构,源表名：a 新表名：b)</span><br><span class="line">法一：select * into b from a where 1&lt;&gt;1（仅用于SQlServer）</span><br><span class="line">法二：select top 0 * into b from a</span><br></pre></td></tr></table></figure>
+<h3 id="拷贝表"><a href="#拷贝表" class="headerlink" title="拷贝表"></a>拷贝表</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(拷贝数据,源表名：a 目标表名：b)</span><br><span class="line">insert into b(a, b, c) select d,e,f from b;</span><br></pre></td></tr></table></figure>
+<h3 id="跨数据库之间表的拷贝-具体数据使用绝对路径"><a href="#跨数据库之间表的拷贝-具体数据使用绝对路径" class="headerlink" title="跨数据库之间表的拷贝(具体数据使用绝对路径)"></a>跨数据库之间表的拷贝(具体数据使用绝对路径)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">insert into b(a, b, c) select d,e,f from b in ‘具体数据库’ where 条件</span><br><span class="line">例子：..from b in &#x27;&quot;&amp;Server.MapPath(&quot;.&quot;)&amp;&quot;\data.mdb&quot; &amp;&quot;&#x27; where..</span><br></pre></td></tr></table></figure>
+<h3 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(表名1：a 表名2：b)</span><br><span class="line">select a,b,c from a where a IN (select d from b )</span><br><span class="line">select a,b,c from a where a IN (1,2,3)</span><br></pre></td></tr></table></figure>
+<h3 id="显示文章、提交人和最后回复时间"><a href="#显示文章、提交人和最后回复时间" class="headerlink" title="显示文章、提交人和最后回复时间"></a>显示文章、提交人和最后回复时间</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select a.title,a.username,b.adddate from table a,(select max(adddate) adddate from table where table.title=a.title) b</span><br></pre></td></tr></table></figure>
+<h3 id="外连接查询"><a href="#外连接查询" class="headerlink" title="外连接查询"></a>外连接查询</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(表名1：a 表名2：b)</span><br><span class="line">select a.a, a.b, a.c, b.c, b.d, b.f from a LEFT OUT JOIN b ON a.a = b.c</span><br></pre></td></tr></table></figure>
+<h3 id="在线视图查询"><a href="#在线视图查询" class="headerlink" title="在线视图查询"></a>在线视图查询</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(表名1：a )</span><br><span class="line">select * from (SELECT a,b,c FROM a) T where t.a &gt; 1;</span><br></pre></td></tr></table></figure>
+<h3 id="between的用法"><a href="#between的用法" class="headerlink" title="between的用法"></a>between的用法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">between限制查询数据范围时包括了边界值,not between不包括</span><br><span class="line">select * from table1 where time between time1 and time2</span><br><span class="line">select a,b,c, from table1 where a not between 数值1 and 数值2</span><br></pre></td></tr></table></figure>
+<h3 id="in-的使用方法"><a href="#in-的使用方法" class="headerlink" title="in 的使用方法"></a>in 的使用方法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table1 where a [not] in (‘值1’,’值2’,’值4’,’值6’)</span><br></pre></td></tr></table></figure>
+<h3 id="not-exists"><a href="#not-exists" class="headerlink" title="not exists"></a>not exists</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">两张关联表，删除主表中已经在副表中没有的信息</span><br><span class="line">delete from table1 where not exists ( select * from table2 where table1.field1=table2.field1 )</span><br></pre></td></tr></table></figure>
+<h3 id="四表联查问题"><a href="#四表联查问题" class="headerlink" title="四表联查问题"></a>四表联查问题</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from a left inner join b on a.a=b.b right inner join c on a.a=c.c inner join d on a.a=d.d where .....</span><br></pre></td></tr></table></figure>
+<h3 id="日程安排提前五分钟提醒"><a href="#日程安排提前五分钟提醒" class="headerlink" title="日程安排提前五分钟提醒"></a>日程安排提前五分钟提醒</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SQL: select * from 日程安排 where datediff(&#x27;minute&#x27;,f开始时间,getdate())&gt;5</span><br></pre></td></tr></table></figure>
+<h3 id="一条sql-语句搞定数据库分页"><a href="#一条sql-语句搞定数据库分页" class="headerlink" title="一条sql 语句搞定数据库分页"></a>一条sql 语句搞定数据库分页</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">select top 10 b.* from (select top 20 主键字段,排序字段 from 表名 order by 排序字段 desc) a,表名 b where b.主键字段 = a.主键字段 order by a.排序字段</span><br><span class="line">具体实现：</span><br><span class="line">关于数据库分页：</span><br><span class="line">  declare @start int,@end int</span><br><span class="line">  @sql  nvarchar(600)</span><br><span class="line">  set @sql=’select top’+str(@end-@start+1)+’+from T where rid not in(select top’+str(@str-1)+’Rid from T where Rid&gt;-1)’</span><br><span class="line">  exec sp_executesql @sql</span><br></pre></td></tr></table></figure>
+<p>注意：在top后不能直接跟一个变量，所以在实际应用中只有这样的进行特殊的处理。Rid为一个标识列，如果top后还有具体的字段，这样做是非常有好处的。因为这样可以避免 top的字段如果是逻辑索引的，查询的结果后实际表中的不一致（逻辑索引中的数据有可能和数据表中的不一致，而查询时如果处在索引则首先查询索引）</p>
+<h3 id="前10条记录"><a href="#前10条记录" class="headerlink" title="前10条记录"></a>前10条记录</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select top 10 * form table1 where 范围</span><br></pre></td></tr></table></figure>
+<h3 id="选择在每一组b值相同的数据中对应的a最大的记录的所有信息-类似这样的用法可以用于论坛每月排行榜-每月热销产品分析-按科目成绩排名-等等"><a href="#选择在每一组b值相同的数据中对应的a最大的记录的所有信息-类似这样的用法可以用于论坛每月排行榜-每月热销产品分析-按科目成绩排名-等等" class="headerlink" title="选择在每一组b值相同的数据中对应的a最大的记录的所有信息(类似这样的用法可以用于论坛每月排行榜,每月热销产品分析,按科目成绩排名,等等.)"></a>选择在每一组b值相同的数据中对应的a最大的记录的所有信息(类似这样的用法可以用于论坛每月排行榜,每月热销产品分析,按科目成绩排名,等等.)</h3><p>select a,b,c from tablename ta where a=(select max(a) from tablename tb where tb.b=ta.b)</p>
+<h3 id="包括所有在-TableA-中但不在-TableB和TableC-中的行并消除所有重复行而派生出一个结果表"><a href="#包括所有在-TableA-中但不在-TableB和TableC-中的行并消除所有重复行而派生出一个结果表" class="headerlink" title="包括所有在 TableA 中但不在 TableB和TableC 中的行并消除所有重复行而派生出一个结果表"></a>包括所有在 TableA 中但不在 TableB和TableC 中的行并消除所有重复行而派生出一个结果表</h3><p>(select a from tableA ) except (select a from tableB) except (select a from tableC)</p>
+<h3 id="随机取出10条数据"><a href="#随机取出10条数据" class="headerlink" title="随机取出10条数据"></a>随机取出10条数据</h3><p>select top 10 * from tablename order by newid()</p>
+<h3 id="随机选择记录"><a href="#随机选择记录" class="headerlink" title="随机选择记录"></a>随机选择记录</h3><p>select newid()</p>
+<h3 id="删除重复记录"><a href="#删除重复记录" class="headerlink" title="删除重复记录"></a>删除重复记录</h3><p>1),delete from tablename where id not in (select max(id) from tablename group by col1,col2,…)<br>2),select distinct * into temp from tablename<br>  delete from tablename<br>  insert into tablename select * from temp<br>评价： 这种操作牵连大量的数据的移动，这种做法不适合大容量但数据操作<br>3),例如：在一个外部表中导入数据，由于某些原因第一次只导入了一部分，但很难判断具体位置，这样只有在下一次全部导入，这样也就产生好多重复的字段，怎样删除重复字段<br>alter table tablename<br>–添加一个自增列<br>add  column_b int identity(1,1)<br> delete from tablename where column_b not in(<br>select max(column_b)  from tablename group by column1,column2,…)<br>alter table tablename drop column column_b</p>
+<h3 id="列出数据库里所有的表名"><a href="#列出数据库里所有的表名" class="headerlink" title="列出数据库里所有的表名"></a>列出数据库里所有的表名</h3><p>select name from sysobjects where type=’U’ // U代表用户</p>
+<h3 id="列出表里的所有的列名"><a href="#列出表里的所有的列名" class="headerlink" title="列出表里的所有的列名"></a>列出表里的所有的列名</h3><p>select name from syscolumns where id=object_id(‘TableName’)</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>原作者： </strong>webkong
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.webkong.cn/mysql%E5%91%BD%E4%BB%A4/" title="mysql命令">https://blog.webkong.cn/mysql命令/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/nginx%E9%9A%90%E8%97%8F%E7%89%88%E6%9C%AC/" rel="prev" title="nginx隐藏版本">
+                  <i class="fa fa-chevron-left"></i> nginx隐藏版本
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/mysql-%E9%94%99%E8%AF%AF%E4%BB%A3%E7%A0%81/" rel="next" title="MySQL 错误代码">
+                  MySQL 错误代码 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">webkong</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"webkong","repo":"blog-gitment","client_id":"54ecf778fa1a619ba5f7","client_secret":"7fc721167bf96eb27e9edc7307a50fa3a7d12d4a","admin_user":"webkong","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"5638b3023c748c4df3e8fa071f39ea0c"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

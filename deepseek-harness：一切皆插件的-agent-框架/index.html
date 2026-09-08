@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs">
+  <meta name="msvalidate.01" content="BABF339751DEC853F1915E4C3272192A">
+  <meta name="yandex-verification" content="eceb5773d0fe4679">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="2026 年 8 月，深度求索开源了 DeepSeek Harness（dsh）——一个「一切皆插件」的 Agent 框架，给出了这个问题的答案：Agent &#x3D; Model + Harness。模型是 Agent 的灵魂，而 Harness 给予 Agent 理解环境、使用工具、在真实场景中持续工作的能力。  开始的开始，让我们从一句广为流传的公式说起：  Agent &#x3D; Model + Har">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DeepSeek Harness：一切皆插件的 Agent 框架">
+<meta property="og:url" content="https://blog.webkong.cn/deepseek-harness%EF%BC%9A%E4%B8%80%E5%88%87%E7%9A%86%E6%8F%92%E4%BB%B6%E7%9A%84-agent-%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:site_name" content="WebKong的网络日志">
+<meta property="og:description" content="2026 年 8 月，深度求索开源了 DeepSeek Harness（dsh）——一个「一切皆插件」的 Agent 框架，给出了这个问题的答案：Agent &#x3D; Model + Harness。模型是 Agent 的灵魂，而 Harness 给予 Agent 理解环境、使用工具、在真实场景中持续工作的能力。  开始的开始，让我们从一句广为流传的公式说起：  Agent &#x3D; Model + Har">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-09-07T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-07T04:28:57.914Z">
+<meta property="article:author" content="webkong">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="DeepSeek">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="dsh">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.webkong.cn/deepseek-harness%EF%BC%9A%E4%B8%80%E5%88%87%E7%9A%86%E6%8F%92%E4%BB%B6%E7%9A%84-agent-%E6%A1%86%E6%9E%B6/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/deepseek-harness%EF%BC%9A%E4%B8%80%E5%88%87%E7%9A%86%E6%8F%92%E4%BB%B6%E7%9A%84-agent-%E6%A1%86%E6%9E%B6/","path":"deepseek-harness：一切皆插件的-agent-框架/","title":"DeepSeek Harness：一切皆插件的 Agent 框架"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>DeepSeek Harness：一切皆插件的 Agent 框架 | WebKong的网络日志</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93765710-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-93765710-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WebKong的网络日志</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享工作中的所用、所想、所感。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">95</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-DeepSeek-Harness"><span class="nav-number">1.</span> <span class="nav-text">什么是 DeepSeek Harness</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E5%88%87%E7%9A%86%E6%8F%92%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">一切皆插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Profile-%E4%B8%8E%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">Profile 与运行模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B"><span class="nav-number">4.</span> <span class="nav-text">快速上手</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8A%E6%89%8B%E4%B9%8B%E5%90%8E%E7%9A%84%E4%B8%89%E6%AD%A5%E8%B5%B0"><span class="nav-number">5.</span> <span class="nav-text">上手之后的三步走</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E4%BD%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%8F%92%E4%BB%B6"><span class="nav-number">6.</span> <span class="nav-text">写你的第一个插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%92%8C%E4%B8%BB%E6%B5%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-number">7.</span> <span class="nav-text">和主流工具的对比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83"><span class="nav-number">8.</span> <span class="nav-text">一些思考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="webkong"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">webkong</p>
+  <div class="site-description" itemprop="description">以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/webkong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/webkong" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.hcharts.cn/" title="http:&#x2F;&#x2F;www.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts中文网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://bbs.hcharts.cn/" title="http:&#x2F;&#x2F;bbs.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts论坛</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/deepseek-harness%EF%BC%9A%E4%B8%80%E5%88%87%E7%9A%86%E6%8F%92%E4%BB%B6%E7%9A%84-agent-%E6%A1%86%E6%9E%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="webkong">
+      <meta itemprop="description" content="以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WebKong的网络日志">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DeepSeek Harness：一切皆插件的 Agent 框架
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-09-07 10:00:00 / 修改时间：12:28:57" itemprop="dateCreated datePublished" datetime="2026-09-07T10:00:00+08:00">2026-09-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>2026 年 8 月，深度求索开源了 DeepSeek Harness（dsh）——一个「一切皆插件」的 Agent 框架，给出了这个问题的答案：Agent = Model + Harness。模型是 Agent 的灵魂，而 Harness 给予 Agent 理解环境、使用工具、在真实场景中持续工作的能力。</p>
+</blockquote>
+<p>开始的开始，让我们从一句广为流传的公式说起：</p>
+<blockquote>
+<p>Agent = Model + Harness</p>
+</blockquote>
+<p>这句话来自 OpenAI，意思是：一个真正可用的 AI Agent，不光要有一个强大的大模型（Model），还需要一整套围绕它的工程能力（Harness）——比如工具调用、文件读写、命令执行、沙箱隔离、权限审批、会话记忆、可观测性等等。模型负责「思考」，Harness 负责「行动」。</p>
+<p>DeepSeek Harness（简称 dsh）正是这一理念的开源落地。它不优化模型本身，而是优化模型运行的环境，核心设计原则就六个字：</p>
+<p><strong>一切皆插件（Everything is a Plugin）。</strong></p>
+<span id="more"></span>
+
+<h1 id="什么是-DeepSeek-Harness"><a href="#什么是-DeepSeek-Harness" class="headerlink" title="什么是 DeepSeek Harness"></a>什么是 DeepSeek Harness</h1><p>DeepSeek Harness 是由 <a target="_blank" rel="noopener" href="https://deepseek.com/">DeepSeek AI</a> 开发的 Agent Harness（智能体框架），2026 年 8 月正式开源，以 TypeScript 编写，使用 MIT 许可证，目前处于开发者预览阶段。</p>
+<ul>
+<li>项目地址：<a target="_blank" rel="noopener" href="https://github.com/deepseek-ai/deepseek-harness">https://github.com/deepseek-ai/deepseek-harness</a></li>
+<li>官方文档：<a target="_blank" rel="noopener" href="https://deepseek-harness.github.io/deepseek-harness/">https://deepseek-harness.github.io/deepseek-harness/</a></li>
+<li>官网：<a target="_blank" rel="noopener" href="https://deepseek.com/harness">https://deepseek.com/harness</a></li>
+</ul>
+<p>它不是一个又一个聊天界面，也不是模型本身。它是让模型能调用工具、执行任务、跟开发者协作的那层基础设施。</p>
+<h1 id="一切皆插件"><a href="#一切皆插件" class="headerlink" title="一切皆插件"></a>一切皆插件</h1><p>dsh 最核心的设计主张是「一切皆插件」：模型适配器是插件，工具注册表是插件，Session Log 是插件，Agent Loop 本身是插件，沙箱是插件，审批策略是插件，连 UI 都是插件。</p>
+<p>模型、工具、技能、会话、沙箱、存储、循环（Agent Loop）、调度、UI 等所有 Agent 能力均由插件提供，并通过 Cordis 内核的服务（Service）与事件（Event）彼此协作。开发者无需改动任何源码，就能在配置层选择、替换、扩展任一能力。</p>
+<p>想换模型？装个插件。想换工具注册方式？装个插件。想把 Agent 从「思考 → 行动 → 观察」改成别的循环？还是装个插件。</p>
+<p>这套架构的关键在于：运行时不存在需要打补丁的特权内核。每一项能力注册都是可逆副作用，插件卸载时自动撤销。因此扩展 dsh 的方式，就是把新插件挂载到其他插件旁边。</p>
+<p>底层由开源插件系统 <a target="_blank" rel="noopener" href="https://github.com/cordiverse/cordis">Cordis</a> 驱动，其设计思想对应论文《A Programming Paradigm for Spatiotemporal Composability》。</p>
+<blockquote>
+<p>这可能是我见过最激进的 Agent 框架设计。与 Claude Code、Codex 这类「产品」不同，dsh 是一个「元框架」——你用它组装自己的 Agent 产品。前者你按它的规则用，后者你用它的积木拼。</p>
+</blockquote>
+<h1 id="Profile-与运行模式"><a href="#Profile-与运行模式" class="headerlink" title="Profile 与运行模式"></a>Profile 与运行模式</h1><p>dsh 通过 Profile + 组合包（Bundle）来组装运行时。运行中的 dsh 是一棵插件树，由启动时按序叠加的各层组合而成——先按 profile 列出的顺序应用每个组合包，然后是 profile 的 <code>cordis.patch.yml</code>、home 级 patch，最后是任意 <code>--patch</code> overlay。</p>
+<p>开箱即提供几种运行模式：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>定位</th>
+<th>能力构成</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>标准模式（web）</td>
+<td>功能完整的编码 Agent</td>
+<td>编辑、Shell、Skills、计划、目标、子代理工作流</td>
+</tr>
+<tr>
+<td>PTC 模式</td>
+<td>代码组合工具调用</td>
+<td>具备标准模式全部能力，并通过 Code Mode SDK 呈现工具</td>
+</tr>
+<tr>
+<td>极简模式</td>
+<td>最小化基准测试</td>
+<td>仅保留 bash 与 <code>str_replace_editor</code> 两个工具</td>
+</tr>
+<tr>
+<td>创造模式</td>
+<td>自定义 Agent preset</td>
+<td>具备标准模式全部能力，可检查运行时、试验插件</td>
+</tr>
+</tbody></table>
+<p>还有 headless 模式，跑脚本和 CI 用：一次性运行任务、打印最终答案并退出，不用开浏览器。</p>
+<h1 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h1><p>系统要求只一个前提：Node.js <code>^22.19.0</code> 或 <code>&gt;=24</code>。</p>
+<p>最方便的上手方式是直接用 npx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npx @deepseek-ai/dsh web</span><br></pre></td></tr></table></figure>
+
+<p>默认会启动 Web UI（<code>http://127.0.0.1:3080</code>），提供完整的图形界面。</p>
+<p>如果想体验 headless 一次性任务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dsh --profile headless <span class="string">&quot;列出这个仓库所有 TODO&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>从源码跑起来（开发插件建议 clone 源码）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/deepseek-ai/deepseek-harness.git</span><br><span class="line"><span class="built_in">cd</span> deepseek-harness</span><br><span class="line">pnpm install</span><br><span class="line">pnpm run build</span><br><span class="line">pnpm dsh web</span><br></pre></td></tr></table></figure>
+
+<p>配套的 SDK 也很友好。Python 官方 SDK 自带运行时，无需系统 Node.js：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install deepseek-harness-sdk</span><br></pre></td></tr></table></figure>
+
+<p>官方也提供了 TypeScript SDK，可以把 Agent 嵌入到任何工作流。</p>
+<h1 id="上手之后的三步走"><a href="#上手之后的三步走" class="headerlink" title="上手之后的三步走"></a>上手之后的三步走</h1><ol>
+<li><strong>配置模型</strong>：<code>Settings → Models</code>，填入 DeepSeek API 密钥。也支持 OpenAI 兼容端点和其他厂商，改完不用重启，模型路由即刻生效。</li>
+<li><strong>选择工作区</strong>：<code>Choose workspace</code>，指向你的项目目录。没选工作区之前输入框是禁用的——我第一次卡在这，还以为是启动失败了。</li>
+<li><strong>发任务</strong>：新开一个会话，让它「总结这个仓库并识别主要包」试试水。</li>
+</ol>
+<p>dsh 运行的时候，所有文件读写和命令执行都被限制在工作区内，路径穿越（<code>../../</code>）会被拦——这是默认的沙箱隔离，不需要额外配置。</p>
+<h1 id="写你的第一个插件"><a href="#写你的第一个插件" class="headerlink" title="写你的第一个插件"></a>写你的第一个插件</h1><p>光会跑没意思，dsh 的灵魂在插件。用一个最小例子讲清楚它的机制。在仓库里建一个插件目录，写一个 <code>greet</code> 工具：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> name = <span class="string">&#x27;hello-plugin&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> inject = [<span class="string">&#x27;tools&#x27;</span>] <span class="keyword">as</span> <span class="keyword">const</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">apply</span>(<span class="params">ctx, tools</span>) </span>&#123;</span><br><span class="line">  tools.register(<span class="string">&#x27;hello&#x27;</span>, &#123;</span><br><span class="line">    <span class="attr">description</span>: <span class="string">&#x27;Say hello to the user.&#x27;</span>,</span><br><span class="line">    <span class="attr">input</span>: &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&#x27;object&#x27;</span>,</span><br><span class="line">      <span class="attr">properties</span>: &#123;</span><br><span class="line">        <span class="attr">name</span>: &#123; <span class="attr">type</span>: <span class="string">&#x27;string&#x27;</span> &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">required</span>: [<span class="string">&#x27;name&#x27;</span>],</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;, <span class="keyword">async</span> (input) =&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`Hello, <span class="subst">$&#123;input.name&#125;</span>!`</span>;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个插件只干四件事：声明插件名、声明需要的服务（tools）、在 <code>apply</code> 入口注册工具、定义工具的入参和执行逻辑。模型通过「描述」知道这个工具存在，通过「入参 schema」知道怎么调用它。</p>
+<blockquote>
+<p>提示：装插件前一定看源码和权限。Harness 插件运行在宿主进程里，属于可信代码，安装脚本会下载什么、需要哪些目录和凭据权限，都得先弄清楚——这跟装任何 npm 包一个道理。</p>
+</blockquote>
+<h1 id="和主流工具的对比"><a href="#和主流工具的对比" class="headerlink" title="和主流工具的对比"></a>和主流工具的对比</h1><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>定位</th>
+<th>与 dsh 的关系</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Claude Code</td>
+<td>闭源商用编码助手</td>
+<td>功能对标，但 dsh 完全开源、可自托管、能力可替换</td>
+</tr>
+<tr>
+<td>Hermes Agent</td>
+<td>自进化个人 Agent（Nous Research）</td>
+<td>侧重跨会话记忆与技能沉淀；dsh 侧重插件化组合与全程可观测</td>
+</tr>
+<tr>
+<td>OpenClaw</td>
+<td>本地优先消息型 Agent</td>
+<td>侧重多渠道接入与数字主权；dsh 提供 Web UI / headless / SDK 多形态</td>
+</tr>
+<tr>
+<td>LangGraph / AutoGen / CrewAI</td>
+<td>Agent 构建框架（编程库）</td>
+<td>框架解决「如何构建」；dsh 是完整 Harness——「如何稳定运行 + 如何替换能力」</td>
+</tr>
+</tbody></table>
+<p>一句话总结定位差异：dsh 不是又一个「写几个 agent 的库」，而是位于 SDK 与框架之上、解决「Agent 如何可靠运行」的完整一层。</p>
+<h1 id="一些思考"><a href="#一些思考" class="headerlink" title="一些思考"></a>一些思考</h1><ul>
+<li><strong>Agent = Model + Harness</strong>。dsh 的定位跟这个公式严丝合缝——它把模型当可替换组件，把工程能力（工具、沙箱、审批、UI）全部做进 Harness 层。</li>
+<li><strong>约束即代码</strong>。AI 又漏改文件了？把「文件修改必须走工具注册」写成一个插件约束，比维护 AGENTS.md 里的一行文字更硬。约束从「文档约定」升级成了「代码强制」。</li>
+<li><strong>上手门槛低，生产要谨慎</strong>。它现在还是 0.1 预览版，官方明说「存在破坏性更新」。做技术预研、做内部工具的底座没问题，想用 dsh 替代 Claude Code 的团队，建议等它稳定几个版本再说。</li>
+</ul>
+<p>国内团队来说，DeepSeek API 直连 + 相对低价，加上 MIT 协议完全开源能自托管，是它最实在的吸引力。</p>
+<p>如果你也在折腾 Agent 相关的基建，欢迎留言交流。下一篇打算写 dsh 的插件开发实战，或者聊聊怎么给它接自定义工具。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>原作者： </strong>webkong
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.webkong.cn/deepseek-harness%EF%BC%9A%E4%B8%80%E5%88%87%E7%9A%86%E6%8F%92%E4%BB%B6%E7%9A%84-agent-%E6%A1%86%E6%9E%B6/" title="DeepSeek Harness：一切皆插件的 Agent 框架">https://blog.webkong.cn/deepseek-harness：一切皆插件的-agent-框架/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+              <a href="/tags/DeepSeek/" rel="tag"># DeepSeek</a>
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/dsh/" rel="tag"># dsh</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E9%BB%91%E8%8B%B9%E6%9E%9Cintel-9560ac%E7%BD%91%E5%8D%A1%E6%88%90%E5%8A%9F%E9%A9%B1%E5%8A%A8/" rel="prev" title="黑苹果intel 9560ac网卡成功驱动">
+                  <i class="fa fa-chevron-left"></i> 黑苹果intel 9560ac网卡成功驱动
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/deepseek-harness-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E-hello-%E5%88%B0%E9%9D%A2%E5%90%91%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B7%A5%E5%85%B7/" rel="next" title="DeepSeek Harness 插件开发实战：从 hello 到面向模型的工具">
+                  DeepSeek Harness 插件开发实战：从 hello 到面向模型的工具 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">webkong</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"webkong","repo":"blog-gitment","client_id":"54ecf778fa1a619ba5f7","client_secret":"7fc721167bf96eb27e9edc7307a50fa3a7d12d4a","admin_user":"webkong","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"75b1d5fd43c4fa72e83d7184eeaa6334"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

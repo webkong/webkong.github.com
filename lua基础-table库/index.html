@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs">
+  <meta name="msvalidate.01" content="BABF339751DEC853F1915E4C3272192A">
+  <meta name="yandex-verification" content="eceb5773d0fe4679">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="table 库是由一些辅助函数构成的，这些函数将 table 作为数组来操作。 下标从 1 开始在 Lua 中，数组下标从 1 开始计数。官方解释：Lua lists have a base index of 1 because it was thought to be most friendly for non-programmers, as it makes indices correspon">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lua基础-table库">
+<meta property="og:url" content="https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80-table%E5%BA%93/index.html">
+<meta property="og:site_name" content="WebKong的网络日志">
+<meta property="og:description" content="table 库是由一些辅助函数构成的，这些函数将 table 作为数组来操作。 下标从 1 开始在 Lua 中，数组下标从 1 开始计数。官方解释：Lua lists have a base index of 1 because it was thought to be most friendly for non-programmers, as it makes indices correspon">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-09-29T09:48:00.000Z">
+<meta property="article:modified_time" content="2026-09-07T03:09:04.791Z">
+<meta property="article:author" content="webkong">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80-table%E5%BA%93/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80-table%E5%BA%93/","path":"lua基础-table库/","title":"Lua基础-table库"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Lua基础-table库 | WebKong的网络日志</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93765710-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-93765710-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WebKong的网络日志</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享工作中的所用、所想、所感。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">95</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8B%E6%A0%87%E4%BB%8E-1-%E5%BC%80%E5%A7%8B"><span class="nav-number">1.</span> <span class="nav-text">下标从 1 开始</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#table-getn-%E8%8E%B7%E5%8F%96%E9%95%BF%E5%BA%A6"><span class="nav-number">2.</span> <span class="nav-text">table.getn 获取长度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#table-concat-table-sep-i-j"><span class="nav-number">3.</span> <span class="nav-text">table.concat (table [, sep [, i [, j ] ] ])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#table-insert-table-pos-value"><span class="nav-number">4.</span> <span class="nav-text">table.insert (table, [pos ,] value)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#table-maxn-table"><span class="nav-number">5.</span> <span class="nav-text">table.maxn (table)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#table-remove-table-pos"><span class="nav-number">6.</span> <span class="nav-text">table.remove (table [, pos])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#table-sort-table-comp"><span class="nav-number">7.</span> <span class="nav-text">table.sort (table [, comp])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#table-%E5%85%B6%E4%BB%96%E9%9D%9E%E5%B8%B8%E6%9C%89%E7%94%A8%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">8.</span> <span class="nav-text">table 其他非常有用的函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E6%96%87"><span class="nav-number">9.</span> <span class="nav-text">原文</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="webkong"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">webkong</p>
+  <div class="site-description" itemprop="description">以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/webkong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/webkong" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.hcharts.cn/" title="http:&#x2F;&#x2F;www.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts中文网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://bbs.hcharts.cn/" title="http:&#x2F;&#x2F;bbs.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts论坛</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80-table%E5%BA%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="webkong">
+      <meta itemprop="description" content="以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WebKong的网络日志">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Lua基础-table库
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-09-29 17:48:00" itemprop="dateCreated datePublished" datetime="2016-09-29T17:48:00+08:00">2016-09-29</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2026-09-07 11:09:04" itemprop="dateModified" datetime="2026-09-07T11:09:04+08:00">2026-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Lua/" itemprop="url" rel="index"><span itemprop="name">Lua</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>table 库是由一些辅助函数构成的，这些函数将 table 作为数组来操作。</p>
+<h4 id="下标从-1-开始"><a href="#下标从-1-开始" class="headerlink" title="下标从 1 开始"></a>下标从 1 开始</h4><p>在 Lua 中，数组下标从 1 开始计数。<br>官方解释：Lua lists have a base index of 1 because it was thought to be most friendly for non-programmers, as it makes indices correspond to ordinal element positions.<br>确实，对于我们数数来说，总是从 1 开始数的，而从 0 开始对于描述偏移量这样的东西有利。 而 Lua 最初设计是一种类似 XML 的数据描述语言，所以索引（index）反应的是数据在里面的位置，而不是偏移量。<br>在初始化一个数组的时候，若不显式地用键值对方式赋值，则会默认用数字作为下标，从 1 开始。由于在 Lua 内部实际采用哈希表和数组分别保存键值对、普通值，所以不推荐混合使用这两种赋值方式。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">local color=&#123;first=&quot;red&quot;, &quot;blue&quot;, third=&quot;green&quot;, &quot;yellow&quot;&#125;</span><br><span class="line">print(color[&quot;first&quot;])                 --&gt; output: red</span><br><span class="line">print(color[1])                       --&gt; output: blue</span><br><span class="line">print(color[&quot;third&quot;])                 --&gt; output: green</span><br><span class="line">print(color[2])                       --&gt; output: yellow</span><br><span class="line">print(color[3])                       --&gt; output: nil</span><br></pre></td></tr></table></figure>
+
+<p>从其他语言过来的开发者会觉得比较坑的一点是，当我们把 table 当作栈或者队列使用的时候，容易犯错，追加到 table 的末尾用的是 <code>s[#s+1] = something</code>，而不是 <code>s[#s] = something</code>，而且如果这个 something 是一个 nil 的话，会导致这一次压栈（或者入队列）没有存入任何东西，<code>#s</code>的值没有变。如果 <code>s = &#123; 1, 2, 3, 4, 5, 6 &#125;</code>，你令<code>s[4] = nil</code>，<code>#s</code> 会令你“匪夷所思”地变成 <code>3</code></p>
+<h4 id="table-getn-获取长度"><a href="#table-getn-获取长度" class="headerlink" title="table.getn 获取长度"></a>table.getn 获取长度</h4><p>取长度操作符写作一元操作 #。 字符串的长度是它的字节数（就是以一个字符一个字节计算的字符串长度）。<br>对于常规的数组，里面从 1 到 n 放着一些非空的值的时候， 它的长度就精确的为 n，即最后一个值的下标。 如果数组有一个“空洞” （就是说，nil 值被夹在非空值之间）， 那么 #t 可能是指向任何一个是 nil 值的前一个位置的下标 （就是说，任何一个 nil 值都有可能被当成数组的结束）。这也就说明对于有“空洞”的情况，table 的长度存在一定的 不可确定性。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">local tblTest1 = &#123; 1, a = 2, 3 &#125;</span><br><span class="line">print(&quot;Test1 &quot; .. table.getn(tblTest1))</span><br><span class="line"></span><br><span class="line">local tblTest2 = &#123; 1, nil &#125;</span><br><span class="line">print(&quot;Test2 &quot; .. table.getn(tblTest2))</span><br><span class="line"></span><br><span class="line">local tblTest3 = &#123; 1, nil, 2 &#125;</span><br><span class="line">print(&quot;Test3 &quot; .. table.getn(tblTest3))</span><br><span class="line"></span><br><span class="line">local tblTest4 = &#123; 1, nil, 2, nil &#125;</span><br><span class="line">print(&quot;Test4 &quot; .. table.getn(tblTest4))</span><br><span class="line"></span><br><span class="line">local tblTest5 = &#123; 1, nil, 2, nil, 3, nil &#125;</span><br><span class="line">print(&quot;Test5 &quot; .. table.getn(tblTest5))</span><br><span class="line"></span><br><span class="line">local tblTest6 = &#123; 1, nil, 2, nil, 3, nil, 4, nil &#125;</span><br><span class="line">print(&quot;Test6 &quot; .. table.getn(tblTest6))</span><br></pre></td></tr></table></figure>
+
+<p>我们使用 Lua 5.1 和 LuaJIT 2.1 分别执行这个用例，结果如下：</p>
+<p>$ lua test.lua<br>Test1 2<br>Test2 1<br>Test3 3<br>Test4 1<br>Test5 3<br>Test6 1<br>$ luajit test.lua<br>Test1 2<br>Test2 1<br>Test3 1<br>Test4 1<br>Test5 1<br>Test6 1</p>
+<p>这一段的输出结果，就是这么 匪夷所思。请问，你以后还敢在 lua 的 table 中用 nil 值吗？如果你继续往后面加 nil，你可能会发现点什么。你可能认为你发现的是个规律。但是，你千万不要认为这是个规律，因为这是错误的。<br>不要在 lua 的 table 中使用 nil 值，如果一个元素要删除，直接 remove，不要用 nil 去代替。</p>
+<h4 id="table-concat-table-sep-i-j"><a href="#table-concat-table-sep-i-j" class="headerlink" title="table.concat (table [, sep [, i [, j ] ] ])"></a>table.concat (table [, sep [, i [, j ] ] ])</h4><p>对于元素是 string 或者 number 类型的表 table，返回 table[i]..sep..table[i+1] ··· sep..table[j] 连接成的字符串。填充字符串 sep 默认为空白字符串。起始索引位置 i 默认为 1，结束索引位置 j 默认是 table 的长度。如果 i 大于 j，返回一个空字符串。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">local a = &#123;1, 3, 5, &quot;hello&quot; &#125;</span><br><span class="line">print(table.concat(a))              -- output: 135hello</span><br><span class="line">print(table.concat(a, &quot;|&quot;))         -- output: 1|3|5|hello</span><br><span class="line">print(table.concat(a, &quot; &quot;, 4, 2))   -- output:</span><br><span class="line">print(table.concat(a, &quot; &quot;, 2, 4))   -- output: 3 5 hello</span><br></pre></td></tr></table></figure>
+
+<h4 id="table-insert-table-pos-value"><a href="#table-insert-table-pos-value" class="headerlink" title="table.insert (table, [pos ,] value)"></a>table.insert (table, [pos ,] value)</h4><p>在（数组型）表 table 的 pos 索引位置插入 value，其它元素向后移动到空的地方。pos 的默认值是表的长度加一，即默认是插在表的最后。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">local a = &#123;1, 8&#125;             --a[1] = 1,a[2] = 8</span><br><span class="line">table.insert(a, 1, 3)   --在表索引为1处插入3</span><br><span class="line">print(a[1], a[2], a[3])</span><br><span class="line">table.insert(a, 10)    --在表的最后插入10</span><br><span class="line">print(a[1], a[2], a[3], a[4])</span><br><span class="line"></span><br><span class="line">--&gt;output</span><br><span class="line">3    1    8</span><br><span class="line">3    1    8    10</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="table-maxn-table"><a href="#table-maxn-table" class="headerlink" title="table.maxn (table)"></a>table.maxn (table)</h4><p>返回（数组型）表 table 的最大索引编号；如果此表没有正的索引编号，返回 0。<br>当长度省略时，此函数通常需要 O(n) 的时间复杂度来计算 table 的末尾。因此用这个函数省略索引位置的调用形式来作 table 元素的末尾追加，是高代价操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">local a = &#123;&#125;</span><br><span class="line">a[-1] = 10</span><br><span class="line">print(table.maxn(a))</span><br><span class="line">a[5] = 10</span><br><span class="line">print(table.maxn(a))</span><br><span class="line"></span><br><span class="line">--&gt;output</span><br><span class="line">0</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+
+<p>此函数的行为不同于 # 运算符，因为 # 可以返回数组中任意一个 nil 空洞或最后一个 nil 之前的元素索引。当然，该函数的开销相比 # 运算符也会更大一些。</p>
+<h4 id="table-remove-table-pos"><a href="#table-remove-table-pos" class="headerlink" title="table.remove (table [, pos])"></a>table.remove (table [, pos])</h4><p>在表 table 中删除索引为 pos（pos 只能是 number 型）的元素，并返回这个被删除的元素，它后面所有元素的索引值都会减一。pos 的默认值是表的长度，即默认是删除表的最后一个元素。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">local a = &#123; 1, 2, 3, 4&#125;</span><br><span class="line">print(table.remove(a, 1)) --删除速索引为1的元素</span><br><span class="line">print(a[1], a[2], a[3], a[4])</span><br><span class="line"></span><br><span class="line">print(table.remove(a))   --删除最后一个元素</span><br><span class="line">print(a[1], a[2], a[3], a[4])</span><br><span class="line"></span><br><span class="line">--&gt;output</span><br><span class="line">1</span><br><span class="line">2    3    4    nil</span><br><span class="line">4</span><br><span class="line">2    3    nil    nil</span><br></pre></td></tr></table></figure>
+
+<h4 id="table-sort-table-comp"><a href="#table-sort-table-comp" class="headerlink" title="table.sort (table [, comp])"></a>table.sort (table [, comp])</h4><p>按照给定的比较函数 comp 给表 table 排序，也就是从 table[1] 到 table[n] ，这里 n 表示 table 的长度。 比较函数有两个参数，如果希望第一个参数排在第二个的前面，就应该返回 true，否则返回 false。 如果比较函数 comp 没有给出，默认从小到大排序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">local function compare(x, y) --从大到小排序</span><br><span class="line">   return x &gt; y         --如果第一个参数大于第二个就返回true，否则返回false</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local a = &#123; 1, 7, 3, 4, 25&#125;</span><br><span class="line">table.sort(a)           --默认从小到大排序</span><br><span class="line">print(a[1], a[2], a[3], a[4], a[5])</span><br><span class="line">table.sort(a, compare) --使用比较函数进行排序</span><br><span class="line">print(a[1], a[2], a[3], a[4], a[5])</span><br><span class="line"></span><br><span class="line">--&gt;output</span><br><span class="line">1    3    4    7    25</span><br><span class="line">25    7    4    3    1</span><br></pre></td></tr></table></figure>
+
+<h4 id="table-其他非常有用的函数"><a href="#table-其他非常有用的函数" class="headerlink" title="table 其他非常有用的函数"></a>table 其他非常有用的函数</h4><p>LuaJIT 2.1 新增加的 table.new 和 table.clear 函数是非常有用的。前者主要用来预分配 lua table 空间，后者主要用来高效的释放 table 空间，并且它们都是可以被 JIT 编译的。具体可以参考一下 OpenResty 捆绑的 lua-resty-* 库，里面有些实例可以作为参考。</p>
+<h4 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h4><p><a target="_blank" rel="noopener" href="https://moonbingbing.gitbooks.io/openresty-best-practices/content/lua/table_library.html">https://moonbingbing.gitbooks.io/openresty-best-practices/content/lua/table_library.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>webkong
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80-table%E5%BA%93/" title="Lua基础-table库">https://blog.webkong.cn/lua基础-table库/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/lua%E5%9F%BA%E7%A1%80-string%E5%BA%93/" rel="prev" title="Lua基础-String库">
+                  <i class="fa fa-chevron-left"></i> Lua基础-String库
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/lua%E5%9F%BA%E7%A1%80-%E6%95%B0%E5%AD%A6%E5%BA%93/" rel="next" title="Lua基础-数学库">
+                  Lua基础-数学库 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">webkong</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"webkong","repo":"blog-gitment","client_id":"54ecf778fa1a619ba5f7","client_secret":"7fc721167bf96eb27e9edc7307a50fa3a7d12d4a","admin_user":"webkong","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"3ec639c7a2c05f6e39e0800fe3c43936"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

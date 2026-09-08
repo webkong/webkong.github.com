@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs">
+  <meta name="msvalidate.01" content="BABF339751DEC853F1915E4C3272192A">
+  <meta name="yandex-verification" content="eceb5773d0fe4679">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言最近几年一直以 JavaScript 最为第一语言开发，所以死扣 JavaScript，突然发现else if原来不是我想象中的else if。并对自己之前的无知感到羞愧。 写过JavaScript的知道在写 if 条件语句的时候都会写成else if,而不是写成elseif。为啥中间要有空格呢？ 比如Python会写成elif、PHP写成elseif、Lua 写成elseif。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原来你是这样的[else if]">
+<meta property="og:url" content="https://blog.webkong.cn/%E5%8E%9F%E6%9D%A5%E4%BD%A0%E6%98%AF%E8%BF%99%E6%A0%B7%E7%9A%84-else-if/index.html">
+<meta property="og:site_name" content="WebKong的网络日志">
+<meta property="og:description" content="前言最近几年一直以 JavaScript 最为第一语言开发，所以死扣 JavaScript，突然发现else if原来不是我想象中的else if。并对自己之前的无知感到羞愧。 写过JavaScript的知道在写 if 条件语句的时候都会写成else if,而不是写成elseif。为啥中间要有空格呢？ 比如Python会写成elif、PHP写成elseif、Lua 写成elseif。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-12-14T11:09:00.000Z">
+<meta property="article:modified_time" content="2026-09-07T03:09:04.798Z">
+<meta property="article:author" content="webkong">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.webkong.cn/%E5%8E%9F%E6%9D%A5%E4%BD%A0%E6%98%AF%E8%BF%99%E6%A0%B7%E7%9A%84-else-if/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/%E5%8E%9F%E6%9D%A5%E4%BD%A0%E6%98%AF%E8%BF%99%E6%A0%B7%E7%9A%84-else-if/","path":"原来你是这样的-else-if/","title":"原来你是这样的[else if]"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>原来你是这样的[else if] | WebKong的网络日志</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93765710-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-93765710-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WebKong的网络日志</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享工作中的所用、所想、所感。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">95</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%8F%E5%B8%B8%E5%9C%A8%E4%BB%A3%E7%A0%81%E4%B8%AD%E5%87%BA%E7%8E%B0%E7%9A%84"><span class="nav-number">2.</span> <span class="nav-text">经常在代码中出现的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%BE%97%E4%B8%8D%E8%AF%B4%E7%9A%84%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="nav-number">3.</span> <span class="nav-text">不得不说的代码块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E8%AF%B4%E4%B8%A4%E5%8F%A5"><span class="nav-number">4.</span> <span class="nav-text">多说两句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E5%AD%97%E9%9D%A2%E9%87%8F"><span class="nav-number">4.1.</span> <span class="nav-text">定义一个对象字面量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%93%E4%B8%8A%E4%B8%80%E4%B8%AA-label"><span class="nav-number">4.2.</span> <span class="nav-text">打上一个 label</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#other"><span class="nav-number">4.3.</span> <span class="nav-text">other</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%90%8E"><span class="nav-number">5.</span> <span class="nav-text">最后</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="webkong"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">webkong</p>
+  <div class="site-description" itemprop="description">以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/webkong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/webkong" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.hcharts.cn/" title="http:&#x2F;&#x2F;www.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts中文网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://bbs.hcharts.cn/" title="http:&#x2F;&#x2F;bbs.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts论坛</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/%E5%8E%9F%E6%9D%A5%E4%BD%A0%E6%98%AF%E8%BF%99%E6%A0%B7%E7%9A%84-else-if/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="webkong">
+      <meta itemprop="description" content="以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WebKong的网络日志">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          原来你是这样的[else if]
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-12-14 19:09:00" itemprop="dateCreated datePublished" datetime="2018-12-14T19:09:00+08:00">2018-12-14</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2026-09-07 11:09:04" itemprop="dateModified" datetime="2026-09-07T11:09:04+08:00">2026-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近几年一直以 JavaScript 最为第一语言开发，所以死扣 JavaScript，突然发现<code>else if</code>原来不是我想象中的<code>else if</code>。并对自己之前的无知感到羞愧。</p>
+<p>写过<code>JavaScript</code>的知道在写 if 条件语句的时候都会写成<code>else if</code>,而不是写成<code>elseif</code>。为啥中间要有空格呢？</p>
+<p>比如<code>Python</code>会写成<code>elif</code>、<code>PHP</code>写成<code>elseif</code>、Lua 写成<code>elseif</code>。</p>
+<span id="more"></span>
+
+<h2 id="经常在代码中出现的"><a href="#经常在代码中出现的" class="headerlink" title="经常在代码中出现的"></a>经常在代码中出现的</h2><p>个人认为 if 条件语句是每个人的代码中都会出现。他们大概是这样的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">testNum</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (a &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;positive&quot;</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;NOT positive&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(testNum(-<span class="number">5</span>));</span><br><span class="line"><span class="comment">// expected output: &quot;NOT positive&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>或者是这样的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (x &gt; <span class="number">5</span>) &#123;</span><br><span class="line"> <span class="comment">/* do the right thing */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (x &gt; <span class="number">50</span>) &#123;</span><br><span class="line"> <span class="comment">/* do the right thing */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (x &gt; <span class="number">100</span>) &#123;</span><br><span class="line"> <span class="comment">/* do the right thing */</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line"> <span class="comment">/* do the right thing */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>那么重点来了，JavaScript 是没有 <code>else if</code>语句的。</p>
+<p>啥 ？ 那我用的到底是什么。。。</p>
+</blockquote>
+<h2 id="不得不说的代码块"><a href="#不得不说的代码块" class="headerlink" title="不得不说的代码块"></a>不得不说的代码块</h2><p>我们有时候会这么写<code>if</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if(a) dosomething(a)</span><br></pre></td></tr></table></figure>
+
+<p>很多 JavaScript 代码检查工具会建议应该加上<code>&#123;...&#125;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if(a) &#123;dosomething(a)&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样对于<code>else</code>，在只包含单条语句的时候可以省略代码块。</p>
+<p>所以实际上，上面的<code>else if</code>代码实际是这样的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">if (x &gt; 5) &#123;</span><br><span class="line"> /* do the right thing */</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  if (x &gt; 50) &#123;</span><br><span class="line">   /* do the right thing */</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    if(x &gt; 100 )&#123;</span><br><span class="line">      /* do the right thing */</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">      /* do the right thing */</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们去掉<code>else</code> 的 <code>&#123;...&#125;</code>去掉</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">if (x &gt; 5) &#123;</span><br><span class="line"> /* do the right thing */</span><br><span class="line">&#125; else</span><br><span class="line">  if (x &gt; 50) &#123;</span><br><span class="line">   /* do the right thing */</span><br><span class="line">  &#125; else</span><br><span class="line">    if(x &gt; 100 )&#123;</span><br><span class="line">      /* do the right thing */</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">      /* do the right thing */</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后再把 else 和 if 弄到一行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">if (x &gt; 5) &#123;</span><br><span class="line"> /* do the right thing */</span><br><span class="line">&#125; else if (x &gt; 50) &#123;</span><br><span class="line">   /* do the right thing */</span><br><span class="line">&#125; else if(x &gt; 100 )&#123;</span><br><span class="line">  /* do the right thing */</span><br><span class="line">&#125;else&#123;</span><br><span class="line">  /* do the right thing */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>就是我们经常写的<code>else if</code>。</p>
+<blockquote>
+<p>所以换句话说，<code>else if</code>其实只是<code>else</code>里面单独的<code>if</code>语句，去掉了<code>&#123;&#125;</code>，省略了一层代码缩进。</p>
+</blockquote>
+<blockquote>
+<p>我们自己发明的用法，而这并不是 JavaScript 语法的范畴。</p>
+</blockquote>
+<h2 id="多说两句"><a href="#多说两句" class="headerlink" title="多说两句"></a>多说两句</h2><p><code>&#123;...&#125;</code>大括号，不仅仅只是大括号。我们在很单纯的使用大括号的时候，大概是：</p>
+<h3 id="定义一个对象字面量"><a href="#定义一个对象字面量" class="headerlink" title="定义一个对象字面量"></a>定义一个对象字面量</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var foo = &#123;</span><br><span class="line">  key: 1,</span><br><span class="line">  value: bar()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们把大括号赋值给了一个变量<code>foo</code>,所以现在<code>&#123;...&#125;</code>是一个值。</p>
+<h3 id="打上一个-label"><a href="#打上一个-label" class="headerlink" title="打上一个 label"></a>打上一个 label</h3><p>当我把<code>var foo =</code>去掉，单纯的剩下一个<code>&#123;...&#125;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  foo:bar()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种写法在 JavaScript 多见，但他又是完全合法的。<code>&#123;...&#125;</code>在这里只是一个普通的代码块。那么里面的<code>foo:bar()</code>为啥也是合法的呢？</p>
+<p>这种写法是不提倡的写法，也是 JavaScript 不常用的特性，“标签语法”。换句话说，给一条语句加上标签，可以配合<code>break</code> / <code>continue</code>来实现 goto 的效果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">foo: &#123;</span><br><span class="line">  console.log(&#x27;face&#x27;);</span><br><span class="line">  break foo;</span><br><span class="line">  console.log(&#x27;this will not be executed&#x27;);</span><br><span class="line">&#125;</span><br><span class="line">console.log(&#x27;swap&#x27;);</span><br><span class="line"></span><br><span class="line">// this will log:</span><br><span class="line"></span><br><span class="line">// &quot;face&quot;</span><br><span class="line">// &quot;swap&quot;</span><br></pre></td></tr></table></figure>
+
+<p>有兴趣的同学可以去 MDN 查阅<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/label">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/label</a></p>
+<h3 id="other"><a href="#other" class="headerlink" title="other"></a>other</h3><blockquote>
+<p>当<code>&#123;...&#125;</code>与 let 一起使用的时候就特别有用，可以强制劫持块的作用域。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(bar); <span class="comment">//ReferenceError: bar is not defined</span></span><br><span class="line">  <span class="keyword">let</span> bar = <span class="string">&#x27;webkong&#x27;</span></span><br><span class="line">  <span class="built_in">console</span>.log(bar); <span class="comment">// webkong</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(bar) <span class="comment">//ReferenceError: bar is not defined</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>JavaScript 是一本优秀的语言，只学其中一部分很容易，全面掌握规则却很难。她有简单易用的语法，同时语言机制又十分复杂和微妙。回顾这几年，后悔的是没有给 JavaScript 足够的耐心和时间，把她当成一门真正的变成语言来探索和学习。很多人可能跟我一样，最开始使用她，用的多了，才开始的回过头来学习。ES 标准的不断演进，概念语法上面的不断发展，让我们期待 JavaScript 的未来会更有作为。</p>
+<blockquote>
+<p>有人会说，java 也是写<code>else if</code>呢…，go 好像也是呢？ 那我不管，我只想写 JS。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>原作者： </strong>webkong
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.webkong.cn/%E5%8E%9F%E6%9D%A5%E4%BD%A0%E6%98%AF%E8%BF%99%E6%A0%B7%E7%9A%84-else-if/" title="原来你是这样的[else if]">https://blog.webkong.cn/原来你是这样的-else-if/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E4%BD%BF%E7%94%A8mock-server/" rel="prev" title="如何优雅的使用mock server">
+                  <i class="fa fa-chevron-left"></i> 如何优雅的使用mock server
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/kaios-permissions-table/" rel="next" title="KaiOS Permissions Table">
+                  KaiOS Permissions Table <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">webkong</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"webkong","repo":"blog-gitment","client_id":"54ecf778fa1a619ba5f7","client_secret":"7fc721167bf96eb27e9edc7307a50fa3a7d12d4a","admin_user":"webkong","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"75b554e81e121a49b04b286e1b0ff636"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs">
+  <meta name="msvalidate.01" content="BABF339751DEC853F1915E4C3272192A">
+  <meta name="yandex-verification" content="eceb5773d0fe4679">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="文件操作Lua I&#x2F;O 库提供两种不同的方式处理文件：隐式文件描述，显式文件描述。 这些文件 I&#x2F;O 操作，在 OpenResty 的上下文中对事件循环是会产生阻塞效应。 OpenResty 比较擅长的是高并发网络处理，在这个环境中，任何文件的操作，都将阻塞其他并行执行的请求。实际中的应用，在 OpenResty 项目中应尽可能让网络处理部分、文件 I&#x2F;0 操作部分相互独立，不要揉和在一起。 隐式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lua基础-文件库">
+<meta property="og:url" content="https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80-%E6%96%87%E4%BB%B6%E5%BA%93/index.html">
+<meta property="og:site_name" content="WebKong的网络日志">
+<meta property="og:description" content="文件操作Lua I&#x2F;O 库提供两种不同的方式处理文件：隐式文件描述，显式文件描述。 这些文件 I&#x2F;O 操作，在 OpenResty 的上下文中对事件循环是会产生阻塞效应。 OpenResty 比较擅长的是高并发网络处理，在这个环境中，任何文件的操作，都将阻塞其他并行执行的请求。实际中的应用，在 OpenResty 项目中应尽可能让网络处理部分、文件 I&#x2F;0 操作部分相互独立，不要揉和在一起。 隐式">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.webkong.cn/images/2016/file_1.png">
+<meta property="og:image" content="https://blog.webkong.cn/images/2016/file_2.png">
+<meta property="og:image" content="https://blog.webkong.cn/images/2016/file_3.png">
+<meta property="og:image" content="https://blog.webkong.cn/images/2016/file_4.png">
+<meta property="article:published_time" content="2016-10-08T06:21:00.000Z">
+<meta property="article:modified_time" content="2026-09-07T03:09:04.792Z">
+<meta property="article:author" content="webkong">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.webkong.cn/images/2016/file_1.png">
+
+
+<link rel="canonical" href="https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80-%E6%96%87%E4%BB%B6%E5%BA%93/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80-%E6%96%87%E4%BB%B6%E5%BA%93/","path":"lua基础-文件库/","title":"Lua基础-文件库"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Lua基础-文件库 | WebKong的网络日志</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93765710-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-93765710-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WebKong的网络日志</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享工作中的所用、所想、所感。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">95</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">文件操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%90%E5%BC%8F%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.0.1.</span> <span class="nav-text">隐式文件描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%BE%E5%BC%8F%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.0.2.</span> <span class="nav-text">显式文件描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0"><span class="nav-number">1.0.3.</span> <span class="nav-text">文件操作函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#io-open-filename-mode"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">io.open (filename [, mode])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#file-close"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">file:close ()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#io-close-file"><span class="nav-number">1.0.3.3.</span> <span class="nav-text">io.close ([file])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#file-flush"><span class="nav-number">1.0.3.4.</span> <span class="nav-text">file:flush ()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#io-flush"><span class="nav-number">1.0.3.5.</span> <span class="nav-text">io.flush ()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#io-input-file"><span class="nav-number">1.0.3.6.</span> <span class="nav-text">io.input ([file])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#file-lines"><span class="nav-number">1.0.3.7.</span> <span class="nav-text">file:lines ()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#io-lines-filename"><span class="nav-number">1.0.3.8.</span> <span class="nav-text">io.lines ([filename])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#io-output-file"><span class="nav-number">1.0.3.9.</span> <span class="nav-text">io.output ([file])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#file-read-%E2%80%A6"><span class="nav-number">1.0.3.10.</span> <span class="nav-text">file:read (…)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#io-read-%E2%80%A6"><span class="nav-number">1.0.3.11.</span> <span class="nav-text">io.read (…)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#io-type-obj"><span class="nav-number">1.0.3.12.</span> <span class="nav-text">io.type (obj)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#file-write-%E2%80%A6"><span class="nav-number">1.0.3.13.</span> <span class="nav-text">file:write (…)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#io-write-%E2%80%A6"><span class="nav-number">1.0.3.14.</span> <span class="nav-text">io.write (…)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#file-seek-whence-offset"><span class="nav-number">1.0.3.15.</span> <span class="nav-text">file:seek ([whence] [, offset])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#file-setvbuf-mode-size"><span class="nav-number">1.0.3.16.</span> <span class="nav-text">file:setvbuf (mode [, size])</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="webkong"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">webkong</p>
+  <div class="site-description" itemprop="description">以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/webkong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/webkong" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.hcharts.cn/" title="http:&#x2F;&#x2F;www.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts中文网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://bbs.hcharts.cn/" title="http:&#x2F;&#x2F;bbs.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts论坛</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80-%E6%96%87%E4%BB%B6%E5%BA%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="webkong">
+      <meta itemprop="description" content="以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WebKong的网络日志">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Lua基础-文件库
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-10-08 14:21:00" itemprop="dateCreated datePublished" datetime="2016-10-08T14:21:00+08:00">2016-10-08</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2026-09-07 11:09:04" itemprop="dateModified" datetime="2026-09-07T11:09:04+08:00">2026-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Lua/" itemprop="url" rel="index"><span itemprop="name">Lua</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h1><p>Lua I/O 库提供两种不同的方式处理文件：隐式文件描述，显式文件描述。</p>
+<p>这些文件 I/O 操作，在 OpenResty 的上下文中对事件循环是会产生阻塞效应。 OpenResty 比较擅长的是高并发网络处理，在这个环境中，任何文件的操作，都将阻塞其他并行执行的请求。实际中的应用，在 OpenResty 项目中应尽可能让网络处理部分、文件 I/0 操作部分相互独立，不要揉和在一起。</p>
+<h3 id="隐式文件描述"><a href="#隐式文件描述" class="headerlink" title="隐式文件描述"></a>隐式文件描述</h3><p>设置一个默认的输入或输出文件，然后在这个文件上进行所有的输入或输出操作。所有的操作函数由 io 表提供。</p>
+<blockquote>
+<p>打开已经存在的 <code>test1.txt</code> 文件，并读取里面的内容</p>
+</blockquote>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">file = <span class="built_in">io</span>.<span class="built_in">input</span>(<span class="string">&quot;test1.txt&quot;</span>)    <span class="comment">-- 使用 io.input() 函数打开文件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">repeat</span></span><br><span class="line">    line = <span class="built_in">io</span>.<span class="built_in">read</span>()            <span class="comment">-- 逐行读取内容，文件结束时返回nil</span></span><br><span class="line">    <span class="keyword">if</span> <span class="literal">nil</span> == line <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="built_in">print</span>(line)</span><br><span class="line"><span class="keyword">until</span> (<span class="literal">false</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">io</span>.<span class="built_in">close</span>(file)                  <span class="comment">-- 关闭文件</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--&gt; output</span></span><br><span class="line">my test file</span><br><span class="line">hello</span><br><span class="line">lua</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在 <code>test1.txt</code> 文件的最后添加一行 “hello world”</p>
+</blockquote>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">file = <span class="built_in">io</span>.<span class="built_in">open</span>(<span class="string">&quot;test1.txt&quot;</span>, <span class="string">&quot;a+&quot;</span>)   <span class="comment">-- 使用 io.open() 函数，以添加模式打开文件</span></span><br><span class="line"><span class="built_in">io</span>.<span class="built_in">output</span>(file)                     <span class="comment">-- 使用 io.output() 函数，设置默认输出文件</span></span><br><span class="line"><span class="built_in">io</span>.<span class="built_in">write</span>(<span class="string">&quot;\nhello world&quot;</span>)           <span class="comment">-- 使用 io.write() 函数，把内容写到文件</span></span><br><span class="line"><span class="built_in">io</span>.<span class="built_in">close</span>(file)</span><br></pre></td></tr></table></figure>
+
+<p>在相应目录下打开<code>test1.txt</code>文件，查看文件内容发生的变化。</p>
+<h3 id="显式文件描述"><a href="#显式文件描述" class="headerlink" title="显式文件描述"></a>显式文件描述</h3><p>使用 file:XXX() 函数方式进行操作,其中 file 为 io.open() 返回的文件句柄。</p>
+<blockquote>
+<p>打开已经存在的 test2.txt 文件，并读取里面的内容</p>
+</blockquote>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">file = <span class="built_in">io</span>.<span class="built_in">open</span>(<span class="string">&quot;test2.txt&quot;</span>, <span class="string">&quot;r&quot;</span>)    <span class="comment">-- 使用 io.open() 函数，以只读模式打开文件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> file:<span class="built_in">lines</span>() <span class="keyword">do</span>         <span class="comment">-- 使用 file:lines() 函数逐行读取文件</span></span><br><span class="line">   <span class="built_in">print</span>(line)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">file:<span class="built_in">close</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">--&gt;output</span></span><br><span class="line">my test2</span><br><span class="line">hello lua</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在 test2.txt 文件的最后添加一行 “hello world”</p>
+</blockquote>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file = <span class="built_in">io</span>.<span class="built_in">open</span>(<span class="string">&quot;test2.txt&quot;</span>, <span class="string">&quot;a&quot;</span>)  <span class="comment">-- 使用 io.open() 函数，以添加模式打开文件</span></span><br><span class="line">file:<span class="built_in">write</span>(<span class="string">&quot;\nhello world&quot;</span>)       <span class="comment">-- 使用 file:open() 函数，在文件末尾追加内容</span></span><br><span class="line">file:<span class="built_in">close</span>()</span><br></pre></td></tr></table></figure>
+
+<p>在相应目录下打开<code>test2.txt</code>文件，查看文件内容发生的变化。</p>
+<h3 id="文件操作函数"><a href="#文件操作函数" class="headerlink" title="文件操作函数"></a>文件操作函数</h3><h4 id="io-open-filename-mode"><a href="#io-open-filename-mode" class="headerlink" title="io.open (filename [, mode])"></a>io.open (filename [, mode])</h4><p>按指定的模式 mode，打开一个文件名为<code>filename</code>的文件，成功则返回文件句柄，失败则返回 nil 加错误信息。模式：</p>
+<p><img src="../../images/2016/file_1.png" alt="mode"></p>
+<p>模式字符串后面可以有一个 ‘b’，用于在某些系统中打开二进制文件。</p>
+<p>注意 “w” 和 “wb” 的区别</p>
+<ul>
+<li><p>“w” 表示文本文件。某些文件系统(如 Linux 的文件系统)认为 0x0A 为文本文件的换行符，Windows 的文件系统认为 0x0D0A 为文本文件的换行符。为了兼容其他文件系统（如从 Linux 拷贝来的文件），Windows 的文件系统在写文件时，会在文件中 0x0A 的前面加上 0x0D。使用 “w”，其属性要看所在的平台。</p>
+</li>
+<li><p>“wb” 表示二进制文件。文件系统会按纯粹的二进制格式进行写操作，因此也就不存在格式转换的问题。（Linux 文件系统下 “w” 和 “wb” 没有区别）</p>
+</li>
+</ul>
+<h4 id="file-close"><a href="#file-close" class="headerlink" title="file:close ()"></a>file:close ()</h4><p>关闭文件。注意：当文件句柄被垃圾收集后，文件将自动关闭。句柄将变为一个不可预知的值。</p>
+<h4 id="io-close-file"><a href="#io-close-file" class="headerlink" title="io.close ([file])"></a>io.close ([file])</h4><p>关闭文件，和 file:close() 的作用相同。没有参数 file 时，关闭默认输出文件。</p>
+<h4 id="file-flush"><a href="#file-flush" class="headerlink" title="file:flush ()"></a>file:flush ()</h4><p>把写入缓冲区的所有数据写入到文件 file 中。</p>
+<h4 id="io-flush"><a href="#io-flush" class="headerlink" title="io.flush ()"></a>io.flush ()</h4><p>相当于 file:flush()，把写入缓冲区的所有数据写入到默认输出文件。</p>
+<h4 id="io-input-file"><a href="#io-input-file" class="headerlink" title="io.input ([file])"></a>io.input ([file])</h4><p>当使用一个文件名调用时，打开这个文件（以文本模式），并设置文件句柄为默认输入文件；<br>当使用一个文件句柄调用时，设置此文件句柄为默认输入文件；<br>当不使用参数调用时，返回默认输入文件句柄。</p>
+<h4 id="file-lines"><a href="#file-lines" class="headerlink" title="file:lines ()"></a>file:lines ()</h4><p>返回一个迭代函数,每次调用将获得文件中的一行内容,当到文件尾时，将返回 nil，但不关闭文件。</p>
+<h4 id="io-lines-filename"><a href="#io-lines-filename" class="headerlink" title="io.lines ([filename])"></a>io.lines ([filename])</h4><p>打开指定的文件 filename 为读模式并返回一个迭代函数,每次调用将获得文件中的一行内容,当到文件尾时，将返回 nil，并自动关闭文件。若不带参数时 io.lines() 等价于 io.input():lines() 读取默认输入设备的内容，结束时不关闭文件。</p>
+<h4 id="io-output-file"><a href="#io-output-file" class="headerlink" title="io.output ([file])"></a>io.output ([file])</h4><p>类似于 io.input，但操作在默认输出文件上。</p>
+<h4 id="file-read-…"><a href="#file-read-…" class="headerlink" title="file:read (…)"></a>file:read (…)</h4><p>按指定的格式读取一个文件。按每个格式将返回一个字符串或数字,如果不能正确读取将返回 nil,若没有指定格式将指默认按行方式进行读取。格式：</p>
+<p><img src="../../images/2016/file_2.png" alt="read"></p>
+<h4 id="io-read-…"><a href="#io-read-…" class="headerlink" title="io.read (…)"></a>io.read (…)</h4><p>相当于 io.input():read</p>
+<h4 id="io-type-obj"><a href="#io-type-obj" class="headerlink" title="io.type (obj)"></a>io.type (obj)</h4><p>检测 obj 是否一个可用的文件句柄。如果 obj 是一个打开的文件句柄，则返回 “file” 如果 obj 是一个已关闭的文件句柄，则返回 “closed file” 如果 obj 不是一个文件句柄，则返回 nil。</p>
+<h4 id="file-write-…"><a href="#file-write-…" class="headerlink" title="file:write (…)"></a>file:write (…)</h4><p>把每一个参数的值写入文件。参数必须为字符串或数字，若要输出其它值，则需通过 tostring 或 string.format 进行转换。</p>
+<h4 id="io-write-…"><a href="#io-write-…" class="headerlink" title="io.write (…)"></a>io.write (…)</h4><p>相当于 io.output():write。</p>
+<h4 id="file-seek-whence-offset"><a href="#file-seek-whence-offset" class="headerlink" title="file:seek ([whence] [, offset])"></a>file:seek ([whence] [, offset])</h4><p>设置和获取当前文件位置，成功则返回最终的文件位置(按字节，相对于文件开头),失败则返回 nil 加错误信息。缺省时，whence 默认为 “cur”，offset 默认为 0。<br>参数 whence：</p>
+<p><img src="../../images/2016/file_3.png" alt="whence"></p>
+<h4 id="file-setvbuf-mode-size"><a href="#file-setvbuf-mode-size" class="headerlink" title="file:setvbuf (mode [, size])"></a>file:setvbuf (mode [, size])</h4><p>设置输出文件的缓冲模式。模式：</p>
+<p><img src="../../images/2016/file_4.png" alt="buf"></p>
+<p>最后两种模式，size 可以指定缓冲的大小(按字节)，忽略 size 将自动调整为最佳的大小。</p>
+<p>原文<br><a target="_blank" rel="noopener" href="https://moonbingbing.gitbooks.io/openresty-best-practices/content/lua/file.html">https://moonbingbing.gitbooks.io/openresty-best-practices/content/lua/file.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>webkong
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80-%E6%96%87%E4%BB%B6%E5%BA%93/" title="Lua基础-文件库">https://blog.webkong.cn/lua基础-文件库/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/lua%E5%9F%BA%E7%A1%80-%E6%95%B0%E5%AD%A6%E5%BA%93/" rel="prev" title="Lua基础-数学库">
+                  <i class="fa fa-chevron-left"></i> Lua基础-数学库
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E5%89%8D%E7%AB%AF%E8%B7%A8%E5%9F%9F%E6%80%BB%E7%BB%93/" rel="next" title="前端跨域总结">
+                  前端跨域总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">webkong</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"webkong","repo":"blog-gitment","client_id":"54ecf778fa1a619ba5f7","client_secret":"7fc721167bf96eb27e9edc7307a50fa3a7d12d4a","admin_user":"webkong","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"1f46b2b7ba0e2075075855f710b15caf"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

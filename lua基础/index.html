@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs">
+  <meta name="msvalidate.01" content="BABF339751DEC853F1915E4C3272192A">
+  <meta name="yandex-verification" content="eceb5773d0fe4679">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Lua 基础数据类型nilnil 是一种类型，Lua 将 nil 用于表示“无效值”。一个变量在第一次赋值前的默认值是 nil，将 nil 赋予给一个全局变量就等同于删除它。 12345local numprint(num)        --&gt;output:nilnum &#x3D; 10print(num)        --&gt;output:10  boolean布尔类型，可选值 true&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lua基础">
+<meta property="og:url" content="https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="WebKong的网络日志">
+<meta property="og:description" content="Lua 基础数据类型nilnil 是一种类型，Lua 将 nil 用于表示“无效值”。一个变量在第一次赋值前的默认值是 nil，将 nil 赋予给一个全局变量就等同于删除它。 12345local numprint(num)        --&gt;output:nilnum &#x3D; 10print(num)        --&gt;output:10  boolean布尔类型，可选值 true&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-09-28T03:46:00.000Z">
+<meta property="article:modified_time" content="2026-09-07T03:09:04.792Z">
+<meta property="article:author" content="webkong">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80/","path":"lua基础/","title":"Lua基础"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Lua基础 | WebKong的网络日志</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93765710-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-93765710-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WebKong的网络日志</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享工作中的所用、所想、所感。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">95</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Lua-%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">Lua 基础数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#nil"><span class="nav-number">1.1.</span> <span class="nav-text">nil</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#boolean"><span class="nav-number">1.2.</span> <span class="nav-text">boolean</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#number%EF%BC%88%E6%95%B0%E5%AD%97%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">number（数字）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#String-%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">1.4.</span> <span class="nav-text">String (字符串)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#table-%E8%A1%A8"><span class="nav-number">1.5.</span> <span class="nav-text">table(表)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#function-%E5%87%BD%E6%95%B0"><span class="nav-number">1.6.</span> <span class="nav-text">function (函数)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lua-%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">Lua 表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E6%95%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">算数表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.2.</span> <span class="nav-text">关系运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.3.</span> <span class="nav-text">逻辑运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BF%9E%E6%8E%A5"><span class="nav-number">2.4.</span> <span class="nav-text">字符串连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">2.5.</span> <span class="nav-text">优先级</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lua-%E7%9A%84%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">Lua 的控制结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#if-else"><span class="nav-number">3.1.</span> <span class="nav-text">if&#x2F;else</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8D%95%E4%B8%AA-if-%E5%88%86%E6%94%AF"><span class="nav-number">3.1.1.</span> <span class="nav-text">单个 if 分支</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E5%88%86%E6%94%AF-if-else-%E5%9E%8B"><span class="nav-number">3.1.2.</span> <span class="nav-text">两个分支 if-else 型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%9A%E4%B8%AA%E5%88%86%E6%94%AF-if-elseif-else"><span class="nav-number">3.1.3.</span> <span class="nav-text">多个分支 if-elseif-else</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#while"><span class="nav-number">3.2.</span> <span class="nav-text">while</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#repeat"><span class="nav-number">3.3.</span> <span class="nav-text">repeat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#for"><span class="nav-number">3.4.</span> <span class="nav-text">for</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#for-%E6%95%B0%E5%AD%97%E5%9E%8B"><span class="nav-number">3.4.1.</span> <span class="nav-text">for 数字型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#for-%E6%B3%9B%E5%9E%8B"><span class="nav-number">3.4.2.</span> <span class="nav-text">for 泛型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#break-return"><span class="nav-number">3.4.3.</span> <span class="nav-text">break&#x2F;return</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lua-%E5%87%BD%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">Lua 函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">4.1.</span> <span class="nav-text">函数的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-number">4.2.</span> <span class="nav-text">函数的参数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92"><span class="nav-number">4.2.1.</span> <span class="nav-text">按值传递</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%98%E9%95%BF%E5%8F%82%E6%95%B0"><span class="nav-number">4.2.2.</span> <span class="nav-text">变长参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B7%E5%90%8D%E5%8F%82%E6%95%B0-%E5%8F%82%E6%95%B0%E6%98%AF%E4%B8%80%E4%B8%AA-table"><span class="nav-number">4.2.3.</span> <span class="nav-text">具名参数(参数是一个 table)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8C%89%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92"><span class="nav-number">4.2.4.</span> <span class="nav-text">按引用传递</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">4.3.</span> <span class="nav-text">函数返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%8A%A8%E6%80%81%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8"><span class="nav-number">4.4.</span> <span class="nav-text">全动态函数调用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">4.4.1.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B0%8F%E8%AF%95%E7%89%9B%E5%88%80"><span class="nav-number">4.4.2.</span> <span class="nav-text">小试牛刀</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="webkong"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">webkong</p>
+  <div class="site-description" itemprop="description">以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/webkong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/webkong" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.hcharts.cn/" title="http:&#x2F;&#x2F;www.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts中文网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://bbs.hcharts.cn/" title="http:&#x2F;&#x2F;bbs.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts论坛</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="webkong">
+      <meta itemprop="description" content="以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WebKong的网络日志">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Lua基础
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-09-28 11:46:00" itemprop="dateCreated datePublished" datetime="2016-09-28T11:46:00+08:00">2016-09-28</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2026-09-07 11:09:04" itemprop="dateModified" datetime="2026-09-07T11:09:04+08:00">2026-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Lua/" itemprop="url" rel="index"><span itemprop="name">Lua</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="Lua-基础数据类型"><a href="#Lua-基础数据类型" class="headerlink" title="Lua 基础数据类型"></a>Lua 基础数据类型</h3><h4 id="nil"><a href="#nil" class="headerlink" title="nil"></a>nil</h4><p>nil 是一种类型，Lua 将 nil 用于表示“无效值”。一个变量在第一次赋值前的默认值是 nil，将 nil 赋予给一个全局变量就等同于删除它。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">local num</span><br><span class="line">print(num)        --&gt;output:nil</span><br><span class="line"></span><br><span class="line">num = 10</span><br><span class="line">print(num)        --&gt;output:10</span><br></pre></td></tr></table></figure>
+
+<h4 id="boolean"><a href="#boolean" class="headerlink" title="boolean"></a>boolean</h4><p>布尔类型，可选值 true/false；Lua 中 nil 和 false 为“假”，其它所有值均为“真”。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">local a = true</span><br><span class="line">local b = 0</span><br><span class="line">local c = nil</span><br><span class="line">if a then</span><br><span class="line">    print(&quot;a&quot;)        --&gt;output:a</span><br><span class="line">else</span><br><span class="line">    print(&quot;not a&quot;)    --这个没有执行</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">if b then</span><br><span class="line">    print(&quot;b&quot;)        --&gt;output:b</span><br><span class="line">else</span><br><span class="line">    print(&quot;not b&quot;)    --这个没有执行</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">if c then</span><br><span class="line">    print(&quot;c&quot;)        --这个没有执行</span><br><span class="line">else</span><br><span class="line">    print(&quot;not c&quot;)    --&gt;output:not c</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h4 id="number（数字）"><a href="#number（数字）" class="headerlink" title="number（数字）"></a>number（数字）</h4><p>Number 类型用于表示实数，和 C/C++ 里面的 double 类型很类似。可以使用数学函数 <code>math.floor</code>（向下取整）和 <code>math.ceil</code>（向上取整）进行取整操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">local order = 3.99</span><br><span class="line">local score = 98.01</span><br><span class="line">print(math.floor(order))   --&gt;output:3</span><br><span class="line">print(math.ceil(score))    --&gt;output:99</span><br></pre></td></tr></table></figure>
+
+<p>一般地，Lua 的 number 类型就是用双精度浮点数来实现的。值得一提的是，LuaJIT 支持所谓的“dual-number”（双数）模式，即 LuaJIT 会根据上下文用整型来存储整数，而用双精度浮点数来存放浮点数。+</p>
+<p>另外，LuaJIT 还支持“长长整型”的大整数（在 x86_64 体系结构上则是 64 位整数）。例如<br><code>print(9223372036854775807LL - 1) --&gt;output:9223372036854775806LL</code></p>
+<h4 id="String-字符串"><a href="#String-字符串" class="headerlink" title="String (字符串)"></a>String (字符串)</h4><p>Lua 中有三种方式表示字符串:<br>1、使用一对匹配的单引号。例：’hello’。<br>2、使用一对匹配的双引号。例：”abclua”。<br>3、字符串还可以用一种长括号（即<code>[[ ]]）</code>括起来的方式定义。 我们把两个正的方括号（即<code>[[</code> ）间插入 n 个等号定义为第 n 级正长括号。 就是说，0 级正的长括号写作 <code>[[</code> ， 一级正的长括号写作 <code>[=[</code> ，如此等等。 反的长括号也作类似定义； 举个例子，4 级反的长括号写作 <code>]====]</code> 。 一个长字符串可以由任何一级的正的长括号开始，而由第一个碰到的同级反的长括号结束。 整个词法分析过程将不受分行限制，不处理任何转义符，并且忽略掉任何不同级别的长括号。 这种方式描述的字符串可以包含任何东西，当然本级别的反长括号除外。 例：<code>[[abc\nbc]]</code>，里面的 <code>&quot;\n&quot;</code> 不会被转义。<br>另外，Lua 的字符串是不可改变的值，不能像在 c 语言中那样直接修改字符串的某个字符，而是根据修改要求来创建一个新的字符串。Lua 也不能通过下标来访问字符串的某个字符。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">local str1 = &#x27;hello world&#x27;</span><br><span class="line">local str2 = &quot;hello lua&quot;</span><br><span class="line">local str3 = [[&quot;add\name&quot;,&#x27;hello&#x27;]]</span><br><span class="line">local str4 = [=[string have a [[]].]=]</span><br><span class="line"></span><br><span class="line">print(str1)    --&gt;output:hello world</span><br><span class="line">print(str2)    --&gt;output:hello lua</span><br><span class="line">print(str3)    --&gt;output:&quot;add\name&quot;,&#x27;hello&#x27;</span><br><span class="line">print(str4)    --&gt;output:string have a [[]].</span><br></pre></td></tr></table></figure>
+
+<p>在 Lua 实现中，Lua 字符串一般都会经历一个“内化”（intern）的过程，即两个完全一样的 Lua 字符串在 Lua 虚拟机中只会存储一份。每一个 Lua 字符串在创建时都会插入到 Lua 虚拟机内部的一个全局的哈希表中。 这意味着</p>
+<ol>
+<li>创建相同的 Lua 字符串并不会引入新的动态内存分配操作，所以相对便宜（但仍有全局哈希表查询的开销），</li>
+<li>内容相同的 Lua 字符串不会占用多份存储空间，</li>
+<li>已经创建好的 Lua 字符串之间进行相等性比较时是 O(1) 时间度的开销，而不是通常见到的 O(n).</li>
+</ol>
+<h4 id="table-表"><a href="#table-表" class="headerlink" title="table(表)"></a>table(表)</h4><p>Table 类型实现了一种抽象的“关联数组”。“关联数组” 是一种具有特殊索引方式的数组，索引通常是字符串（string）或者 number 类型，但也可以是除 nil 以外的任意类型的值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">local corp = &#123;</span><br><span class="line">    web = &quot;www.google.com&quot;,   --索引为字符串，key = &quot;web&quot;,</span><br><span class="line">                              --            value = &quot;www.google.com&quot;</span><br><span class="line">    telephone = &quot;12345678&quot;,   --索引为字符串</span><br><span class="line">    staff = &#123;&quot;Jack&quot;, &quot;Scott&quot;, &quot;Gary&quot;&#125;, --索引为字符串，值也是一个表</span><br><span class="line">    100876,              --相当于 [1] = 100876，此时索引为数字</span><br><span class="line">                         --      key = 1, value = 100876</span><br><span class="line">    100191,              --相当于 [2] = 100191，此时索引为数字</span><br><span class="line">    [10] = 360,          --直接把数字索引给出</span><br><span class="line">    [&quot;city&quot;] = &quot;Beijing&quot; --索引为字符串</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print(corp.web)               --&gt;output:www.google.com</span><br><span class="line">print(corp[&quot;telephone&quot;])      --&gt;output:12345678</span><br><span class="line">print(corp[2])                --&gt;output:100191</span><br><span class="line">print(corp[&quot;city&quot;])           --&gt;output:&quot;Beijing&quot;</span><br><span class="line">print(corp.staff[1])          --&gt;output:Jack</span><br><span class="line">print(corp[10])               --&gt;output:360</span><br></pre></td></tr></table></figure>
+
+<p>在内部实现上，table 通常实现为一个哈希表、一个数组、或者两者的混合。具体的实现为何种形式，动态依赖于具体的 table 的键分布特点。</p>
+<h4 id="function-函数"><a href="#function-函数" class="headerlink" title="function (函数)"></a>function (函数)</h4><p>在 Lua 中，函数 也是一种数据类型，函数可以存储在变量中，可以通过参数传递给其他函数，还可以作为其他函数的返回值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">local function foo()</span><br><span class="line">    print(&quot;in the function&quot;)</span><br><span class="line">    --dosomething()</span><br><span class="line">    local x = 10</span><br><span class="line">    local y = 20</span><br><span class="line">    return x + y</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local a = foo    --把函数赋给变量</span><br><span class="line"></span><br><span class="line">print(a())</span><br><span class="line"></span><br><span class="line">--output:</span><br><span class="line">in the function</span><br><span class="line">30</span><br><span class="line">有名函数的定义本质上是匿名函数对变量的赋值。为说明这一点，考虑</span><br><span class="line">function foo()</span><br><span class="line">end</span><br><span class="line">等价于</span><br><span class="line"></span><br><span class="line">foo = function ()</span><br><span class="line">end</span><br><span class="line">类似地，</span><br><span class="line"></span><br><span class="line">local function foo()</span><br><span class="line">end</span><br><span class="line">等价于</span><br><span class="line"></span><br><span class="line">local foo = function ()</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h3 id="Lua-表达式"><a href="#Lua-表达式" class="headerlink" title="Lua 表达式"></a>Lua 表达式</h3><h4 id="算数表达式"><a href="#算数表达式" class="headerlink" title="算数表达式"></a>算数表达式</h4><p><code>+ - * / % ^</code> ^指数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">print(1 + 2)       --&gt;打印 3</span><br><span class="line">print(5 / 10)      --&gt;打印 0.5。 这是Lua不同于c语言的</span><br><span class="line">print(5.0 / 10)    --&gt;打印 0.5。 浮点数相除的结果是浮点数</span><br><span class="line">-- print(10 / 0)   --&gt;注意除数不能为0，计算的结果会出错</span><br><span class="line">print(2 ^ 10)      --&gt;打印 1024。 求2的10次方</span><br><span class="line"></span><br><span class="line">local num = 1357</span><br><span class="line">print(num % 2)       --&gt;打印 1</span><br><span class="line">print((num % 2) == 1) --&gt;打印 true。 判断num是否为奇数</span><br><span class="line">print((num % 5) == 0)  --&gt;打印 false。判断num是否能被5整数</span><br></pre></td></tr></table></figure>
+
+<h4 id="关系运算符"><a href="#关系运算符" class="headerlink" title="关系运算符"></a>关系运算符</h4><p><code>&lt; &gt; &lt;= &gt;= == ~=</code> ~= 不等于</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print(1 &lt; 2)    --&gt;打印 true</span><br><span class="line">print(1 == 2)   --&gt;打印 false</span><br><span class="line">print(1 ~= 2)   --&gt;打印 true</span><br><span class="line">local a, b = true, false</span><br><span class="line">print(a == b)  --&gt;打印 false</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在使用“==”做等于判断时，要注意对于 table, userdate 和函数， Lua 是作引用比较的。也就是说，只有当两个变量引用同一个对象时，才认为它们相等。可以看下面的例子：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">local a = &#123; x = 1, y = 0&#125;</span><br><span class="line">local b = &#123; x = 1, y = 0&#125;</span><br><span class="line">if a == b then</span><br><span class="line">  print(&quot;a==b&quot;)</span><br><span class="line">else</span><br><span class="line">  print(&quot;a~=b&quot;)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">---output:</span><br><span class="line">a~=b</span><br></pre></td></tr></table></figure>
+
+<p>由于 Lua 字符串总是会被“内化”，即相同内容的字符串只会被保存一份，因此 Lua 字符串之间的相等性比较可以简化为其内部存储地址的比较。这意味着 Lua 字符串的相等性比较总是为 O(1). 而在其他编程语言中，字符串的相等性比较则通常为 O(n)，即需要逐个字节（或按若干个连续字节）进行比较。</p>
+<h4 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h4><p><code>and or not</code> 与 或 非</p>
+<p>Lua 中的 and 和 or 是不同于 c 语言的。在 c 语言中，and 和 or 只得到两个值 1 和 0，其中 1 表示真，0 表示假。而 Lua 中 and 的执行过程是这样的：</p>
+<p><code>a and b</code> 如果 a 为 nil，则返回 a，否则返回 b;<br><code>a or b</code>如果 a 为 nil，则返回 b，否则返回 a。</p>
+<blockquote>
+<p>所有逻辑操作符将 false 和 nil 视作假，其他任何值视作真，对于 and 和 or，“短路求值”，对于 not，永远只返回 true 或者 false。</p>
+</blockquote>
+<h4 id="字符串连接"><a href="#字符串连接" class="headerlink" title="字符串连接"></a>字符串连接</h4><p>在 Lua 中连接两个字符串，可以使用操作符“..”（两个点）。如果其任意一个操作数是数字的话，Lua 会将这个数字转换成字符串。注意，连接操作符只会创建一个新字符串，而不会改变原操作数。也可以使用 string 库函数 string.format 连接字符串。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">print(&quot;Hello &quot; .. &quot;World&quot;)    --&gt;打印 Hello World</span><br><span class="line">print(0 .. 1)                 --&gt;打印 01</span><br><span class="line"></span><br><span class="line">str1 = string.format(&quot;%s-%s&quot;,&quot;hello&quot;,&quot;world&quot;)</span><br><span class="line">print(str1)              --&gt;打印 hello-world</span><br><span class="line"></span><br><span class="line">str2 = string.format(&quot;%d-%s-%.2f&quot;,123,&quot;world&quot;,1.21)</span><br><span class="line">print(str2)              --&gt;打印 123-world-1.21</span><br></pre></td></tr></table></figure>
+
+<p>由于 Lua 字符串本质上是只读的，因此字符串连接运算符几乎总会创建一个新的（更大的）字符串。这意味着如果有很多这样的连接操作（比如在循环中使用 .. 来拼接最终结果），则性能损耗会非常大。在这种情况下，推荐使用 table 和 table.concat() 来进行很多字符串的拼接，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">local pieces = &#123;&#125;</span><br><span class="line">for i, elem in ipairs(my_list) do</span><br><span class="line">    pieces[i] = my_process(elem)</span><br><span class="line">end</span><br><span class="line">local res = table.concat(pieces)</span><br></pre></td></tr></table></figure>
+
+<p>当然，上面的例子还可以使用 LuaJIT 独有的 table.new 来恰当地初始化 pieces 表的空间，以避免该表的动态生长。这个特性我们在后面还会详细讨论。</p>
+<h4 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h4><p>Lua 操作符的优先级如下表所示(从高到低)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">^</span><br><span class="line">not # -</span><br><span class="line">* / %</span><br><span class="line">+ -</span><br><span class="line">..</span><br><span class="line">&lt; &gt; &lt;= &gt;= == ~=</span><br><span class="line">and</span><br><span class="line">or</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">local a, b = 1, 2</span><br><span class="line">local x, y = 3, 4</span><br><span class="line">local i = 10</span><br><span class="line">local res = 0</span><br><span class="line">res = a + i &lt; b/2 + 1  --&gt;等价于res =  (a + i) &lt; ((b/2) + 1)</span><br><span class="line">res = 5 + x^2*8        --&gt;等价于res =  5 + ((x^2) * 8)</span><br><span class="line">res = a &lt; y and y &lt;=x  --&gt;等价于res =  (a &lt; y) and (y &lt;= x)</span><br></pre></td></tr></table></figure>
+
+<p>若不确定某些操作符的优先级，就应显示地用括号来指定运算顺序。这样做还可以提高代码的可读性。</p>
+<h3 id="Lua-的控制结构"><a href="#Lua-的控制结构" class="headerlink" title="Lua 的控制结构"></a>Lua 的控制结构</h3><p>流程控制语句对于程序设计来说特别重要，它可以用于设定程序的逻辑结构。一般需要与条件判断语句结合使用。Lua 语言提供的控制结构有 if，while，repeat，for，并提供 break 关键字来满足更丰富的需求。本章主要介绍 Lua 语言的控制结构的使用。</p>
+<h4 id="if-else"><a href="#if-else" class="headerlink" title="if/else"></a>if/else</h4><p>if-else 是我们熟知的一种控制结构。Lua 跟其他语言一样，提供了 if-else 的控制结构。因为是大家熟悉的语法，本节只简单介绍一下它的使用方法。</p>
+<h5 id="单个-if-分支"><a href="#单个-if-分支" class="headerlink" title="单个 if 分支"></a>单个 if 分支</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">local x = 10</span><br><span class="line">if x &gt; 0 then</span><br><span class="line">  print(&#x27;x is a positive number&#x27;)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h5 id="两个分支-if-else-型"><a href="#两个分支-if-else-型" class="headerlink" title="两个分支 if-else 型"></a>两个分支 if-else 型</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x = 10</span><br><span class="line">if x &gt; 0 then</span><br><span class="line">    print(&quot;x is a positive number&quot;)</span><br><span class="line">else</span><br><span class="line">    print(&quot;x is a non-positive number&quot;)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h5 id="多个分支-if-elseif-else"><a href="#多个分支-if-elseif-else" class="headerlink" title="多个分支 if-elseif-else"></a>多个分支 if-elseif-else</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">local score = 90</span><br><span class="line">if score == 100 then</span><br><span class="line">    print(&quot;Very good!Your score is 100&quot;)</span><br><span class="line">elseif score &gt;= 60 then</span><br><span class="line">    print(&quot;Congratulations, you have passed it,your score greater or equal to 60&quot;)</span><br><span class="line">--此处可以添加多个elseif</span><br><span class="line">else</span><br><span class="line">    print(&quot;Sorry, you do not pass the exam! &quot;)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>与 C 语言的不同之处是 else 与 if 是连在一起的，若将 else 与 if 写成 “else if” 则相当于在 else 里嵌套另一个 if 语句，如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">score = 0</span><br><span class="line">if score == 100 then</span><br><span class="line">    print(&quot;Very good!Your score is 100&quot;)</span><br><span class="line">elseif score &gt;= 60 then</span><br><span class="line">    print(&quot;Congratulations, you have passed it,your score greater or equal to 60&quot;)</span><br><span class="line">else</span><br><span class="line">    if score &gt; 0 then</span><br><span class="line">        print(&quot;Your score is better than 0&quot;)</span><br><span class="line">    else</span><br><span class="line">        print(&quot;My God, your score turned out to be 0&quot;)</span><br><span class="line">    end --与上一示例代码不同的是，此处要添加一个end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h4 id="while"><a href="#while" class="headerlink" title="while"></a>while</h4><p>Lua 跟其他常见语言一样，提供了 while 控制结构，语法上也没有什么特别的。但是没有提供 do-while 型的控制结构，但是提供了功能相当的 repeat。+</p>
+<p>while 型控制结构语法如下，当表达式值为假（即 false 或 nil）时结束循环。也可以使用 break 语言提前跳出循环。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">while 表达式 do</span><br><span class="line">--body</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>示例代码，求 1 + 2 + 3 + 4 + 5 的结果</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">x = 1</span><br><span class="line">sum = 0</span><br><span class="line"></span><br><span class="line">while x &lt;= 5 do</span><br><span class="line">    sum = sum + x</span><br><span class="line">    x = x + 1</span><br><span class="line">end</span><br><span class="line">print(sum)  --&gt;output 15</span><br></pre></td></tr></table></figure>
+
+<p>值得一提的是，Lua 并没有像许多其他语言那样提供类似 continue 这样的控制语句用来立即进入下一个循环迭代（如果有的话）。因此，我们需要仔细地安排循环体里的分支，以避免这样的需求。<br>没有提供 continue ，却也提供了另外一个标准控制语句 break ，可以跳出当前循环。例如我们遍历 table ，查找值为 11 的数组下标索引：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">local t = &#123;1, 3, 5, 8, 11, 18, 21&#125;</span><br><span class="line"></span><br><span class="line">local i</span><br><span class="line">for i, v in ipairs(t) do</span><br><span class="line">    if 11 == v then</span><br><span class="line">        print(&quot;index[&quot; .. i .. &quot;] have right value[11]&quot;)</span><br><span class="line">        break</span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h4 id="repeat"><a href="#repeat" class="headerlink" title="repeat"></a>repeat</h4><p>Lua 中的 repeat 控制结构类似于其他语言（如：C++语言）中的 do-while，但是控制方式是刚好相反的。简单点说，执行 repeat 循环体后，直到 until 的条件为真时才结束，而其他语言（如：C++语言）的 do-while 则是当条件为假时就结束循环。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = 10</span><br><span class="line">repeat</span><br><span class="line">  print(x)</span><br><span class="line">until true</span><br></pre></td></tr></table></figure>
+
+<p>除此之外，repeat 与其他语言的 do-while 基本是一样的。同样，Lua 中的 repeat 也可以在使用 break 退出。</p>
+<h4 id="for"><a href="#for" class="headerlink" title="for"></a>for</h4><h5 id="for-数字型"><a href="#for-数字型" class="headerlink" title="for 数字型"></a>for 数字型</h5><blockquote>
+<p>for 语句有两种形式：数字 for（numeric for）和范型 for（generic for）。</p>
+</blockquote>
+<p>数字型 for 的语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for var = begin, finish, step do</span><br><span class="line">    --body</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>关于数字 for 需要关注以下几点：</p>
+<ol>
+<li>var 从 begin 变化到 finish，每次变化都以 step 作为步长递增 var</li>
+<li>begin、 finish、 step 三个表达式只会在循环开始时执行一次</li>
+<li>第三个表达式 step 是可选的， 默认为 1</li>
+<li>控制变量 var 的作用域仅在 for 循环内，需要在外面控制，则需将值赋给一个新的变量</li>
+<li>循环过程中不要改变控制变量的值，那样会带来不可预知的影响</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">for i = 1, 5 do</span><br><span class="line">  print(i)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">-- output:</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+
+<p>如果不想给循环设置上限的话，可以使用常量 math.huge：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">for i = 1, math.huge do</span><br><span class="line">    if (0.3*i^3 - 20*i^2 - 500 &gt;=0) then</span><br><span class="line">      print(i)</span><br><span class="line">      break</span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h5 id="for-泛型"><a href="#for-泛型" class="headerlink" title="for 泛型"></a>for 泛型</h5><p>泛型 for 循环通过一个迭代器（iterator）函数来遍历所有值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-- 打印数组a的所有值</span><br><span class="line">local a = &#123;&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;&#125;</span><br><span class="line">for i, v in ipairs(a) do</span><br><span class="line">  print(&quot;index:&quot;, i, &quot; value:&quot;, v)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">-- output:</span><br><span class="line">index:  1  value: a</span><br><span class="line">index:  2  value: b</span><br><span class="line">index:  3  value: c</span><br><span class="line">index:  4  value: d</span><br></pre></td></tr></table></figure>
+
+<p>Lua 的基础库提供了 <code>ipairs</code>，这是一个用于遍历数组的迭代器函数。在每次循环中，i 会被赋予一个索引值，同时 v 被赋予一个对应于该索引的数组元素值。<br>下面是另一个类似的示例，演示了如何遍历一个 table 中所有的 key</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-- 打印table t中所有的key</span><br><span class="line">for k in pairs(t) do</span><br><span class="line">    print(k)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>从外观上看泛型 for 比较简单，但其实它是非常强大的。通过不同的迭代器，几乎可以遍历所有的东西， 而且写出的代码极具可读性。标准库提供了几种迭代器，包括用于迭代文件中每行的（<code>io.lines</code>）、 迭代 table 元素的（<code>pairs</code>）、迭代数组元素的（<code>ipairs</code>）、迭代字符串中单词的（<code>string.gmatch</code>）等。<br>泛型 for 循环与数字型 for 循环有两个相同点：<br>（1）循环变量是循环体的局部变量；<br>（2）决不应该对循环变量作任何赋值。</p>
+<p>对于泛型 for 的使用，再来看一个更具体的示例。假设有这样一个 table，它的内容是一周中每天的名称：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">local days = &#123;</span><br><span class="line">  &quot;Sunday&quot;, &quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;,</span><br><span class="line">  &quot;Thursday&quot;, &quot;Friday&quot;, &quot;Saturday&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在要将一个名称转换成它在一周中的位置。为此，需要根据给定的名称来搜索这个 table。然而 在 Lua 中，通常更有效的方法是创建一个“逆向 table”。例如这个逆向 table 叫 revDays，它以 一周中每天的名称作为索引，位置数字作为值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">local revDays = &#123;</span><br><span class="line">   [&quot;Sunday&quot;] = 1,</span><br><span class="line">   [&quot;Monday&quot;] = 2,</span><br><span class="line">   [&quot;Tuesday&quot;] = 3,</span><br><span class="line">   [&quot;Wednesday&quot;] = 4,</span><br><span class="line">   [&quot;Thursday&quot;] = 5,</span><br><span class="line">   [&quot;Friday&quot;] = 6,</span><br><span class="line">   [&quot;Saturday&quot;] = 7</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来，要找出一个名称所对应的需要，只需用名字来索引这个 reverse table 即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">local x = &quot;Tuesday&quot;</span><br><span class="line">print(revDays[x])  --&gt;3</span><br></pre></td></tr></table></figure>
+
+<p>当然，不必手动声明这个逆向 table，而是通过原来的 table 自动地构造出这个逆向 table：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">local days = &#123;</span><br><span class="line">   &quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;, &quot;Thursday&quot;,</span><br><span class="line">   &quot;Friday&quot;, &quot;Saturday&quot;,&quot;Sunday&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">local revDays = &#123;&#125;</span><br><span class="line">for k, v in pairs(days) do</span><br><span class="line">  revDays[v] = k</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">-- print value</span><br><span class="line">for k,v in pairs(revDays) do</span><br><span class="line">  print(&quot;k:&quot;, k, &quot; v:&quot;, v)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">-- output:</span><br><span class="line">k:  Tuesday   v: 2</span><br><span class="line">k:  Monday    v: 1</span><br><span class="line">k:  Sunday    v: 7</span><br><span class="line">k:  Thursday  v: 4</span><br><span class="line">k:  Friday    v: 5</span><br><span class="line">k:  Wednesday v: 3</span><br><span class="line">k:  Saturday  v: 6</span><br></pre></td></tr></table></figure>
+
+<p>这个循环会为每个元素进行赋值，其中变量 k 为 key(1、2、…)，变量 v 为 value(“Sunday”、”Monday”、…)。<br>值得一提的是，在 LuaJIT 2.1 中，ipairs() 内建函数是可以被 JIT 编译的，而 pairs() 则只能被解释执行。因此在性能敏感的场景，应当合理安排数据结构，避免对哈希表进行遍历。事实上，即使未来 pairs 可以被 JIT 编译，哈希表的遍历本身也不会有数组遍历那么高效，毕竟哈希表就不是为遍历而设计的数据结构。</p>
+<h5 id="break-return"><a href="#break-return" class="headerlink" title="break/return"></a>break/return</h5><p><strong>break</strong></p>
+<p>语句 break 用来终止 while、repeat 和 for 三种循环的执行，并跳出当前循环体， 继续执行当前循环之后的语句。下面举一个 while 循环中的 break 的例子来说明：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sum = 0</span><br><span class="line">i = 1</span><br><span class="line">while true do</span><br><span class="line">    sum = sum + i</span><br><span class="line">    if sum &gt; 100 then</span><br><span class="line">        break</span><br><span class="line">    end</span><br><span class="line">    i = i + 1</span><br><span class="line">end</span><br><span class="line">print(&quot;The result is &quot; .. i)  --&gt;output:The result is 14</span><br></pre></td></tr></table></figure>
+
+<p>在实际应用中，break 经常用于嵌套循环中。</p>
+<p><strong>return</strong></p>
+<p>return 主要用于从函数中返回结果，或者用于简单的结束一个函数的执行。</p>
+<h3 id="Lua-函数"><a href="#Lua-函数" class="headerlink" title="Lua 函数"></a>Lua 函数</h3><p>在 Lua 中，函数是一种对语句和表达式进行抽象的主要机制。函数既可以完成某项特定的任务，也可以只做一些计算并返回结果。在第一种情况中，一句函数调用被视为一条语句；而在第二种情况中，则将其视为一句表达式。<br>示例代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(&quot;hello world!&quot;)        -- 用 print() 函数输出 hello world！</span><br><span class="line">local m = math.max(1, 5)     -- 调用数学库函数 max，</span><br><span class="line">                             -- 用来求 1,5 中的最大值，并返回赋给变量 m</span><br></pre></td></tr></table></figure>
+
+<p>使用函数的好处：</p>
+<p>降低程序的复杂性：把函数作为一个独立的模块，写完函数后，只关心它的功能，而不再考虑函数里面的细节。<br>增加程序的可读性：当我们调用 math.max() 函数时，很明显函数是用于求最大值的，实现细节就不关心了。<br>避免重复代码：当程序中有相同的代码部分时，可以把这部分写成一个函数，通过调用函数来实现这部分代码的功能，节约空间，减少代码长度。<br>隐含局部变量：在函数中使用局部变量，变量的作用范围不会超出函数，这样它就不会给外界带来干扰。</p>
+<h4 id="函数的定义"><a href="#函数的定义" class="headerlink" title="函数的定义"></a>函数的定义</h4><p>Lua 使用关键字 function 定义函数，语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function function_name (arc)  -- arc 表示参数列表，函数的参数列表可以为空</span><br><span class="line">   -- body</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>上面的语法定义了一个全局函数，名为 function_name. 全局函数本质上就是函数类型的值赋给了一个全局变量，即上面的语法等价于</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function_name = function (arc)</span><br><span class="line">  -- body</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>由于全局变量一般会污染全局名字空间，同时也有性能损耗（即查询全局环境表的开销），因此我们应当尽量使用“局部函数”，其记法是类似的，只是开头加上 local 修饰符：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">local function function_name (arc)</span><br><span class="line">  -- body</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>由于函数定义本质上就是变量赋值，而变量的定义总是应放置在变量使用之前，所以函数的定义也需要放置在函数调用之前。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">local function max(a, b)  --定义函数 max，用来求两个数的最大值，并返回</span><br><span class="line">   local temp = nil       --使用局部变量 temp，保存最大值</span><br><span class="line">   if(a &gt; b) then</span><br><span class="line">      temp = a</span><br><span class="line">   else</span><br><span class="line">      temp = b</span><br><span class="line">   end</span><br><span class="line">   return temp            --返回最大值</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local m = max(-12, 20)    --调用函数 max，找去 -12 和 20 中的最大值</span><br><span class="line">print(m)                  --&gt; output 20</span><br></pre></td></tr></table></figure>
+
+<p>如果参数列表为空，必须使用 () 表明是函数调用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">local function func()   --形参为空</span><br><span class="line">    print(&quot;no parameter&quot;)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">func()                  --函数调用，圆扩号不能省</span><br><span class="line"></span><br><span class="line">--&gt; output：</span><br><span class="line">no parameter</span><br></pre></td></tr></table></figure>
+
+<p>在定义函数要注意几点：</p>
+<ol>
+<li>利用名字来解释函数、变量的目的，使人通过名字就能看出来函数、变量的作用。</li>
+<li>每个函数的长度要尽量控制在一个屏幕内，一眼可以看明白。</li>
+<li>让代码自己说话，不需要注释最好。</li>
+</ol>
+<p>由于函数定义等价于变量赋值，我们也可以把函数名替换为某个 Lua 表的某个字段，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function foo.bar(a, b, c)</span><br><span class="line">    -- body ...</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>此时我们是把一个函数类型的值赋给了 foo 表的 bar 字段。换言之，上面的定义等价于</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foo.bar = function (a, b, c)</span><br><span class="line">    print(a, b, c)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>对于此种形式的函数定义，不能再使用 local 修饰符了，因为不存在定义新的局部变量了。</p>
+<h4 id="函数的参数"><a href="#函数的参数" class="headerlink" title="函数的参数"></a>函数的参数</h4><h5 id="按值传递"><a href="#按值传递" class="headerlink" title="按值传递"></a>按值传递</h5><p>Lua 函数的参数大部分是按值传递的。值传递就是调用函数时，实参把它的值通过赋值运算传递给形参，然后形参的改变和实参就没有关系了。在这个过程中，实参是通过它在参数表中的位置与形参匹配起来的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">local function swap(a, b) --定义函数swap,函数内部进行交换两个变量的值</span><br><span class="line">   local temp = a</span><br><span class="line">   a = b</span><br><span class="line">   b = temp</span><br><span class="line">   print(a, b)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local x = &quot;hello&quot;</span><br><span class="line">local y = 20</span><br><span class="line">print(x, y)</span><br><span class="line">swap(x, y)    --调用swap函数</span><br><span class="line">print(x, y)   --调用swap函数后，x和y的值并没有交换</span><br><span class="line"></span><br><span class="line">--&gt;output</span><br><span class="line">hello 20</span><br><span class="line">20  hello</span><br><span class="line">hello 20</span><br></pre></td></tr></table></figure>
+
+<p>在调用函数的时候，若形参个数和实参个数不同时，Lua 会自动调整实参个数。调整规则：若实参个数大于形参个数，从左向右，多余的实参被忽略；若实参个数小于形参个数，从左向右，没有被实参初始化的形参会被初始化为 nil。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">local function fun1(a, b)       --两个形参，多余的实参被忽略掉</span><br><span class="line">   print(a, b)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local function fun2(a, b, c, d) --四个形参，没有被实参初始化的形参，用nil初始化</span><br><span class="line">   print(a, b, c, d)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local x = 1</span><br><span class="line">local y = 2</span><br><span class="line">local z = 3</span><br><span class="line"></span><br><span class="line">fun1(x, y, z)         -- z被函数fun1忽略掉了，参数变成 x, y</span><br><span class="line">fun2(x, y, z)         -- 后面自动加上一个nil，参数变成 x, y, z, nil</span><br><span class="line"></span><br><span class="line">--&gt;output</span><br><span class="line">1   2</span><br><span class="line">1   2   3   nil</span><br></pre></td></tr></table></figure>
+
+<h5 id="变长参数"><a href="#变长参数" class="headerlink" title="变长参数"></a>变长参数</h5><p>上面函数的参数都是固定的，其实 Lua 还支持变长参数。若形参为 … ,示该函数可以接收不同长度的参数。访问参数的时候也要使用 …</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">local function func( ... )                -- 形参为 ... ,表示函数采用变长参数</span><br><span class="line"></span><br><span class="line">   local temp = &#123;...&#125;                     -- 访问的时候也要使用 ...</span><br><span class="line">   local ans = table.concat(temp, &quot; &quot;)    -- 使用 table.concat 库函数对数</span><br><span class="line">                                          -- 组内容使用 &quot; &quot; 拼接成字符串。</span><br><span class="line">   print(ans)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">func(1, 2)        -- 传递了两个参数</span><br><span class="line">func(1, 2, 3, 4)  -- 传递了四个参数</span><br><span class="line"></span><br><span class="line">--&gt;output</span><br><span class="line">1 2</span><br><span class="line"></span><br><span class="line">1 2 3 4</span><br></pre></td></tr></table></figure>
+
+<p>值得一提的是，LuaJIT 2 尚不能 JIT 编译这种变长参数的用法，只能解释执行。所以对性能敏感的代码，应当避免使用此种形式。</p>
+<h5 id="具名参数-参数是一个-table"><a href="#具名参数-参数是一个-table" class="headerlink" title="具名参数(参数是一个 table)"></a>具名参数(参数是一个 table)</h5><p>Lua 还支持通过名称来指定实参，这时候要把所有的实参组织到一个 table 中，并将这个 table 作为唯一的实参传给函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">local function change(arg) -- change 函数，改变长方形的长和宽，使其各增长一倍</span><br><span class="line">  arg.width = arg.width * 2</span><br><span class="line">  arg.height = arg.height * 2</span><br><span class="line">  return arg</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local rectangle = &#123; width = 20, height = 15 &#125;</span><br><span class="line">print(&quot;before change:&quot;, &quot;width  =&quot;, rectangle.width,</span><br><span class="line">                        &quot;height =&quot;, rectangle.height)</span><br><span class="line">rectangle = change(rectangle)</span><br><span class="line">print(&quot;after  change:&quot;, &quot;width  =&quot;, rectangle.width,</span><br><span class="line">                        &quot;height =&quot;, rectangle.height)</span><br><span class="line"></span><br><span class="line">--&gt;output</span><br><span class="line">before change: width = 20  height =  15</span><br><span class="line">after  change: width = 40  height =  30</span><br></pre></td></tr></table></figure>
+
+<h5 id="按引用传递"><a href="#按引用传递" class="headerlink" title="按引用传递"></a>按引用传递</h5><p>当函数参数是 table 类型时，传递进来的是 实际参数的引用，此时在函数内部对该 table 所做的修改，会直接对调用者所传递的实际参数生效，而无需自己返回结果和让调用者进行赋值。 我们把上面改变长方形长和宽的例子修改一下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function change(arg) --change函数，改变长方形的长和宽，使其各增长一倍</span><br><span class="line">  arg.width = arg.width * 2  --表arg不是表rectangle的拷贝，他们是同一个表</span><br><span class="line">  arg.height = arg.height * 2</span><br><span class="line">end                  -- 没有return语句了</span><br><span class="line"></span><br><span class="line">local rectangle = &#123; width = 20, height = 15 &#125;</span><br><span class="line">print(&quot;before change:&quot;, &quot;width = &quot;, rectangle.width,</span><br><span class="line">                        &quot; height = &quot;, rectangle.height)</span><br><span class="line">change(rectangle)</span><br><span class="line">print(&quot;after change:&quot;, &quot;width = &quot;, rectangle.width,</span><br><span class="line">                       &quot; height =&quot;, rectangle.height)</span><br><span class="line"></span><br><span class="line">--&gt; output</span><br><span class="line">before change: width = 20  height = 15</span><br><span class="line">after  change: width = 40  height = 30</span><br></pre></td></tr></table></figure>
+
+<p>在常用基本类型中，除了 table 是按址传递类型外，其它的都是按值传递参数。 用全局变量来代替函数参数的不好编程习惯应该被抵制，良好的编程习惯应该是减少全局变量的使用。</p>
+<h4 id="函数返回值"><a href="#函数返回值" class="headerlink" title="函数返回值"></a>函数返回值</h4><p>Lua 具有一项与众不同的特性，允许函数返回多个值。Lua 的库函数中，有一些就是返回多个值。</p>
+<blockquote>
+<p>示例代码：使用库函数 string.find，在源字符串中查找目标字符串，若查找成功，则返回目标字符串在源字符串中的起始位置和结束位置的下标。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">local s, e = string.find(&quot;hello world&quot;, &quot;llo&quot;)</span><br><span class="line">print(s, e)  --&gt;output 3  5</span><br></pre></td></tr></table></figure>
+
+<p>返回多个值时，值之间用 “,” 隔开。</p>
+<blockquote>
+<p>示例代码：定义一个函数，实现两个变量交换值</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">local function swap(a, b)   -- 定义函数 swap，实现两个变量交换值</span><br><span class="line">   return b, a              -- 按相反顺序返回变量的值</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local x = 1</span><br><span class="line">local y = 20</span><br><span class="line">x, y = swap(x, y)           -- 调用 swap 函数</span><br><span class="line">print(x, y)                 --&gt; output   20     1</span><br></pre></td></tr></table></figure>
+
+<p>当函数返回值的个数和接收返回值的变量的个数不一致时，Lua 也会自动调整参数个数。</p>
+<p>调整规则： 若返回值个数大于接收变量的个数，多余的返回值会被忽略掉； 若返回值个数小于参数个数，从左向右，没有被返回值初始化的变量会被初始化为 nil。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function init()             --init 函数 返回两个值 1 和 &quot;lua&quot;</span><br><span class="line">  return 1, &quot;lua&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">x = init()</span><br><span class="line">print(x)</span><br><span class="line"></span><br><span class="line">x, y, z = init()</span><br><span class="line">print(x, y, z)</span><br><span class="line"></span><br><span class="line">--output</span><br><span class="line">1</span><br><span class="line">1 lua nil</span><br></pre></td></tr></table></figure>
+
+<p>当一个函数有一个以上返回值，且函数调用不是一个列表表达式的最后一个元素，那么函数调用只会产生一个返回值,也就是第一个返回值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">local function init()       -- init 函数 返回两个值 1 和 &quot;lua&quot;</span><br><span class="line">    return 1, &quot;lua&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local x, y, z = init(), 2   -- init 函数的位置不在最后，此时只返回 1</span><br><span class="line">print(x, y, z)              --&gt;output  1  2  nil</span><br><span class="line"></span><br><span class="line">local a, b, c = 2, init()   -- init 函数的位置在最后，此时返回 1 和 &quot;lua&quot;</span><br><span class="line">print(a, b, c)              --&gt;output  2  1  lua</span><br></pre></td></tr></table></figure>
+
+<p>函数调用的实参列表也是一个列表表达式。考虑下面的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">local function init()</span><br><span class="line">    return 1, &quot;lua&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">print(init(), 2)   --&gt;output  1  2</span><br><span class="line">print(2, init())   --&gt;output  2  1  lua</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果你确保只取函数返回值的第一个值，可以使用括号运算符，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">local function init()</span><br><span class="line">    return 1, &quot;lua&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">print((init()), 2)   --&gt;output  1  2</span><br><span class="line">print(2, (init()))   --&gt;output  2  1</span><br></pre></td></tr></table></figure>
+
+<p>值得一提的是，如果实参列表中某个函数会返回多个值，同时调用者又没有显式地使用括号运算符来筛选和过滤，则这样的表达式是不能被 LuaJIT 2 所 JIT 编译的，而只能被解释执行。</p>
+<h4 id="全动态函数调用"><a href="#全动态函数调用" class="headerlink" title="全动态函数调用"></a>全动态函数调用</h4><p>调用回调函数，并把一个数组参数作为回调函数的参数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">local args = &#123;...&#125; or &#123;&#125;</span><br><span class="line">method_name(unpack(args, 1, table.maxn(args)))</span><br></pre></td></tr></table></figure>
+
+<h5 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h5><p>如果你的实参 table 中确定没有 nil 空洞，则可以简化为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">method_name(unpack(args))</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>你要调用的函数参数是未知的；</li>
+<li>函数的实际参数的类型和数目也都是未知的。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">add_task(end_time, callback, params)</span><br><span class="line"></span><br><span class="line">if os.time() &gt;= endTime then</span><br><span class="line">    callback(unpack(params, 1, table.maxn(params)))</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>值得一提的是，unpack 内建函数还不能为 LuaJIT 所 JIT 编译，因此这种用法总是会被解释执行。对性能敏感的代码路径应避免这种用法。</p>
+<h5 id="小试牛刀"><a href="#小试牛刀" class="headerlink" title="小试牛刀"></a>小试牛刀</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">local function run(x, y)</span><br><span class="line">    print(&#x27;run&#x27;, x, y)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local function attack(targetId)</span><br><span class="line">    print(&#x27;targetId&#x27;, targetId)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local function do_action(method, ...)</span><br><span class="line">    local args = &#123;...&#125; or &#123;&#125;</span><br><span class="line">    method(unpack(args, 1, table.maxn(args)))</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">do_action(run, 1, 2)         -- output: run 1 2</span><br><span class="line">do_action(attack, 1111)      -- output: targetId    1111</span><br></pre></td></tr></table></figure>
+
+<p>来源<br><a target="_blank" rel="noopener" href="https://moonbingbing.gitbooks.io/openresty-best-practices/content/lua/class.html">https://moonbingbing.gitbooks.io/openresty-best-practices/content/lua/class.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>webkong
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80/" title="Lua基础">https://blog.webkong.cn/lua基础/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/es6-%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0/" rel="prev" title="ES6-箭头函数">
+                  <i class="fa fa-chevron-left"></i> ES6-箭头函数
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/lua%E5%9F%BA%E7%A1%80-%E6%A8%A1%E5%9D%97/" rel="next" title="Lua基础-模块">
+                  Lua基础-模块 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">webkong</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"webkong","repo":"blog-gitment","client_id":"54ecf778fa1a619ba5f7","client_secret":"7fc721167bf96eb27e9edc7307a50fa3a7d12d4a","admin_user":"webkong","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"704521f25037c380af2315f4735e6625"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

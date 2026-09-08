@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs">
+  <meta name="msvalidate.01" content="BABF339751DEC853F1915E4C3272192A">
+  <meta name="yandex-verification" content="eceb5773d0fe4679">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="搬运此文， 通过深度学习还检测图像中明显或者暗示性成人内容的 AWS 出品工具。  图像审核 问：什么是图像审核？  Amazon Rekognition 的图像审核是一种基于深度学习并且易于使用的 API，用于检测图像中的明显或暗示性成人内容。开发人员可以根据自己的业务需求，使用这种额外的元数据来筛选不当内容。除了根据存在的成人内容对图像进行标记之外，图像审核功能还会返回一个带有置信度的分级标">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS-Rekognition图像识别监管">
+<meta property="og:url" content="https://blog.webkong.cn/aws-rekognition%E5%9B%BE%E5%83%8F%E8%AF%86%E5%88%AB%E7%9B%91%E7%AE%A1/index.html">
+<meta property="og:site_name" content="WebKong的网络日志">
+<meta property="og:description" content="搬运此文， 通过深度学习还检测图像中明显或者暗示性成人内容的 AWS 出品工具。  图像审核 问：什么是图像审核？  Amazon Rekognition 的图像审核是一种基于深度学习并且易于使用的 API，用于检测图像中的明显或暗示性成人内容。开发人员可以根据自己的业务需求，使用这种额外的元数据来筛选不当内容。除了根据存在的成人内容对图像进行标记之外，图像审核功能还会返回一个带有置信度的分级标">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-06-27T03:16:00.000Z">
+<meta property="article:modified_time" content="2026-09-07T03:09:04.795Z">
+<meta property="article:author" content="webkong">
+<meta property="article:tag" content="Rekognition">
+<meta property="article:tag" content="图像监管">
+<meta property="article:tag" content="图像审核">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.webkong.cn/aws-rekognition%E5%9B%BE%E5%83%8F%E8%AF%86%E5%88%AB%E7%9B%91%E7%AE%A1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/aws-rekognition%E5%9B%BE%E5%83%8F%E8%AF%86%E5%88%AB%E7%9B%91%E7%AE%A1/","path":"aws-rekognition图像识别监管/","title":"AWS-Rekognition图像识别监管"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>AWS-Rekognition图像识别监管 | WebKong的网络日志</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93765710-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-93765710-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WebKong的网络日志</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享工作中的所用、所想、所感。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">95</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E5%AE%A1%E6%A0%B8"><span class="nav-number">1.</span> <span class="nav-text">图像审核</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="webkong"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">webkong</p>
+  <div class="site-description" itemprop="description">以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/webkong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/webkong" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.hcharts.cn/" title="http:&#x2F;&#x2F;www.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts中文网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://bbs.hcharts.cn/" title="http:&#x2F;&#x2F;bbs.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts论坛</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/aws-rekognition%E5%9B%BE%E5%83%8F%E8%AF%86%E5%88%AB%E7%9B%91%E7%AE%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="webkong">
+      <meta itemprop="description" content="以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WebKong的网络日志">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AWS-Rekognition图像识别监管
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-06-27 11:16:00" itemprop="dateCreated datePublished" datetime="2017-06-27T11:16:00+08:00">2017-06-27</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2026-09-07 11:09:04" itemprop="dateModified" datetime="2026-09-07T11:09:04+08:00">2026-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AWS/" itemprop="url" rel="index"><span itemprop="name">AWS</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>搬运此文， 通过深度学习还检测图像中明显或者暗示性成人内容的 AWS 出品工具。</p>
+</blockquote>
+<h3 id="图像审核"><a href="#图像审核" class="headerlink" title="图像审核"></a>图像审核</h3><blockquote>
+<p>问：什么是图像审核？</p>
+</blockquote>
+<p>Amazon Rekognition 的图像审核是一种基于深度学习并且易于使用的 API，用于检测图像中的明显或暗示性成人内容。开发人员可以根据自己的业务需求，使用这种额外的元数据来筛选不当内容。除了根据存在的成人内容对图像进行标记之外，图像审核功能还会返回一个带有置信度的分级标签列表。这些标签会指明成人内容的具体类型，从而让开发人员能够进行更细化的控制，以便筛选和管理大量用户生成的内容 (UGC)。这一 API 可以用于社交和交友网站、相片分享平台、博客和论坛、儿童应用程序、电子商务网站、娱乐和在线广告服务等应用场景。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>问：Amazon Rekognition 可以检测哪些类型的明显或暗示性成人内容？</p>
+</blockquote>
+<p>Amazon Rekognition 可以检测图像中以下类型的明显或暗示性成人内容：</p>
+<ul>
+<li>明显的裸露<ul>
+<li>裸露</li>
+<li>男性裸体图形</li>
+<li>女性裸体图形</li>
+<li>性活动</li>
+<li>部分裸露</li>
+</ul>
+</li>
+<li>暗示性<ul>
+<li>女性泳装或内衣</li>
+<li>男性泳装或内衣</li>
+<li>暴露的衣服<br>Amazon Rekognition 的图像审核 API 可以返回一个分级标签列表，并附带检测到的每个标签的置信度。例如，对于一张不当图像，Rekognition 可能会返回最高级别的标签“明显的裸露”及其置信度。开发人员可以利用这一功能来标记内容。同时，Rekognition 还会提供“男性裸体图形”等更多信息及其置信度，从而返回细化到第二级别的信息。开发人员可以利用这一信息来构建更为复杂的筛选逻辑。</li>
+</ul>
+</li>
+</ul>
+<p>请注意，图像审核 API 并不能筛选出所有明显或暗示性成人内容。此外，图像审核 API 无法检测出某个图像是否包含违法内容(例如儿童色情内容) 或不正常成人内容。</p>
+<blockquote>
+<p>问：除了明显和暗示性成人内容以外，Amazon Rekognition 的图像审核 API 能否检测其他不当内容？</p>
+</blockquote>
+<p>Rekognition 目前只支持上文所述的标签。我们会根据客户反馈继续添加并完善各种标签。</p>
+<p>如果您需要检测图片中其他类型的不当内容，请通过下文介绍的反馈流程联系我们。<br>问：怎样确保 Rekognition 符合我的成人图像审核案例的要求？</p>
+<p>Rekognition 的图像审核模型已经经过调整和大规模测试，但我们不建议您用自己的数据集来测量准确性和衡量性能。</p>
+<p>您可以在 API 请求中使用“MinConfidence”参数，以便在内容检测 (灵敏度) 和检测准确性 (精度) 之间实现平衡。如果降低“MinConfidence”，您可能会检测出大多数不当内容，但也有可能检测出事实上不属于明显或暗示性成人内容的内容。如果提高“MinConfidence”，您可能能够确保检测出的所有内容事实上都是明显或暗示性成人内容，但可能会没有标记出某些不当内容。有关如何使用“MinConfidence”的示例，请参阅此处的文档。</p>
+<p><a target="_blank" rel="noopener" href="https://aws.amazon.com/cn/rekognition/faqs/">https://aws.amazon.com/cn/rekognition/faqs/</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>原作者： </strong>webkong
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.webkong.cn/aws-rekognition%E5%9B%BE%E5%83%8F%E8%AF%86%E5%88%AB%E7%9B%91%E7%AE%A1/" title="AWS-Rekognition图像识别监管">https://blog.webkong.cn/aws-rekognition图像识别监管/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Rekognition/" rel="tag"># Rekognition</a>
+              <a href="/tags/%E5%9B%BE%E5%83%8F%E7%9B%91%E7%AE%A1/" rel="tag"># 图像监管</a>
+              <a href="/tags/%E5%9B%BE%E5%83%8F%E5%AE%A1%E6%A0%B8/" rel="tag"># 图像审核</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E6%A6%82%E5%BF%B5-%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/" rel="prev" title="概念-空间复杂度">
+                  <i class="fa fa-chevron-left"></i> 概念-空间复杂度
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/python-%E5%86%85%E5%BB%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0/" rel="next" title="python-内建的一些函数">
+                  python-内建的一些函数 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">webkong</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"webkong","repo":"blog-gitment","client_id":"54ecf778fa1a619ba5f7","client_secret":"7fc721167bf96eb27e9edc7307a50fa3a7d12d4a","admin_user":"webkong","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"42d88d69b6b652a30ef93b285f29e8d5"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

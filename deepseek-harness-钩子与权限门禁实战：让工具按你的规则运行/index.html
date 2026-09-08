@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs">
+  <meta name="msvalidate.01" content="BABF339751DEC853F1915E4C3272192A">
+  <meta name="yandex-verification" content="eceb5773d0fe4679">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前两篇解决「怎么把能力加进 dsh」，这篇回答「怎么给能力立规矩」。我用 dsh 的钩子系统写一个权限门禁插件：通过 tools&#x2F;pre-execute 对一次工具调用返回「允许 &#x2F; 拒绝 &#x2F; 询问」，再把它和一个审批策略插件接起来。看完你就能让 Agent 的任何操作都走你的规则。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DeepSeek Harness 钩子与权限门禁实战：让工具按你的规则运行">
+<meta property="og:url" content="https://blog.webkong.cn/deepseek-harness-%E9%92%A9%E5%AD%90%E4%B8%8E%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%A9%E5%B7%A5%E5%85%B7%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99%E8%BF%90%E8%A1%8C/index.html">
+<meta property="og:site_name" content="WebKong的网络日志">
+<meta property="og:description" content="前两篇解决「怎么把能力加进 dsh」，这篇回答「怎么给能力立规矩」。我用 dsh 的钩子系统写一个权限门禁插件：通过 tools&#x2F;pre-execute 对一次工具调用返回「允许 &#x2F; 拒绝 &#x2F; 询问」，再把它和一个审批策略插件接起来。看完你就能让 Agent 的任何操作都走你的规则。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-09-07T05:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-07T12:04:51.751Z">
+<meta property="article:author" content="webkong">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="DeepSeek">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="dsh">
+<meta property="article:tag" content="权限">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.webkong.cn/deepseek-harness-%E9%92%A9%E5%AD%90%E4%B8%8E%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%A9%E5%B7%A5%E5%85%B7%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99%E8%BF%90%E8%A1%8C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/deepseek-harness-%E9%92%A9%E5%AD%90%E4%B8%8E%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%A9%E5%B7%A5%E5%85%B7%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99%E8%BF%90%E8%A1%8C/","path":"deepseek-harness-钩子与权限门禁实战：让工具按你的规则运行/","title":"DeepSeek Harness 钩子与权限门禁实战：让工具按你的规则运行"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>DeepSeek Harness 钩子与权限门禁实战：让工具按你的规则运行 | WebKong的网络日志</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93765710-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-93765710-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WebKong的网络日志</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享工作中的所用、所想、所感。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">95</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9D%83%E9%99%90%E8%A6%81%E6%8C%82%E5%9C%A8%E6%B0%B4%E7%AE%A1%E4%B8%8A%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E5%86%99%E8%BF%9B%E5%B7%A5%E5%85%B7%E9%87%8C"><span class="nav-number">1.</span> <span class="nav-text">为什么权限要挂在水管上，而不是写进工具里</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81"><span class="nav-number">2.</span> <span class="nav-text">最小权限门禁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E7%A7%8D%E5%86%B3%E7%AD%96%E8%90%BD%E5%9C%B0"><span class="nav-number">3.</span> <span class="nav-text">三种决策落地</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%95%E8%B0%83%E5%AE%88%E5%8D%AB%EF%BC%9A%E4%B8%8D%E8%AE%B8%E6%92%A4%E9%94%80%E7%9A%84%E6%9C%80%E7%BB%88%E6%8B%92%E7%BB%9D"><span class="nav-number">4.</span> <span class="nav-text">单调守卫：不许撤销的最终拒绝</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8D%A2%E4%B8%AA%E6%80%9D%E8%B7%AF%EF%BC%9A%E8%AE%A9%E5%9B%9E%E7%AD%94%E8%80%85%E8%87%AA%E5%B7%B1%E5%86%B3%E5%AE%9A"><span class="nav-number">5.</span> <span class="nav-text">换个思路：让回答者自己决定</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">6.</span> <span class="nav-text">一个完整的例子</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E5%8F%AF%E6%8B%A6%E6%88%AA%E7%82%B9"><span class="nav-number">7.</span> <span class="nav-text">更多可拦截点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83"><span class="nav-number">8.</span> <span class="nav-text">一些思考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="webkong"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">webkong</p>
+  <div class="site-description" itemprop="description">以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/webkong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/webkong" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.hcharts.cn/" title="http:&#x2F;&#x2F;www.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts中文网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://bbs.hcharts.cn/" title="http:&#x2F;&#x2F;bbs.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts论坛</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/deepseek-harness-%E9%92%A9%E5%AD%90%E4%B8%8E%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%A9%E5%B7%A5%E5%85%B7%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99%E8%BF%90%E8%A1%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="webkong">
+      <meta itemprop="description" content="以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WebKong的网络日志">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DeepSeek Harness 钩子与权限门禁实战：让工具按你的规则运行
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-09-07 13:00:00 / 修改时间：20:04:51" itemprop="dateCreated datePublished" datetime="2026-09-07T13:00:00+08:00">2026-09-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>前两篇解决「怎么把能力加进 dsh」，这篇回答「怎么给能力立规矩」。我用 dsh 的钩子系统写一个权限门禁插件：通过 <code>tools/pre-execute</code> 对一次工具调用返回「允许 / 拒绝 / 询问」，再把它和一个审批策略插件接起来。看完你就能让 Agent 的任何操作都走你的规则。</p>
+</blockquote>
+<span id="more"></span>
+
+<p><a href="https://blog.webkong.cn/deepseek-harness-plugin-services-events/">上一篇</a>讲清楚了 <code>tools</code> 流水线。里面最值得单独展开的就是 <code>tools/pre-execute</code>——它是 <strong>waterfall</strong>，是 dsh 的「可重排策略层」，钩子、权限、沙箱、plan-mode 全都挂在这儿。</p>
+<p>这篇就用它写一个真正的权限门禁。</p>
+<h1 id="为什么权限要挂在水管上，而不是写进工具里"><a href="#为什么权限要挂在水管上，而不是写进工具里" class="headerlink" title="为什么权限要挂在水管上，而不是写进工具里"></a>为什么权限要挂在水管上，而不是写进工具里</h1><p>新手最容易想到的做法是：在 <code>execute</code> 里 <code>if (args.path.includes(&#39;/etc&#39;)) throw</code>。但我上篇说过，dsh 的纪律是<strong>把部署策略从工具里剥离出来</strong>。原因有三：</p>
+<ol>
+<li><strong>跨工具复用。</strong> 权限判断跟哪个工具无关——「这个操作能不能执行」对所有工具都成立。写在每个工具里就是重复。</li>
+<li><strong>不污染工具。</strong> 工具只该关心「怎么执行」，不该关心「行不行、要不要问用户」。职责分离。</li>
+<li><strong>可替换。</strong> 换一套权限规则，你只在 <code>pre-execute</code> 上换插件，一行都不改工具。</li>
+</ol>
+<p>于是 dsh 把审批、钩子、沙箱都做成了 <code>tools/pre-execute</code> 上的<strong>独立插件</strong>。工具和策略服务零耦合。</p>
+<h1 id="最小权限门禁"><a href="#最小权限门禁" class="headerlink" title="最小权限门禁"></a>最小权限门禁</h1><p>先看最核心的钩子插件。它监听 <code>tools/pre-execute</code>，返回类型化决策：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">type</span> &#123; Context &#125; <span class="keyword">from</span> <span class="string">&#x27;@deepseek-ai/cordis&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">type</span> &#123; PreToolDecision, ToolExecution &#125; <span class="keyword">from</span> <span class="string">&#x27;@deepseek-ai/dsh-tools&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> <span class="function"><span class="keyword">function</span> <span class="title">isAllowed</span>(<span class="params">exec: ToolExecution</span>): <span class="title">Promise</span>&lt;<span class="title">boolean</span>&gt;</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">export</span> <span class="title">const</span> <span class="title">name</span> = &#x27;<span class="title">permission</span>-<span class="title">gate</span>&#x27;</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">export</span> <span class="function"><span class="keyword">function</span> <span class="title">apply</span>(<span class="params">ctx: Context</span>) </span>&#123;</span></span><br><span class="line"><span class="function">  <span class="title">ctx</span>.<span class="title">on</span>(<span class="params"><span class="string">&#x27;tools/pre-execute&#x27;</span>, <span class="keyword">async</span> (exec, next): <span class="built_in">Promise</span>&lt;PreToolDecision&gt; =&gt; &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">if</span> (!(<span class="keyword">await</span> isAllowed(exec))) &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">      <span class="keyword">return</span> &#123; kind: <span class="string">&#x27;deny&#x27;</span>, reason: <span class="string">&#x27;Denied by policy.&#x27;</span> &#125;</span></span></span><br><span class="line"><span class="params"><span class="function">    &#125;</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">return</span> next()</span></span></span><br><span class="line"><span class="params"><span class="function">  &#125;</span>)</span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里 <code>isAllowed(exec)</code> 是占位的策略函数——实际里它会读你的规则（哪些工具、哪些路径、哪些命令行允许）。关键在后面两行：</p>
+<ul>
+<li><code>return &#123; kind: &#39;deny&#39;, reason: &#39;...&#39; &#125;</code> —— <strong>否决</strong>这次调用。这是 waterfall 的「不调 <code>next()</code> 直接返回」——所谓「有意短路」。</li>
+<li><code>return next()</code> —— <strong>放行</strong>给后续监听器。这是 waterfall 的纪律：你只是作为策略层之一，决定权还在链条上。</li>
+</ul>
+<p><code>PreToolDecision</code> 是 <code>allow</code> / <code>ask</code> / <code>deny</code> 三种决策。所以一个门禁插件能返回「允许」「拒绝」或「询问用户」。</p>
+<blockquote>
+<p>这里有个陷阱要记住：hook 插件拦截的是 <code>tools/pre-execute</code> 这个扩展点，<strong>它本身不等于权限门禁</strong>。沙箱、plan-mode 也挂在这儿。你不能因为写了 <code>pre-execute</code> 就以为那是权限系统——它只是「一个可拦截点」。</p>
+</blockquote>
+<h1 id="三种决策落地"><a href="#三种决策落地" class="headerlink" title="三种决策落地"></a>三种决策落地</h1><p>光有 <code>allow</code> / <code>deny</code> 不够，真正有意思的是「还能问用户」。dsh 的审批机制叫 <strong>user approval</strong>，通过 <code>ctx.approval</code> 服务触发。</p>
+<p>先看询问怎么触发。审批策略有两种：</p>
+<table>
+<thead>
+<tr>
+<th>策略</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ask</code>（默认）</td>
+<td>把问题委托给响应者链；无人响应 → 落回 <code>unavailable</code>（fail closed）</td>
+</tr>
+<tr>
+<td><code>never</code></td>
+<td>确定性返回 <code>rejected</code>，不问任何人（CI、无人值守跑的严格模式）</td>
+</tr>
+</tbody></table>
+<p>一个完整的门禁插件，可以在 <code>pre-execute</code> 里返回 <code>ask</code>，让审批系统去决定：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">apply</span>(<span class="params">ctx: Context</span>) </span>&#123;</span><br><span class="line">  ctx.on(<span class="string">&#x27;tools/pre-execute&#x27;</span>, <span class="keyword">async</span> (exec, next): <span class="built_in">Promise</span>&lt;PreToolDecision&gt; =&gt; &#123;</span><br><span class="line">    <span class="comment">// 危险命令需要用户确认</span></span><br><span class="line">    <span class="keyword">if</span> (exec.name === <span class="string">&#x27;bash&#x27;</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> &#123; <span class="attr">kind</span>: <span class="string">&#x27;ask&#x27;</span>, <span class="attr">reason</span>: <span class="string">`Run this command? <span class="subst">$&#123;exec.<span class="built_in">arguments</span>.command&#125;</span>`</span> &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> next()</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>ask</code> 的决策会走到 <code>ctx.approval.request(...)</code>，其结果是闭合的：</p>
+<table>
+<thead>
+<tr>
+<th>结果</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>allowed-once</code></td>
+<td>只授权被问的那一次操作（唯一的放行）</td>
+</tr>
+<tr>
+<td><code>rejected</code></td>
+<td>显式拒绝</td>
+</tr>
+<tr>
+<td><code>cancelled</code></td>
+<td>请求被撤销</td>
+</tr>
+<tr>
+<td><code>unavailable</code></td>
+<td>没有负责的响应者 / 响应者抛异常（fail closed）</td>
+</tr>
+</tbody></table>
+<p>注意 <code>fail closed</code>（失败即拒绝）：<strong>缺失、不负责、抛异常或不合规的响应者，得到的都是 <code>unavailable</code>，而不是放行。</strong> 这是安全感设计的核心——宁可拒绝，不可误放。</p>
+<h1 id="单调守卫：不许撤销的最终拒绝"><a href="#单调守卫：不许撤销的最终拒绝" class="headerlink" title="单调守卫：不许撤销的最终拒绝"></a>单调守卫：不许撤销的最终拒绝</h1><p><code>pre-execute</code> 是 waterfall，意味着它的决策是「可重排的策略层」——后面的监听器可能推翻前面的。但有些拒绝是<strong>底线</strong>，绝不能被绕过。</p>
+<p>dsh 因此单独提供 <code>ctx.tools.guard()</code>：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ctx.tools.guard(<span class="function">(<span class="params">exec</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (exec.name === <span class="string">&#x27;bash&#x27;</span> &amp;&amp; exec.arguments.command.includes(<span class="string">&#x27;rm -rf /&#x27;</span>)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span> <span class="comment">// 单调拒绝，任何后续监听器都无法撤销</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><code>guard()</code> 用于设置<strong>最终单调拒绝</strong>，后续监听器无法再把它改回来。这跟 <code>pre-execute</code> 的「可协商」完全不同。</p>
+<p>两者的分工一句话总结：</p>
+<blockquote>
+<p><strong>需要「可以商量」的策略 → 用 <code>pre-execute</code>（waterfall）；需要「绝对不许」的底线 → 用 <code>ctx.tools.guard()</code>（单调守卫）。</strong></p>
+</blockquote>
+<p>上篇的流水线图里，<code>pre-execute</code> 之后紧接着就是守卫。<code>pre-execute</code> 先跑，守卫在它之后、<code>execute</code> 之前。所以即使 <code>pre-execute</code> 链条里有人放行，撞上守卫依旧会被打死。</p>
+<h1 id="换个思路：让回答者自己决定"><a href="#换个思路：让回答者自己决定" class="headerlink" title="换个思路：让回答者自己决定"></a>换个思路：让回答者自己决定</h1><p>上面是「门禁主动问」。还有一种更解耦的做法——把审批做成 <strong>response 者</strong>，挂在 <code>approval/request</code> 上。</p>
+<p><code>approval/request</code> 是一个 <strong>waterfall</strong>，各响应者决定是否「认领」这次请求。认清它就返回一个结果；不认就调用 <code>next()</code> 委托给下一个：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">apply</span>(<span class="params">ctx: Context</span>) </span>&#123;</span><br><span class="line">  ctx.on(<span class="string">&#x27;approval/request&#x27;</span>, <span class="keyword">async</span> (req, next) =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (req.toolName !== <span class="string">&#x27;bash&#x27;</span>) <span class="keyword">return</span> next()   <span class="comment">// 不是我的事，委托</span></span><br><span class="line">    <span class="keyword">if</span> (req.reason?.includes(<span class="string">&#x27;rm -rf&#x27;</span>)) <span class="keyword">return</span> <span class="string">&#x27;rejected&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;allowed-once&#x27;</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第一个响应者占据唯一的决策槽位。这种设计最有价值的地方是：<strong>UI 通道、本地策略、自动化桥接（ACP）都可以作为响应者共存</strong>，它们通过共同的结果词汇协作，互相不认知。</p>
+<p><code>approval/request</code> 返回的结果是 <code>allowed-once | rejected | cancelled | unavailable</code>。发起方（比如 <code>dsh-tools</code>、<code>dsh-tool-bash</code>）消费这个闭合结果，<strong>除非是 <code>allowed-once</code>，否则一律拒绝</strong>。</p>
+<h1 id="一个完整的例子"><a href="#一个完整的例子" class="headerlink" title="一个完整的例子"></a>一个完整的例子</h1><p>把上面串起来，一个「危险命令必须确认」的完整策略长这样：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">type</span> &#123; Context &#125; <span class="keyword">from</span> <span class="string">&#x27;@deepseek-ai/cordis&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">type</span> &#123; PreToolDecision &#125; <span class="keyword">from</span> <span class="string">&#x27;@deepseek-ai/dsh-tools&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> name = <span class="string">&#x27;safe-bash-gate&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> inject = [<span class="string">&#x27;tools&#x27;</span>, <span class="string">&#x27;approval&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">apply</span>(<span class="params">ctx: Context</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 1) 底线：任何情况下都不许 rm -rf /</span></span><br><span class="line">  ctx.tools.guard(<span class="function">(<span class="params">exec</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (exec.name === <span class="string">&#x27;bash&#x27;</span> &amp;&amp; exec.arguments.command.includes(<span class="string">&#x27;rm -rf /&#x27;</span>)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2) 策略：bash 命令需要询问用户</span></span><br><span class="line">  ctx.on(<span class="string">&#x27;tools/pre-execute&#x27;</span>, <span class="keyword">async</span> (exec, next): <span class="built_in">Promise</span>&lt;PreToolDecision&gt; =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (exec.name === <span class="string">&#x27;bash&#x27;</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> &#123; <span class="attr">kind</span>: <span class="string">&#x27;ask&#x27;</span>, <span class="attr">reason</span>: <span class="string">&#x27;This command will run in your workspace:&#x27;</span> &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> next()</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意 <code>inject</code> 里我加了 <code>&#39;approval&#39;</code>——因为我们要用到审批服务。组合里也得有对应的提供方。挂了它之后，任何 <code>bash</code> 调用都会先被询问；<code>rm -rf /</code> 则连问都不问，直接被打死。</p>
+<h1 id="更多可拦截点"><a href="#更多可拦截点" class="headerlink" title="更多可拦截点"></a>更多可拦截点</h1><p><code>pre-execute</code> 只是冰山一角。<code>tools</code> 的执行路径上还有一整个扩展点家族，每个都有明确分工：</p>
+<table>
+<thead>
+<tr>
+<th>扩展点</th>
+<th>模式</th>
+<th>典型用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>tools/pre-execute</code></td>
+<td>waterfall</td>
+<td>钩子、权限、沙箱（可重排策略）</td>
+</tr>
+<tr>
+<td><code>ctx.tools.guard()</code></td>
+<td>单调守卫</td>
+<td>不允许撤销的最终拒绝</td>
+</tr>
+<tr>
+<td><code>tools/execute</code></td>
+<td>waterfall</td>
+<td>超时、重试、指标（环绕分发）</td>
+</tr>
+<tr>
+<td><code>tools/post-execute</code></td>
+<td>waterfall</td>
+<td>接受 / 替换结果、附加上下文</td>
+</tr>
+<tr>
+<td><code>tools/result</code></td>
+<td>emit</td>
+<td>只观察，不可变的归一化结果</td>
+</tr>
+</tbody></table>
+<p>再往上，Agent 级也有 <code>agent/pre-step</code>、<code>agent/request</code>、<code>agent/turn-stopping</code> 等钩子，分别对应「步骤前」「请求前」「回合停止前」。dsh 的扩展点就是一张完整的地图——每个产品功能（钩子、<code>/goal</code>、context 压缩、plan mode、子代理、MCP、cron 调度……）都落在某个扩展点的一个监听器上，没有一行修改循环本身。这就是它「微内核」声明的来源。</p>
+<h1 id="一些思考"><a href="#一些思考" class="headerlink" title="一些思考"></a>一些思考</h1><ul>
+<li><strong>策略分层是门艺术。</strong> dsh 把「可商量」(<code>pre-execute</code>) 和「不可商量」(<code>guard</code>) 分开，是安全感与灵活性的平衡。你有想留给用户判断的空间，也有绝不妥协的底线。很多框架要么全灵活、要么全强硬，做成这样分层的少。</li>
+<li><strong>fail closed 比 fail open 安全得多。</strong> 审批系统「缺失响应者 → unavailable → 拒绝」这个设计，符合安全默认的原则：不知道该不该允许时，宁可拦下来。</li>
+<li><strong>插件化权限是真解放。</strong> 以前加个权限，要么改工具源码，要么求上游合并；现在只是往 <code>pre-execute</code> 上挂一个插件，工具完全不用动。这大概是 dsh 「一切皆插件」最直接的收益。</li>
+</ul>
+<p>三篇下来，从「写 hello」到「服务与事件」再到「权限门禁」，你已经能看懂 dsh 的插件、服务、事件、流水线这整套机制了。下一步不妨自己 clone 源码，试着给 dsh 加一个真正的自定义工具，或者把某个内置能力换成你自己的实现——那才是真正上手 dsh 的开始。欢迎留言交流。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>原作者： </strong>webkong
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.webkong.cn/deepseek-harness-%E9%92%A9%E5%AD%90%E4%B8%8E%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%A9%E5%B7%A5%E5%85%B7%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99%E8%BF%90%E8%A1%8C/" title="DeepSeek Harness 钩子与权限门禁实战：让工具按你的规则运行">https://blog.webkong.cn/deepseek-harness-钩子与权限门禁实战：让工具按你的规则运行/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+              <a href="/tags/DeepSeek/" rel="tag"># DeepSeek</a>
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/dsh/" rel="tag"># dsh</a>
+              <a href="/tags/%E6%9D%83%E9%99%90/" rel="tag"># 权限</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/deepseek-harness-%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%B1%82%EF%BC%9A%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%85%A5%E3%80%81%E4%BA%8B%E4%BB%B6%E4%B8%8E-tools-%E6%B5%81%E6%B0%B4%E7%BA%BF/" rel="prev" title="DeepSeek Harness 插件机制深层：服务注入、事件与 tools 流水线">
+                  <i class="fa fa-chevron-left"></i> DeepSeek Harness 插件机制深层：服务注入、事件与 tools 流水线
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">webkong</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"webkong","repo":"blog-gitment","client_id":"54ecf778fa1a619ba5f7","client_secret":"7fc721167bf96eb27e9edc7307a50fa3a7d12d4a","admin_user":"webkong","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"3fa29019d231ef1e5e765dfb6fe4704b"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs">
+  <meta name="msvalidate.01" content="BABF339751DEC853F1915E4C3272192A">
+  <meta name="yandex-verification" content="eceb5773d0fe4679">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="基本用法ES6允许按照一定模式，从数组和对象中提取值，对变量进行赋值，这被称为解构（Destructuring）。 以前，为变量赋值，只能直接指定值。 123var a &#x3D; 1;var b &#x3D; 2;var c &#x3D; 3; ES6允许写成下面这样。var [a, b, c] &#x3D; [1, 2, 3];上面代码表示，可以从数组中提取值，按照对应位置，对变量赋值。本质上，这种写法属于“模式匹配”，只要等号两">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ES6-变量的解构赋值">
+<meta property="og:url" content="https://blog.webkong.cn/es6-%E5%8F%98%E9%87%8F%E7%9A%84%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC/index.html">
+<meta property="og:site_name" content="WebKong的网络日志">
+<meta property="og:description" content="基本用法ES6允许按照一定模式，从数组和对象中提取值，对变量进行赋值，这被称为解构（Destructuring）。 以前，为变量赋值，只能直接指定值。 123var a &#x3D; 1;var b &#x3D; 2;var c &#x3D; 3; ES6允许写成下面这样。var [a, b, c] &#x3D; [1, 2, 3];上面代码表示，可以从数组中提取值，按照对应位置，对变量赋值。本质上，这种写法属于“模式匹配”，只要等号两">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-07-17T09:55:19.000Z">
+<meta property="article:modified_time" content="2026-09-07T03:09:04.787Z">
+<meta property="article:author" content="webkong">
+<meta property="article:tag" content="ES6">
+<meta property="article:tag" content="解构赋值">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.webkong.cn/es6-%E5%8F%98%E9%87%8F%E7%9A%84%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/es6-%E5%8F%98%E9%87%8F%E7%9A%84%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC/","path":"es6-变量的解构赋值/","title":"ES6-变量的解构赋值"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ES6-变量的解构赋值 | WebKong的网络日志</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93765710-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-93765710-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WebKong的网络日志</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享工作中的所用、所想、所感。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">95</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">基本用法</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="webkong"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">webkong</p>
+  <div class="site-description" itemprop="description">以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/webkong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/webkong" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.hcharts.cn/" title="http:&#x2F;&#x2F;www.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts中文网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://bbs.hcharts.cn/" title="http:&#x2F;&#x2F;bbs.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts论坛</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/es6-%E5%8F%98%E9%87%8F%E7%9A%84%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="webkong">
+      <meta itemprop="description" content="以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WebKong的网络日志">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ES6-变量的解构赋值
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-07-17 17:55:19" itemprop="dateCreated datePublished" datetime="2016-07-17T17:55:19+08:00">2016-07-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2026-09-07 11:09:04" itemprop="dateModified" datetime="2026-09-07T11:09:04+08:00">2026-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><p>ES6允许按照一定模式，从数组和对象中提取值，对变量进行赋值，这被称为解构（Destructuring）。</p>
+<p>以前，为变量赋值，只能直接指定值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var a = 1;</span><br><span class="line">var b = 2;</span><br><span class="line">var c = 3;</span><br></pre></td></tr></table></figure>
+<p>ES6允许写成下面这样。<br><code>var [a, b, c] = [1, 2, 3];</code><br>上面代码表示，可以从数组中提取值，按照对应位置，对变量赋值。<br>本质上，这种写法属于“模式匹配”，只要等号两边的模式相同，左边的变量就会被赋予对应的值。下面是一些使用嵌套数组进行解构的例子。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">let [foo, [[bar], baz]] = [1, [[2], 3]];</span><br><span class="line">foo // 1</span><br><span class="line">bar // 2</span><br><span class="line">baz // 3</span><br><span class="line"></span><br><span class="line">let [ , , third] = [&quot;foo&quot;, &quot;bar&quot;, &quot;baz&quot;];</span><br><span class="line">third // &quot;baz&quot;</span><br><span class="line"></span><br><span class="line">let [x, , y] = [1, 2, 3];</span><br><span class="line">x // 1</span><br><span class="line">y // 3</span><br><span class="line"></span><br><span class="line">let [head, ...tail] = [1, 2, 3, 4];</span><br><span class="line">head // 1</span><br><span class="line">tail // [2, 3, 4]</span><br><span class="line"></span><br><span class="line">let [x, y, ...z] = [&#x27;a&#x27;];</span><br><span class="line">x // &quot;a&quot;</span><br><span class="line">y // undefined</span><br><span class="line">z // []</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果解构不成功，变量的值就等于<code>undefined</code>。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var [foo] = [];</span><br><span class="line">var [bar, foo] = [1];</span><br></pre></td></tr></table></figure>
+<p>以上两种情况都属于解构不成功，foo的值都会等于<code>undefined</code>。</p>
+<blockquote>
+<p>另一种情况是不完全解构，即等号左边的模式，只匹配一部分的等号右边的数组。这种情况下，解构依然可以成功。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let [x, y] = [1, 2, 3];</span><br><span class="line">x // 1</span><br><span class="line">y // 2</span><br><span class="line"></span><br><span class="line">let [a, [b], d] = [1, [2, 3], 4];</span><br><span class="line">a // 1</span><br><span class="line">b // 2</span><br><span class="line">d // 4</span><br></pre></td></tr></table></figure>
+<p>上面两个例子，都属于不完全解构，但是可以成功。</p>
+<p>如果等号的右边不是数组（或者严格地说，不是可遍历的结构），那么将会报错。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 报错</span><br><span class="line">let [foo] = 1;</span><br><span class="line">let [foo] = false;</span><br><span class="line">let [foo] = NaN;</span><br><span class="line">let [foo] = undefined;</span><br><span class="line">let [foo] = null;</span><br><span class="line">let [foo] = &#123;&#125;;</span><br><span class="line">````</span><br><span class="line">上面的表达式都会报错，因为等号右边的值，要么转为对象以后不具备Iterator接口（前五个表达式），要么本身就不具备Iterator接口（最后一个表达式）。</span><br><span class="line"></span><br><span class="line">&gt;解构赋值不仅适用于var命令，也适用于let和const命令。</span><br></pre></td></tr></table></figure>
+<p>var [v1, v2, …, vN ] = array;<br>let [v1, v2, …, vN ] = array;<br>const [v1, v2, …, vN ] = array;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对于Set结构，也可以使用数组的解构赋值。</span><br></pre></td></tr></table></figure>
+<p>let [x, y, z] = new Set([“a”, “b”, “c”]);<br>x // “a”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">事实上，只要某种数据结构具有Iterator接口，都可以采用数组形式的解构赋值。</span><br></pre></td></tr></table></figure>
+<p>function* fibs() {<br>  var a = 0;<br>  var b = 1;<br>  while (true) {<br>    yield a;<br>    [a, b] = [b, a + b];<br>  }<br>}</p>
+<p>var [first, second, third, fourth, fifth, sixth] = fibs();<br>sixth // 5<br>上面代码中，fibs是一个Generator函数，原生具有Iterator接口。解构赋值会依次从这个接口获取值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">默认值</span><br><span class="line">-----</span><br><span class="line">解构赋值允许指定默认值。</span><br></pre></td></tr></table></figure>
+<p>var [foo = true] = [];<br>foo // true</p>
+<p>[x, y = ‘b’] = [‘a’]; // x=’a’, y=’b’<br>[x, y = ‘b’] = [‘a’, undefined]; // x=’a’, y=’b’</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;注意，ES6内部使用严格相等运算符（===），判断一个位置是否有值。所以，如果一个数组成员不严格等于undefined，默认值是不会生效的。</span><br></pre></td></tr></table></figure>
+<p>var [x = 1] = [undefined];<br>x // 1</p>
+<p>var [x = 1] = [null];<br>x // null</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;上面代码中，如果一个数组成员是null，默认值就不会生效，因为null不严格等于undefined。</span><br><span class="line"></span><br><span class="line">如果默认值是一个表达式，那么这个表达式是惰性求值的，即只有在用到的时候，才会求值。</span><br></pre></td></tr></table></figure>
+<p>function f() {<br>  console.log(‘aaa’);<br>}</p>
+<p>let [x = f()] = [1];<br>上面代码中，因为x能取到值，所以函数f根本不会执行。上面的代码其实等价于下面的代码。</p>
+<p>let x;<br>if ([1][0] === undefined) {<br>  x = f();<br>} else {<br>  x = [1][0];<br>}<br>默认值可以引用解构赋值的其他变量，但该变量必须已经声明。</p>
+<p>let [x = 1, y = x] = [];     // x=1; y=1<br>let [x = 1, y = x] = [2];    // x=2; y=2<br>let [x = 1, y = x] = [1, 2]; // x=1; y=2<br>let [x = y, y = 1] = [];     // ReferenceError<br>上面最后一个表达式之所以会报错，是因为x用到默认值y时，y还没有声明。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">对象的解构赋值</span><br><span class="line">-------</span><br><span class="line"></span><br><span class="line">解构不仅可以用于数组，还可以用于对象。</span><br></pre></td></tr></table></figure>
+<p>var { foo, bar } = { foo: “aaa”, bar: “bbb” };<br>foo // “aaa”<br>bar // “bbb”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对象的解构与数组有一个重要的不同。数组的元素是按次序排列的，变量的取值由它的位置决定；而对象的属性没有次序，`变量必须与属性同名`，才能取到正确的值。</span><br></pre></td></tr></table></figure>
+<p>var { bar, foo } = { foo: “aaa”, bar: “bbb” };<br>foo // “aaa”<br>bar // “bbb”</p>
+<p>var { baz } = { foo: “aaa”, bar: “bbb” };<br>baz // undefined</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">上面代码的第一个例子，等号左边的两个变量的次序，与等号右边两个同名属性的次序不一致，但是对取值完全没有影响。第二个例子的变量没有对应的同名属性，导致取不到值，最后等于undefined。</span><br><span class="line"></span><br><span class="line">如果变量名与属性名不一致，必须写成下面这样。</span><br></pre></td></tr></table></figure>
+<p>var { foo: baz } = { foo: ‘aaa’, bar: ‘bbb’ };<br>baz // “aaa”</p>
+<p>let obj = { first: ‘hello’, last: ‘world’ };<br>let { first: f, last: l } = obj;<br>f // ‘hello’<br>l // ‘world’</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;这实际上说明，对象的解构赋值是下面形式的简写。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>var { foo: foo, bar: bar } = { foo: “aaa”, bar: “bbb” };<br>也就是说，对象的解构赋值的内部机制，是先找到同名属性，然后再赋给对应的变量。真正被赋值的是后者，而不是前者。</p>
+<p>var { foo: baz } = { foo: “aaa”, bar: “bbb” };<br>baz // “aaa”<br>foo // error: foo is not defined<br>上面代码中，真正被赋值的是变量baz，而不是模式foo。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;注意，采用这种写法时，变量的声明和赋值是一体的。对于let和const来说，变量不能重新声明，所以一旦赋值的变量以前声明过，就会报错。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>let foo;<br>let {foo} = {foo: 1}; // SyntaxError: Duplicate declaration “foo”</p>
+<p>let baz;<br>let {bar: baz} = {bar: 1}; // SyntaxError: Duplicate declaration “baz”<br>上面代码中，解构赋值的变量都会重新声明，所以报错了。不过，因为var命令允许重新声明，所以这个错误只会在使用let和const命令时出现。如果没有第二个let命令，上面的代码就不会报错。</p>
+<p>let foo;<br>({foo} = {foo: 1}); // 成功</p>
+<p>let baz;<br>({bar: baz} = {bar: 1}); // 成功<br>上面代码中，let命令下面一行的圆括号是必须的，否则会报错。因为解析器会将起首的大括号，理解成一个代码块，而不是赋值语句。</p>
+<p>和数组一样，解构也可以用于嵌套结构的对象。</p>
+<p>var obj = {<br>  p: [<br>    ‘Hello’,<br>    { y: ‘World’ }<br>  ]<br>};</p>
+<p>var { p: [x, { y }] } = obj;<br>x // “Hello”<br>y // “World”<br>注意，这时p是模式，不是变量，因此不会被赋值。</p>
+<p>var node = {<br>  loc: {<br>    start: {<br>      line: 1,<br>      column: 5<br>    }<br>  }<br>};</p>
+<p>var { loc: { start: { line }} } = node;<br>line // 1<br>loc  // error: loc is undefined<br>start // error: start is undefined<br>上面代码中，只有line是变量，loc和start都是模式，不会被赋值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">下面是嵌套赋值的例子。</span><br></pre></td></tr></table></figure>
+<p>let obj = {};<br>let arr = [];</p>
+<p>({ foo: obj.prop, bar: arr[0] } = { foo: 123, bar: true });</p>
+<p>obj // {prop:123}<br>arr // [true]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对象的解构也可以指定默认值。</span><br></pre></td></tr></table></figure>
+<p>var {x = 3} = {};<br>x // 3</p>
+<p>var {x, y = 5} = {x: 1};<br>x // 1<br>y // 5</p>
+<p>var {x:y = 3} = {};<br>y // 3</p>
+<p>var {x:y = 3} = {x: 5};<br>y // 5</p>
+<p>var { message: msg = ‘Something went wrong’ } = {};<br>msg // “Something went wrong”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;默认值生效的条件是，对象的属性值严格等于undefined。</span><br></pre></td></tr></table></figure>
+<p>var {x = 3} = {x: undefined};<br>x // 3</p>
+<p>var {x = 3} = {x: null};<br>x // null<br>上面代码中，如果x属性等于null，就不严格相等于undefined，导致默认值不会生效。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如果解构失败，变量的值等于undefined。</span><br></pre></td></tr></table></figure>
+<p>var {foo} = {bar: ‘baz’};<br>foo // undefined</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如果解构模式是嵌套的对象，而且子对象所在的父属性不存在，那么将会报错。</span><br></pre></td></tr></table></figure>
+<p>// 报错<br>var {foo: {bar}} = {baz: ‘baz’};<br>上面代码中，等号左边对象的foo属性，对应一个子对象。该子对象的bar属性，解构时会报错。原因很简单，因为foo这时等于undefined，再取子属性就会报错，请看下面的代码。</p>
+<p>var _tmp = {baz: ‘baz’};<br>_tmp.foo.bar // 报错<br>如果要将一个已经声明的变量用于解构赋值，必须非常小心。</p>
+<p>// 错误的写法<br>var x;<br>{x} = {x: 1};<br>// SyntaxError: syntax error<br>上面代码的写法会报错，因为JavaScript引擎会将{x}理解成一个代码块，从而发生语法错误。只有不将大括号写在行首，避免JavaScript将其解释为代码块，才能解决这个问题。</p>
+<p>// 正确的写法<br>({x} = {x: 1});<br>上面代码将整个解构赋值语句，放在一个圆括号里面，就可以正确执行。关于圆括号与解构赋值的关系，参见下文。</p>
+<p>解构赋值允许，等号左边的模式之中，不放置任何变量名。因此，可以写出非常古怪的赋值表达式。</p>
+<p>({} = [true, false]);<br>({} = ‘abc’);<br>({} = []);<br>上面的表达式虽然毫无意义，但是语法是合法的，可以执行。</p>
+<p>对象的解构赋值，可以很方便地将现有对象的方法，赋值到某个变量。</p>
+<p>let { log, sin, cos } = Math;<br>上面代码将Math对象的对数、正弦、余弦三个方法，赋值到对应的变量上，使用起来就会方便很多。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">由于数组本质是特殊的对象，因此可以对数组进行对象属性的解构。</span><br></pre></td></tr></table></figure>
+<p>var arr = [1, 2, 3];<br>var {0 : first, [arr.length - 1] : last} = arr;<br>first // 1<br>last // 3</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">上面代码对数组进行对象结构。数组arr的0键对应的值是1，[arr.length - 1]就是2键，对应的值是3。方括号这种写法，属于“属性名表达式”。</span><br><span class="line"></span><br><span class="line">字符串的解构赋值</span><br><span class="line">-------</span><br><span class="line">字符串也可以解构赋值。这是因为此时，字符串被转换成了一个类似数组的对象。</span><br></pre></td></tr></table></figure>
+<p>const [a, b, c, d, e] = ‘hello’;<br>a // “h”<br>b // “e”<br>c // “l”<br>d // “l”<br>e // “o”<br>类似数组的对象都有一个length属性，因此还可以对这个属性解构赋值。</p>
+<p>let {length : len} = ‘hello’;<br>len // 5</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">数值和布尔值的解构赋值</span><br><span class="line">-----</span><br><span class="line">&gt;解构赋值时，如果等号右边是数值和布尔值，则会先转为对象。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>let {toString: s} = 123;<br>s === Number.prototype.toString // true</p>
+<p>let {toString: s} = true;<br>s === Boolean.prototype.toString // true<br>上面代码中，数值和布尔值的包装对象都有toString属性，因此变量s都能取到值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&gt;解构赋值的规则是，只要等号右边的值不是对象，就先将其转为对象。由于undefined和null无法转为对象，所以对它们进行解构赋值，都会报错。</span><br></pre></td></tr></table></figure>
+<p>let { prop: x } = undefined; // TypeError<br>let { prop: y } = null; // TypeError</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">函数参数的解构赋值</span><br><span class="line">-----</span><br><span class="line">函数的参数也可以使用解构赋值。</span><br></pre></td></tr></table></figure>
+<p>function add([x, y]){<br>  return x + y;<br>}</p>
+<p>add([1, 2]); // 3</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">上面代码中，函数add的参数表面上是一个数组，但在传入参数的那一刻，数组参数就被解构成变量x和y。对于函数内部的代码来说，它们能感受到的参数就是x和y。</span><br><span class="line"></span><br><span class="line">下面是另一个例子。</span><br></pre></td></tr></table></figure>
+<p>[[1, 2], [3, 4]].map(([a, b]) =&gt; a + b);<br>// [ 3, 7 ]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">函数参数的解构也可以使用默认值。</span><br></pre></td></tr></table></figure>
+<p>function move({x = 0, y = 0} = {}) {<br>  return [x, y];<br>}</p>
+<p>move({x: 3, y: 8}); // [3, 8]<br>move({x: 3}); // [3, 0]<br>move({}); // [0, 0]<br>move(); // [0, 0]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">上面代码中，函数move的参数是一个对象，通过对这个对象进行解构，得到变量x和y的值。如果解构失败，x和y等于默认值。</span><br><span class="line"></span><br><span class="line">注意，下面的写法会得到不一样的结果。</span><br></pre></td></tr></table></figure>
+<p>function move({x, y} = { x: 0, y: 0 }) {<br>  return [x, y];<br>}</p>
+<p>move({x: 3, y: 8}); // [3, 8]<br>move({x: 3}); // [3, undefined]<br>move({}); // [undefined, undefined]<br>move(); // [0, 0]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">上面代码是为函数move的参数指定默认值，而不是为变量x和y指定默认值，所以会得到与前一种写法不同的结果。</span><br><span class="line"></span><br><span class="line">`undefined`就会触发函数参数的默认值。</span><br></pre></td></tr></table></figure>
+<p>[1, undefined, 3].map((x = ‘yes’) =&gt; x);<br>// [ 1, ‘yes’, 3 ]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">圆括号问题</span><br><span class="line">------</span><br><span class="line">解构赋值虽然很方便，但是解析起来并不容易。对于编译器来说，一个式子到底是模式，还是表达式，没有办法从一开始就知道，必须解析到（或解析不到）等号才能知道。</span><br><span class="line"></span><br><span class="line">由此带来的问题是，如果模式中出现圆括号怎么处理。</span><br><span class="line"></span><br><span class="line">&gt;ES6的规则是，只要有可能导致解构的歧义，就不得使用圆括号。</span><br><span class="line"></span><br><span class="line">但是，这条规则实际上不那么容易辨别，处理起来相当麻烦。因此，建议只要有可能，就不要在模式中放置圆括号。</span><br><span class="line"></span><br><span class="line">不能使用圆括号的情况</span><br><span class="line">以下三种解构赋值不得使用圆括号。</span><br><span class="line"></span><br><span class="line">（1）变量声明语句中，不能带有圆括号。</span><br></pre></td></tr></table></figure>
+<p>// 全部报错<br>var [(a)] = [1];</p>
+<p>var {x: (c)} = {};<br>var ({x: c}) = {};<br>var {(x: c)} = {};<br>var {(x): c} = {};}</p>
+<p>var { o: ({ p: p }) } = { o: { p: 2 } };<br>上面三个语句都会报错，因为它们都是变量声明语句，模式不能使用圆括号。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">（2）函数参数中，模式不能带有圆括号。</span><br><span class="line"></span><br><span class="line">函数参数也属于变量声明，因此不能带有圆括号。</span><br></pre></td></tr></table></figure>
+<p>// 报错<br>function f([(z)]) { return z; }</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">（3）赋值语句中，不能将整个模式，或嵌套模式中的一层，放在圆括号之中。</span><br></pre></td></tr></table></figure>
+<p>// 全部报错<br>({ p: a }) = { p: 42 };<br>([a]) = [5];<br>上面代码将整个模式放在圆括号之中，导致报错。</p>
+<p>// 报错<br>[({ p: a }), { x: c }] = [{}, {}];<br>上面代码将嵌套模式的一层，放在圆括号之中，导致报错。</p>
+<p>可以使用圆括号的情况<br>可以使用圆括号的情况只有一种：赋值语句的非模式部分，可以使用圆括号。</p>
+<p>[(b)] = [3]; // 正确<br>({ p: (d) } = {}); // 正确<br>[(parseInt.prop)] = [3]; // 正确<br>上面三行语句都可以正确执行，因为首先它们都是赋值语句，而不是声明语句；其次它们的圆括号都不属于模式的一部分。第一行语句中，模式是取数组的第一个成员，跟圆括号无关；第二行语句中，模式是p，而不是d；第三行语句与第一行语句的性质一致。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">用途</span><br><span class="line">-----</span><br><span class="line">变量的解构赋值用途很多。</span><br><span class="line"></span><br><span class="line">* 交换变量的值</span><br><span class="line"></span><br><span class="line">  `[x, y] = [y, x];`</span><br><span class="line">  上面代码交换变量x和y的值，这样的写法不仅简洁，而且易读，语义非常清晰。</span><br><span class="line"></span><br><span class="line">* 从函数返回多个值</span><br><span class="line"></span><br><span class="line">  函数只能返回一个值，如果要返回多个值，只能将它们放在数组或对象里返回。有了解构赋值，取出这些值就非常方便。</span><br></pre></td></tr></table></figure>
+<p>  // 返回一个数组</p>
+<p>  function example() {<br>    return [1, 2, 3];<br>  }<br>  var [a, b, c] = example();</p>
+<p>  // 返回一个对象</p>
+<p>  function example() {<br>    return {<br>      foo: 1,<br>      bar: 2<br>    };<br>  }<br>  var { foo, bar } = example();<br>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* 函数参数的定义</span><br><span class="line"></span><br><span class="line">  解构赋值可以方便地将一组参数与变量名对应起来。</span><br></pre></td></tr></table></figure><br>  // 参数是一组有次序的值<br>  function f([x, y, z]) { … }<br>  f([1, 2, 3]);</p>
+<p>  // 参数是一组无次序的值<br>  function f({x, y, z}) { … }<br>  f({z: 3, y: 2, x: 1});<br>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* 提取JSON数据</span><br><span class="line"></span><br><span class="line">  解构赋值对提取JSON对象中的数据，尤其有用。</span><br></pre></td></tr></table></figure><br>  var jsonData = {<br>    id: 42,<br>    status: “OK”,<br>    data: [867, 5309]<br>  };</p>
+<p>  let { id, status, data: number } = jsonData;</p>
+<p>  console.log(id, status, number);<br>  // 42, “OK”, [867, 5309]<br>  上面代码可以快速提取JSON数据的值。<br>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* 函数参数的默认值</span><br></pre></td></tr></table></figure><br>  jQuery.ajax = function (url, {<br>    async = true,<br>    beforeSend = function () {},<br>    cache = true,<br>    complete = function () {},<br>    crossDomain = false,<br>    global = true,<br>    // … more config<br>  }) {<br>    // … do stuff<br>  };<br>  指定参数的默认值，就避免了在函数体内部再写var foo = config.foo || ‘default foo’;这样的语句。<br>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* 遍历Map结构</span><br><span class="line"></span><br><span class="line">  任何部署了Iterator接口的对象，都可以用for...of循环遍历。Map结构原生支持Iterator接口，配合变量的解构赋值，获取键名和键值就非常方便。</span><br></pre></td></tr></table></figure><br>  var map = new Map();<br>  map.set(‘first’, ‘hello’);<br>  map.set(‘second’, ‘world’);</p>
+<p>  for (let [key, value] of map) {<br>    console.log(key + “ is “ + value);<br>  }<br>  // first is hello<br>  // second is world<br>  如果只想获取键名，或者只想获取键值，可以写成下面这样。</p>
+<p>  // 获取键名<br>  for (let [key] of map) {<br>    // …<br>  }</p>
+<p>  // 获取键值<br>  for (let [,value] of map) {<br>    // …<br>  }<br>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">* 输入模块的指定方法</span><br><span class="line"></span><br><span class="line">  加载模块时，往往需要指定输入那些方法。解构赋值使得输入语句非常清晰。</span><br><span class="line"></span><br></pre></td></tr></table></figure><br>const { SourceMapConsumer, SourceNode } = require(“source-map”);</p>
+<pre><code>
+
+&gt;[来源](http://es6.ruanyifeng.com/#docs/destructuring)
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>webkong
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.webkong.cn/es6-%E5%8F%98%E9%87%8F%E7%9A%84%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC/" title="ES6-变量的解构赋值">https://blog.webkong.cn/es6-变量的解构赋值/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/ES6/" rel="tag"># ES6</a>
+              <a href="/tags/%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC/" rel="tag"># 解构赋值</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E5%B8%B8%E7%94%A8-git-%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/" rel="prev" title="常用 Git 命令清单">
+                  <i class="fa fa-chevron-left"></i> 常用 Git 命令清单
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/javascript%E8%BF%9E%E7%AD%89%E8%B5%8B%E5%80%BC/" rel="next" title="JavaScript连等赋值">
+                  JavaScript连等赋值 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">webkong</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"webkong","repo":"blog-gitment","client_id":"54ecf778fa1a619ba5f7","client_secret":"7fc721167bf96eb27e9edc7307a50fa3a7d12d4a","admin_user":"webkong","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"da3222038be3e7210354d886575284b8"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="97S4MEw8wG8koUe3JlguibTqN_wWGHTKB67PRtnkgFs">
+  <meta name="msvalidate.01" content="BABF339751DEC853F1915E4C3272192A">
+  <meta name="yandex-verification" content="eceb5773d0fe4679">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="罗列字典的常用操作，遵循艾宾浩斯记忆遗忘曲线，让知识固化，方便查询和使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python-字典的常用操作">
+<meta property="og:url" content="https://blog.webkong.cn/python-%E5%AD%97%E5%85%B8%E7%9A%84%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:site_name" content="WebKong的网络日志">
+<meta property="og:description" content="罗列字典的常用操作，遵循艾宾浩斯记忆遗忘曲线，让知识固化，方便查询和使用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-06-15T03:02:00.000Z">
+<meta property="article:modified_time" content="2026-09-07T03:09:04.797Z">
+<meta property="article:author" content="webkong">
+<meta property="article:tag" content="原创">
+<meta property="article:tag" content="dict">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.webkong.cn/python-%E5%AD%97%E5%85%B8%E7%9A%84%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/python-%E5%AD%97%E5%85%B8%E7%9A%84%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/","path":"python-字典的常用操作/","title":"python-字典的常用操作"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>python-字典的常用操作 | WebKong的网络日志</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93765710-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-93765710-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WebKong的网络日志</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享工作中的所用、所想、所感。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">95</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAdict"><span class="nav-number">1.</span> <span class="nav-text">创建dict</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dict%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">dict函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%AD%97%E5%85%B8%E6%93%8D%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">基本字典操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#len"><span class="nav-number">2.1.</span> <span class="nav-text">len()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#del"><span class="nav-number">2.2.</span> <span class="nav-text">del</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#in"><span class="nav-number">2.3.</span> <span class="nav-text">in</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%8B%E5%80%BC"><span class="nav-number">2.4.</span> <span class="nav-text">赋值</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E5%85%B8%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">3.</span> <span class="nav-text">字典格式化字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E5%85%B8%E6%96%B9%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">字典方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#clear"><span class="nav-number">4.1.</span> <span class="nav-text">clear</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#copy"><span class="nav-number">4.2.</span> <span class="nav-text">copy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fromkeys"><span class="nav-number">4.3.</span> <span class="nav-text">fromkeys</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#get"><span class="nav-number">4.4.</span> <span class="nav-text">get</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#has-key"><span class="nav-number">4.5.</span> <span class="nav-text">has_key</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#items-amp-iteritems"><span class="nav-number">4.6.</span> <span class="nav-text">items &amp; iteritems</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#keys-amp-iterkeys"><span class="nav-number">4.7.</span> <span class="nav-text">keys &amp; iterkeys</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pop"><span class="nav-number">4.8.</span> <span class="nav-text">pop</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#popitem"><span class="nav-number">4.9.</span> <span class="nav-text">popitem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#setdefault"><span class="nav-number">4.10.</span> <span class="nav-text">setdefault</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#update"><span class="nav-number">4.11.</span> <span class="nav-text">update</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#values-amp-itervalues"><span class="nav-number">4.12.</span> <span class="nav-text">values &amp; itervalues</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="webkong"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">webkong</p>
+  <div class="site-description" itemprop="description">以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/webkong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/webkong" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;webkong" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.hcharts.cn/" title="http:&#x2F;&#x2F;www.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts中文网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://bbs.hcharts.cn/" title="http:&#x2F;&#x2F;bbs.hcharts.cn&#x2F;" rel="noopener" target="_blank">Hcharts论坛</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/python-%E5%AD%97%E5%85%B8%E7%9A%84%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="webkong">
+      <meta itemprop="description" content="以分享前端知识为主，涉及后端、移动端、运维等，在码路上渐行渐远...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WebKong的网络日志">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python-字典的常用操作
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-06-15 11:02:00" itemprop="dateCreated datePublished" datetime="2017-06-15T11:02:00+08:00">2017-06-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2026-09-07 11:09:04" itemprop="dateModified" datetime="2026-09-07T11:09:04+08:00">2026-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>罗列字典的常用操作，遵循艾宾浩斯记忆遗忘曲线，让知识固化，方便查询和使用。</p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="创建dict"><a href="#创建dict" class="headerlink" title="创建dict"></a>创建dict</h3><h4 id="dict函数"><a href="#dict函数" class="headerlink" title="dict函数"></a>dict函数</h4><p>dict函数可以通过其他映射，比如字典或者<code>(key,value)</code>遮这样的序列对建立字典。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; items = [(&#x27;name&#x27;,&#x27;webkong&#x27;),(&#x27;age&#x27;,18)]</span><br><span class="line">&gt;&gt;&gt; d = dict(items)</span><br><span class="line">&gt;&gt;&gt; d</span><br><span class="line">&#123;&#x27;age&#x27;: 18, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者通过关键字参数来创建</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; d = dict(name=&#x27;webkong&#x27;,age=18)</span><br><span class="line">&gt;&gt;&gt; d</span><br><span class="line">&#123;&#x27;age&#x27;: 18, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果不带参数，就会返回空字典. 和 list, tuple, str函数一样。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a = dict()</span><br><span class="line">&gt;&gt;&gt; a</span><br><span class="line">&#123;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>也可以直接用字面量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; c = &#123;&#x27;name&#x27;:&#x27;webkong&#x27;,&#x27;age&#x27;:19&#125;</span><br><span class="line">&gt;&gt;&gt; c</span><br><span class="line">&#123;&#x27;age&#x27;: 19, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="基本字典操作"><a href="#基本字典操作" class="headerlink" title="基本字典操作"></a>基本字典操作</h3><h4 id="len"><a href="#len" class="headerlink" title="len()"></a>len()</h4><p>返回键值对的数量</p>
+<h4 id="del"><a href="#del" class="headerlink" title="del"></a>del</h4><p>del a[‘name’]  #删除键为name的值</p>
+<h4 id="in"><a href="#in" class="headerlink" title="in"></a>in</h4><p>‘name’ in a 返回 True 检查字典中是否含有键为name的项</p>
+<h4 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h4><p>a[‘name’] = ‘wsw’</p>
+<blockquote>
+<p>键的类型： 字典的键是不可变类型，有可能是整型、浮点型（实型）、字符串或元组。<br>添加：键不存在，也可以赋值，这样字典就会建立新的项。</p>
+</blockquote>
+<h3 id="字典格式化字符串"><a href="#字典格式化字符串" class="headerlink" title="字典格式化字符串"></a>字典格式化字符串</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; info</span><br><span class="line">&#123;&#x27;age&#x27;: 19, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; &quot;%(name)s&#x27;s age is %(age)s.&quot; % info</span><br><span class="line">&quot;webkong&#x27;s age is 19.&quot;</span><br></pre></td></tr></table></figure>
+<p>只要给出的键可以在字典中找到，就可以使用任意数量的转换说明符。在模板系统中非常有用。</p>
+<h3 id="字典方法"><a href="#字典方法" class="headerlink" title="字典方法"></a>字典方法</h3><h4 id="clear"><a href="#clear" class="headerlink" title="clear"></a>clear</h4><p>原地操作， 清除字典中的所有项， 无返回值（或者说返回None）。</p>
+<h4 id="copy"><a href="#copy" class="headerlink" title="copy"></a>copy</h4><p>返回一个具有相同键值对的新字典。这种方法实现的是浅复制，因为值本身是相同的，而不是副本。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; info</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;html&#x27;, &#x27;css&#x27;, &#x27;js&#x27;], &#x27;age&#x27;: 19, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; a = info.copy()</span><br><span class="line">&gt;&gt;&gt; a</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;html&#x27;, &#x27;css&#x27;, &#x27;js&#x27;], &#x27;age&#x27;: 19, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; a[&#x27;name&#x27;] = &#x27;webkong1&#x27;</span><br><span class="line">&gt;&gt;&gt; a</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;html&#x27;, &#x27;css&#x27;, &#x27;js&#x27;], &#x27;age&#x27;: 19, &#x27;name&#x27;: &#x27;webkong1&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; info</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;html&#x27;, &#x27;css&#x27;, &#x27;js&#x27;], &#x27;age&#x27;: 19, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; a[&#x27;skills&#x27;].remove(&#x27;html&#x27;)</span><br><span class="line">&gt;&gt;&gt; a</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;css&#x27;, &#x27;js&#x27;], &#x27;age&#x27;: 19, &#x27;name&#x27;: &#x27;webkong1&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; info</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;css&#x27;, &#x27;js&#x27;], &#x27;age&#x27;: 19, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br></pre></td></tr></table></figure>
+<p>在替换值得时候，原字典不受影响， 但是如果用原地操作修改了某个值，原字典也会改变。</p>
+<p>避免这种问题的一种方式就是深复制(deep copy)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from copy import deepcopy</span><br><span class="line">&gt;&gt;&gt; info</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;css&#x27;, &#x27;js&#x27;], &#x27;age&#x27;: 19, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; i = deepcopy(info)</span><br><span class="line">&gt;&gt;&gt; f = info.copy()</span><br><span class="line">&gt;&gt;&gt; f[&#x27;skills&#x27;].append(&#x27;js&#x27;)</span><br><span class="line">&gt;&gt;&gt; f</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;css&#x27;, &#x27;js&#x27;, &#x27;js&#x27;], &#x27;age&#x27;: 19, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; i</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;css&#x27;, &#x27;js&#x27;], &#x27;age&#x27;: 19, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="fromkeys"><a href="#fromkeys" class="headerlink" title="fromkeys"></a>fromkeys</h4><p>使用给定的键建立新的字典，每一个键默认的值是None.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a = &#123;&#125;.fromkeys([&#x27;name&#x27;,&#x27;age&#x27;])</span><br><span class="line">&gt;&gt;&gt; a</span><br><span class="line">&#123;&#x27;age&#x27;: None, &#x27;name&#x27;: None&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="get"><a href="#get" class="headerlink" title="get"></a>get</h4><p>访问字典项的方法，在访问不存在的项时，返回None。也可以自己定义“默认值”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a</span><br><span class="line">&#123;&#x27;age&#x27;: None, &#x27;name&#x27;: None&#125;</span><br><span class="line">&gt;&gt;&gt; a.get(&#x27;kk&#x27;,&#x27;NNN&#x27;)</span><br><span class="line">&#x27;NNN&#x27;</span><br></pre></td></tr></table></figure>
+<h4 id="has-key"><a href="#has-key" class="headerlink" title="has_key"></a>has_key</h4><p>检查字典中是否又给出的键。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a.has_key(&#x27;name&#x27;) 相当于 k in d</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="items-amp-iteritems"><a href="#items-amp-iteritems" class="headerlink" title="items &amp; iteritems"></a>items &amp; iteritems</h4><p>items 方法将所有的字典项以列表的方式返回，list中的每一个项来自(key, value)，返回时没有次序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> info</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;css&#x27;, &#x27;js&#x27;, &#x27;js&#x27;], &#x27;age&#x27;: 19, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; info.items()</span><br><span class="line">[(&#x27;skills&#x27;, [&#x27;css&#x27;, &#x27;js&#x27;, &#x27;js&#x27;]), (&#x27;age&#x27;, 19), (&#x27;name&#x27;, &#x27;webkong&#x27;)]</span><br></pre></td></tr></table></figure>
+
+<p>iteritems 方法和items大致相同，但是会返回一个迭代器对象。</p>
+<h4 id="keys-amp-iterkeys"><a href="#keys-amp-iterkeys" class="headerlink" title="keys &amp; iterkeys"></a>keys &amp; iterkeys</h4><p>keys方法将字典中的键以列表的形式返回， iterkeys返回迭代器对象。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; info</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;css&#x27;, &#x27;js&#x27;, &#x27;js&#x27;], &#x27;age&#x27;: 19, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; info.keys()</span><br><span class="line">[&#x27;skills&#x27;, &#x27;age&#x27;, &#x27;name&#x27;]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="pop"><a href="#pop" class="headerlink" title="pop"></a>pop</h4><p>pop方法用来获取对应键的值，然后将这个键值对从字典中移除。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; info</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;css&#x27;, &#x27;js&#x27;, &#x27;js&#x27;], &#x27;age&#x27;: 19, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; d = info.pop(&#x27;name&#x27;)</span><br><span class="line">&gt;&gt;&gt; d</span><br><span class="line">&#x27;webkong&#x27;</span><br><span class="line">&gt;&gt;&gt; info</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;css&#x27;, &#x27;js&#x27;, &#x27;js&#x27;], &#x27;age&#x27;: 19&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="popitem"><a href="#popitem" class="headerlink" title="popitem"></a>popitem</h4><p>popitem 类似于list.pop，但不同的是，popitem弹出的是随机项，因为字典没有最后项的概念。 若想一个接一个地移除并处理项，这个方法就很适合，不用首先获取键的列表。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.popitem()</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="setdefault"><a href="#setdefault" class="headerlink" title="setdefault"></a>setdefault</h4><p>setdefault可以在字典不包含给定键值对的情况下设置相应的键值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; b = &#123;&#125;</span><br><span class="line">&gt;&gt;&gt; b.setdefault(&#x27;name&#x27;,&#x27;N/A&#x27;)</span><br><span class="line">&#x27;N/A&#x27;</span><br><span class="line">&gt;&gt;&gt; b</span><br><span class="line">&#123;&#x27;name&#x27;: &#x27;N/A&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; b[&#x27;name&#x27;] = &#x27;webkong&#x27;</span><br><span class="line">&gt;&gt;&gt; b</span><br><span class="line">&#123;&#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; b.setdefault(&#x27;name&#x27;,&#x27;N/A&#x27;)</span><br><span class="line">&#x27;webkong&#x27;</span><br><span class="line">&gt;&gt;&gt; b</span><br><span class="line">&#123;&#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="update"><a href="#update" class="headerlink" title="update"></a>update</h4><p>update 方法可以利用一个字典项更新另外一个字典。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;css&#x27;, &#x27;js&#x27;, &#x27;js&#x27;], &#x27;age&#x27;: 19, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; x = &#123;&#x27;age&#x27;:18&#125;</span><br><span class="line">&gt;&gt;&gt; a.update(x)</span><br><span class="line">&gt;&gt;&gt; a</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;css&#x27;, &#x27;js&#x27;, &#x27;js&#x27;], &#x27;age&#x27;: 18, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; y = &#123;&#x27;kk&#x27;:&#x27;kkkk&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; a.update(y)</span><br><span class="line">&gt;&gt;&gt; a</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;css&#x27;, &#x27;js&#x27;, &#x27;js&#x27;], &#x27;kk&#x27;: &#x27;kkkk&#x27;, &#x27;age&#x27;: 18, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="values-amp-itervalues"><a href="#values-amp-itervalues" class="headerlink" title="values &amp; itervalues"></a>values &amp; itervalues</h4><p>values 方法以列表的形式返回字典的值， 返回的值可以包含重复的元素。 itervalues 返回一个迭代对象。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a</span><br><span class="line">&#123;&#x27;skills&#x27;: [&#x27;css&#x27;, &#x27;js&#x27;, &#x27;js&#x27;], &#x27;kk&#x27;: &#x27;kkkk&#x27;, &#x27;age&#x27;: 18, &#x27;name&#x27;: &#x27;webkong&#x27;&#125;</span><br><span class="line">&gt;&gt;&gt; a.values()</span><br><span class="line">[[&#x27;css&#x27;, &#x27;js&#x27;, &#x27;js&#x27;], &#x27;kkkk&#x27;, 18, &#x27;webkong&#x27;]</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>原作者： </strong>webkong
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.webkong.cn/python-%E5%AD%97%E5%85%B8%E7%9A%84%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/" title="python-字典的常用操作">https://blog.webkong.cn/python-字典的常用操作/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%8E%9F%E5%88%9B/" rel="tag"># 原创</a>
+              <a href="/tags/dict/" rel="tag"># dict</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/python-%E5%88%97%E8%A1%A8%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/" rel="prev" title="python-列表常用操作">
+                  <i class="fa fa-chevron-left"></i> python-列表常用操作
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/python-%E5%B8%B8%E7%94%A8%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/" rel="next" title="python-常用高阶函数">
+                  python-常用高阶函数 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">webkong</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"webkong","repo":"blog-gitment","client_id":"54ecf778fa1a619ba5f7","client_secret":"7fc721167bf96eb27e9edc7307a50fa3a7d12d4a","admin_user":"webkong","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"b23498ed1517c3f8b383d51425726dad"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
