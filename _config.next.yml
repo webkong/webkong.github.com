@@ -149,22 +149,12 @@ local_search:
 
 # ---------------------------------------------------------------
 # Comments
-# Legacy Gitment config replaced with Gitalk (same GitHub App / repo).
+# Legacy Gitment/Gitalk removed — Gitalk requires a client-side secret or
+# proxy, and its GitHub App was flagged as a credential risk. Comments off.
 # ---------------------------------------------------------------
 
 comments:
   style: tabs
-  active: gitalk
+  active:
   storage: true
   lazyload: false
-
-gitalk:
-  enable: true
-  github_id: webkong
-  repo: blog-gitment
-  client_id: 54ecf778fa1a619ba5f7
-  # client_secret removed: Gitalk runs client-side; never ship the secret.
-  # Use a proxy_gateway + admin_token instead (see Gitalk docs).
-  admin_user: webkong
-  distraction_free_mode: true
-  language: zh-CN
