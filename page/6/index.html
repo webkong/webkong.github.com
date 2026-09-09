@@ -1668,7 +1668,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2026-09-07 11:09:04" itemprop="dateModified" datetime="2026-09-07T11:09:04+08:00">2026-09-07</time>
+        <time title="修改时间：2026-09-09 15:14:48" itemprop="dateModified" datetime="2026-09-09T15:14:48+08:00">2026-09-09</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1693,7 +1693,7 @@
           <blockquote>
 <p>最近项目需要做一个小巧的web应用，所以用了avalon，并用webpack管理代码</p>
 </blockquote>
-<p>安装过程就不在赘述，可以看<a href="http://webkong.cn/2016/webpack%E5%AE%89%E8%A3%85/">webpack的安装</a></p>
+<p>安装过程就不在赘述，可以看<a href="https://webkong.cn/webpack%E7%9A%84%E5%AE%89%E8%A3%85/">webpack的安装</a></p>
 <ol>
 <li>安装webpack</li>
 <li>新建项目目录</li>
@@ -1726,7 +1726,7 @@
 </blockquote>
 <h2 id="配置文件详解"><a href="#配置文件详解" class="headerlink" title="配置文件详解"></a>配置文件详解</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">module: &#123;</span><br><span class="line">    loaders: [&#123;</span><br><span class="line">        test: /\.css$/,</span><br><span class="line">        //loader: &quot;style-loader!css-loader?modules&quot;</span><br><span class="line">        loader: ExtractTextPlugin.extract(&quot;style-loader&quot;, &quot;css-loader&quot;)</span><br><span class="line">    &#125;, &#123;</span><br><span class="line">        test: /\.(jpg|png)$/,</span><br><span class="line">        loader: &quot;url?limit=8192&quot;</span><br><span class="line">    &#125;, &#123;</span><br><span class="line">        test: /\.scss$/,</span><br><span class="line">        //loader: &quot;style!css!sass&quot;</span><br><span class="line">        loader: ExtractTextPlugin.extract(&#x27;style&#x27;, &#x27;css!sass&#x27;)</span><br><span class="line">    &#125;,&#123;</span><br><span class="line">        test: /\.less$/,</span><br><span class="line">        loader: &quot;style!css!less&quot;</span><br><span class="line">    &#125;,&#123;</span><br><span class="line">        test: /\.html$/,</span><br><span class="line">        loader: &quot;html?attrs=img:src img:data-src&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123; test: /\.(woff|ttf|eot|woff2)$/, loader: &quot;file-loader&quot;&#125;</span><br><span class="line"></span><br><span class="line">    ]</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
 <p>配置文件中的loader，用来将各种文件一起打包在一起，css,js,scss,html等文件打包到一起<br>可以去官网查看具体的loader<br>[<a target="_blank" rel="noopener" href="http://webpack.github.io/docs/list-of-plugins.html]">http://webpack.github.io/docs/list-of-plugins.html]</a>(<a target="_blank" rel="noopener" href="http://webpack.github.io/docs/list-of-p">http://webpack.github.io/docs/list-of-p</a></p>
-<p>可以查看<a href="http://webkong.cn/2016/webpack%E9%85%8D%E7%BD%AE%EF%BC%88jQuery+jq%E6%8F%92%E4%BB%B6%EF%BC%89/">webpack配置jQuery插件</a></p>
+<p>可以查看<a href="https://webkong.cn/webpack%E9%85%8D%E7%BD%AE%EF%BC%88jquery-jq%E6%8F%92%E4%BB%B6%EF%BC%89/">webpack配置jQuery插件</a></p>
 
       
     </div>
