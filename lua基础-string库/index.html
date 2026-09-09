@@ -22,11 +22,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 <meta name="description" content="Lua 字符串库包含很多强大的字符操作函数。字符串库中的所有函数都导出在模块 string 中。在 Lua 5.1 中，它还将这些函数导出作为 string 类型的方法。这样假设要返回一个字符串转的大写形式，可以写成 ans &#x3D; string.upper(s) ,也能写成 ans &#x3D; s:upper()。为了避免与之前版本不兼容，此处使用前者。Lua 字符串总是由字节构成的。Lua 核心并不尝试理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Lua基础-String库">
-<meta property="og:url" content="https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80-string%E5%BA%93/index.html">
+<meta property="og:url" content="https://webkong.cn/lua%E5%9F%BA%E7%A1%80-string%E5%BA%93/index.html">
 <meta property="og:site_name" content="WebKong的网络日志">
 <meta property="og:description" content="Lua 字符串库包含很多强大的字符操作函数。字符串库中的所有函数都导出在模块 string 中。在 Lua 5.1 中，它还将这些函数导出作为 string 类型的方法。这样假设要返回一个字符串转的大写形式，可以写成 ans &#x3D; string.upper(s) ,也能写成 ans &#x3D; s:upper()。为了避免与之前版本不兼容，此处使用前者。Lua 字符串总是由字节构成的。Lua 核心并不尝试理">
 <meta property="og:locale" content="zh_CN">
@@ -36,11 +36,11 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80-string%E5%BA%93/">
+<link rel="canonical" href="https://webkong.cn/lua%E5%9F%BA%E7%A1%80-string%E5%BA%93/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80-string%E5%BA%93/","path":"lua基础-string库/","title":"Lua基础-String库"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://webkong.cn/lua%E5%9F%BA%E7%A1%80-string%E5%BA%93/","path":"lua基础-string库/","title":"Lua基础-String库"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>Lua基础-String库 | WebKong的网络日志</title>
@@ -244,7 +244,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80-string%E5%BA%93/">
+    <link itemprop="mainEntityOfPage" href="https://webkong.cn/lua%E5%9F%BA%E7%A1%80-string%E5%BA%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -362,7 +362,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://blog.webkong.cn/lua%E5%9F%BA%E7%A1%80-string%E5%BA%93/" title="Lua基础-String库">https://blog.webkong.cn/lua基础-string库/</a>
+      <a href="https://webkong.cn/lua%E5%9F%BA%E7%A1%80-string%E5%BA%93/" title="Lua基础-String库">https://webkong.cn/lua基础-string库/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！

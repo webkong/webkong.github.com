@@ -22,16 +22,16 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 <meta name="description" content="上一篇聊了 DeepSeek Harness（dsh）「一切皆插件」的设计，这篇直接动手：把一个 greet 工具注册进 harness，让模型能调用它，并全程通过事件观察结果。整个例子不需要 API Key、不调用模型，跑通就走完了 dsh 插件开发的完整链路。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DeepSeek Harness 插件开发实战：从 hello 到面向模型的工具">
-<meta property="og:url" content="https://blog.webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E-hello-%E5%88%B0%E9%9D%A2%E5%90%91%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B7%A5%E5%85%B7/index.html">
+<meta property="og:url" content="https://webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E-hello-%E5%88%B0%E9%9D%A2%E5%90%91%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B7%A5%E5%85%B7/index.html">
 <meta property="og:site_name" content="WebKong的网络日志">
 <meta property="og:description" content="上一篇聊了 DeepSeek Harness（dsh）「一切皆插件」的设计，这篇直接动手：把一个 greet 工具注册进 harness，让模型能调用它，并全程通过事件观察结果。整个例子不需要 API Key、不调用模型，跑通就走完了 dsh 插件开发的完整链路。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-09-07T03:00:00.000Z">
-<meta property="article:modified_time" content="2026-09-07T12:03:47.633Z">
+<meta property="article:modified_time" content="2026-09-09T06:48:22.634Z">
 <meta property="article:author" content="webkong">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="DeepSeek">
@@ -41,11 +41,11 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://blog.webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E-hello-%E5%88%B0%E9%9D%A2%E5%90%91%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B7%A5%E5%85%B7/">
+<link rel="canonical" href="https://webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E-hello-%E5%88%B0%E9%9D%A2%E5%90%91%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B7%A5%E5%85%B7/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E-hello-%E5%88%B0%E9%9D%A2%E5%90%91%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B7%A5%E5%85%B7/","path":"deepseek-harness-插件开发实战：从-hello-到面向模型的工具/","title":"DeepSeek Harness 插件开发实战：从 hello 到面向模型的工具"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E-hello-%E5%88%B0%E9%9D%A2%E5%90%91%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B7%A5%E5%85%B7/","path":"deepseek-harness-插件开发实战：从-hello-到面向模型的工具/","title":"DeepSeek Harness 插件开发实战：从 hello 到面向模型的工具"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>DeepSeek Harness 插件开发实战：从 hello 到面向模型的工具 | WebKong的网络日志</title>
@@ -249,7 +249,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E-hello-%E5%88%B0%E9%9D%A2%E5%90%91%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B7%A5%E5%85%B7/">
+    <link itemprop="mainEntityOfPage" href="https://webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E-hello-%E5%88%B0%E9%9D%A2%E5%90%91%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B7%A5%E5%85%B7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -272,10 +272,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2026-09-07 11:00:00 / 修改时间：20:03:47" itemprop="dateCreated datePublished" datetime="2026-09-07T11:00:00+08:00">2026-09-07</time>
+      <time title="创建时间：2026-09-07 11:00:00" itemprop="dateCreated datePublished" datetime="2026-09-07T11:00:00+08:00">2026-09-07</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2026-09-09 14:48:22" itemprop="dateModified" datetime="2026-09-09T14:48:22+08:00">2026-09-09</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -308,7 +314,7 @@
 </blockquote>
 <span id="more"></span>
 
-<p><a href="https://blog.webkong.cn/deepseek-harness%EF%BC%9A%E4%B8%80%E5%88%87%E7%9A%86%E6%8F%92%E4%BB%B6%E7%9A%84-agent-%E6%A1%86%E6%9E%B6/">上一篇</a>里我们摸清了 dsh 的骨架：Agent = Model + Harness，一切能力都是插件。但光懂了架构不算会写插件，这篇是真正落地的教程。</p>
+<p><a href="https://webkong.cn/deepseek-harness%EF%BC%9A%E4%B8%80%E5%88%87%E7%9A%86%E6%8F%92%E4%BB%B6%E7%9A%84-agent-%E6%A1%86%E6%9E%B6/">上一篇</a>里我们摸清了 dsh 的骨架：Agent = Model + Harness，一切能力都是插件。但光懂了架构不算会写插件，这篇是真正落地的教程。</p>
 <p>我会带你走完一条最小、但完全真实的路径：<strong>写一个工具插件 → 注册进 <code>tools</code> 服务 → 驱动一次调用 → 通过 <code>tools/result</code> 事件观察结果</strong>。全程无密钥、不碰模型。</p>
 <h1 id="从最小工具开始"><a href="#从最小工具开始" class="headerlink" title="从最小工具开始"></a>从最小工具开始</h1><p>dsh 的工具就是「模型能调用的一个能力」。要让它被模型看见，你需要做三件事：定义它、把它注册给 <code>tools</code> 服务、告诉 harness 你依赖这个服务。</p>
 <p>先写一个 <code>greet-tool.ts</code>：</p>
@@ -416,7 +422,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://blog.webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E-hello-%E5%88%B0%E9%9D%A2%E5%90%91%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B7%A5%E5%85%B7/" title="DeepSeek Harness 插件开发实战：从 hello 到面向模型的工具">https://blog.webkong.cn/deepseek-harness-插件开发实战：从-hello-到面向模型的工具/</a>
+      <a href="https://webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%EF%BC%9A%E4%BB%8E-hello-%E5%88%B0%E9%9D%A2%E5%90%91%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B7%A5%E5%85%B7/" title="DeepSeek Harness 插件开发实战：从 hello 到面向模型的工具">https://webkong.cn/deepseek-harness-插件开发实战：从-hello-到面向模型的工具/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！

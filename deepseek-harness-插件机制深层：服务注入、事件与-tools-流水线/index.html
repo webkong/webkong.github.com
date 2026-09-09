@@ -22,16 +22,16 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 <meta name="description" content="上一篇动手写出了第一个 dsh 工具。这篇往回退一步，讲透插件之间的「对话方式」：什么是服务、inject 到底如何决定启动顺序、事件系统为什么能解耦插件，以及 tools 执行时那一层层流水线（pre-execute &#x2F; guards &#x2F; execute &#x2F; post-execute &#x2F; result）各自干什么。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DeepSeek Harness 插件机制深层：服务注入、事件与 tools 流水线">
-<meta property="og:url" content="https://blog.webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%B1%82%EF%BC%9A%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%85%A5%E3%80%81%E4%BA%8B%E4%BB%B6%E4%B8%8E-tools-%E6%B5%81%E6%B0%B4%E7%BA%BF/index.html">
+<meta property="og:url" content="https://webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%B1%82%EF%BC%9A%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%85%A5%E3%80%81%E4%BA%8B%E4%BB%B6%E4%B8%8E-tools-%E6%B5%81%E6%B0%B4%E7%BA%BF/index.html">
 <meta property="og:site_name" content="WebKong的网络日志">
 <meta property="og:description" content="上一篇动手写出了第一个 dsh 工具。这篇往回退一步，讲透插件之间的「对话方式」：什么是服务、inject 到底如何决定启动顺序、事件系统为什么能解耦插件，以及 tools 执行时那一层层流水线（pre-execute &#x2F; guards &#x2F; execute &#x2F; post-execute &#x2F; result）各自干什么。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-09-07T04:00:00.000Z">
-<meta property="article:modified_time" content="2026-09-07T12:04:20.232Z">
+<meta property="article:modified_time" content="2026-09-09T06:48:22.642Z">
 <meta property="article:author" content="webkong">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="DeepSeek">
@@ -41,11 +41,11 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://blog.webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%B1%82%EF%BC%9A%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%85%A5%E3%80%81%E4%BA%8B%E4%BB%B6%E4%B8%8E-tools-%E6%B5%81%E6%B0%B4%E7%BA%BF/">
+<link rel="canonical" href="https://webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%B1%82%EF%BC%9A%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%85%A5%E3%80%81%E4%BA%8B%E4%BB%B6%E4%B8%8E-tools-%E6%B5%81%E6%B0%B4%E7%BA%BF/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%B1%82%EF%BC%9A%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%85%A5%E3%80%81%E4%BA%8B%E4%BB%B6%E4%B8%8E-tools-%E6%B5%81%E6%B0%B4%E7%BA%BF/","path":"deepseek-harness-插件机制深层：服务注入、事件与-tools-流水线/","title":"DeepSeek Harness 插件机制深层：服务注入、事件与 tools 流水线"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%B1%82%EF%BC%9A%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%85%A5%E3%80%81%E4%BA%8B%E4%BB%B6%E4%B8%8E-tools-%E6%B5%81%E6%B0%B4%E7%BA%BF/","path":"deepseek-harness-插件机制深层：服务注入、事件与-tools-流水线/","title":"DeepSeek Harness 插件机制深层：服务注入、事件与 tools 流水线"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>DeepSeek Harness 插件机制深层：服务注入、事件与 tools 流水线 | WebKong的网络日志</title>
@@ -249,7 +249,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%B1%82%EF%BC%9A%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%85%A5%E3%80%81%E4%BA%8B%E4%BB%B6%E4%B8%8E-tools-%E6%B5%81%E6%B0%B4%E7%BA%BF/">
+    <link itemprop="mainEntityOfPage" href="https://webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%B1%82%EF%BC%9A%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%85%A5%E3%80%81%E4%BA%8B%E4%BB%B6%E4%B8%8E-tools-%E6%B5%81%E6%B0%B4%E7%BA%BF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -272,10 +272,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2026-09-07 12:00:00 / 修改时间：20:04:20" itemprop="dateCreated datePublished" datetime="2026-09-07T12:00:00+08:00">2026-09-07</time>
+      <time title="创建时间：2026-09-07 12:00:00" itemprop="dateCreated datePublished" datetime="2026-09-07T12:00:00+08:00">2026-09-07</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2026-09-09 14:48:22" itemprop="dateModified" datetime="2026-09-09T14:48:22+08:00">2026-09-09</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -308,7 +314,7 @@
 </blockquote>
 <span id="more"></span>
 
-<p><a href="https://blog.webkong.cn/deepseek-harness-plugin-hello/">上一篇</a>我们写出了 <code>greet</code> 工具，但它是「照葫芦画瓢」。为什么插件要 <code>inject: [&#39;tools&#39;]</code>？为什么 <code>ctx.tools.register(...)</code> 卸载时会自动注销？为什么观察者插件能靠一个 <code>tools/result</code> 事件跟工具插件勾搭上？</p>
+<p><a href="https://webkong.cn/deepseek-harness-plugin-hello/">上一篇</a>我们写出了 <code>greet</code> 工具，但它是「照葫芦画瓢」。为什么插件要 <code>inject: [&#39;tools&#39;]</code>？为什么 <code>ctx.tools.register(...)</code> 卸载时会自动注销？为什么观察者插件能靠一个 <code>tools/result</code> 事件跟工具插件勾搭上？</p>
 <p>答案都藏在 dsh 底层的插件系统 <strong>Cordis</strong> 里。这篇把它讲透。</p>
 <h1 id="插件、Service-与事件"><a href="#插件、Service-与事件" class="headerlink" title="插件、Service 与事件"></a>插件、Service 与事件</h1><p>dsh 里有两套插件协作的机制，对应两句话：</p>
 <ul>
@@ -454,7 +460,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://blog.webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%B1%82%EF%BC%9A%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%85%A5%E3%80%81%E4%BA%8B%E4%BB%B6%E4%B8%8E-tools-%E6%B5%81%E6%B0%B4%E7%BA%BF/" title="DeepSeek Harness 插件机制深层：服务注入、事件与 tools 流水线">https://blog.webkong.cn/deepseek-harness-插件机制深层：服务注入、事件与-tools-流水线/</a>
+      <a href="https://webkong.cn/deepseek-harness-%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%B1%82%EF%BC%9A%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%85%A5%E3%80%81%E4%BA%8B%E4%BB%B6%E4%B8%8E-tools-%E6%B5%81%E6%B0%B4%E7%BA%BF/" title="DeepSeek Harness 插件机制深层：服务注入、事件与 tools 流水线">https://webkong.cn/deepseek-harness-插件机制深层：服务注入、事件与-tools-流水线/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！

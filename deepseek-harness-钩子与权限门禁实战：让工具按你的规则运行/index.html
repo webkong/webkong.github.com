@@ -22,16 +22,16 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 <meta name="description" content="前两篇解决「怎么把能力加进 dsh」，这篇回答「怎么给能力立规矩」。我用 dsh 的钩子系统写一个权限门禁插件：通过 tools&#x2F;pre-execute 对一次工具调用返回「允许 &#x2F; 拒绝 &#x2F; 询问」，再把它和一个审批策略插件接起来。看完你就能让 Agent 的任何操作都走你的规则。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DeepSeek Harness 钩子与权限门禁实战：让工具按你的规则运行">
-<meta property="og:url" content="https://blog.webkong.cn/deepseek-harness-%E9%92%A9%E5%AD%90%E4%B8%8E%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%A9%E5%B7%A5%E5%85%B7%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99%E8%BF%90%E8%A1%8C/index.html">
+<meta property="og:url" content="https://webkong.cn/deepseek-harness-%E9%92%A9%E5%AD%90%E4%B8%8E%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%A9%E5%B7%A5%E5%85%B7%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99%E8%BF%90%E8%A1%8C/index.html">
 <meta property="og:site_name" content="WebKong的网络日志">
 <meta property="og:description" content="前两篇解决「怎么把能力加进 dsh」，这篇回答「怎么给能力立规矩」。我用 dsh 的钩子系统写一个权限门禁插件：通过 tools&#x2F;pre-execute 对一次工具调用返回「允许 &#x2F; 拒绝 &#x2F; 询问」，再把它和一个审批策略插件接起来。看完你就能让 Agent 的任何操作都走你的规则。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-09-07T05:00:00.000Z">
-<meta property="article:modified_time" content="2026-09-07T12:04:51.751Z">
+<meta property="article:modified_time" content="2026-09-09T06:48:22.639Z">
 <meta property="article:author" content="webkong">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="DeepSeek">
@@ -41,11 +41,11 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://blog.webkong.cn/deepseek-harness-%E9%92%A9%E5%AD%90%E4%B8%8E%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%A9%E5%B7%A5%E5%85%B7%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99%E8%BF%90%E8%A1%8C/">
+<link rel="canonical" href="https://webkong.cn/deepseek-harness-%E9%92%A9%E5%AD%90%E4%B8%8E%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%A9%E5%B7%A5%E5%85%B7%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99%E8%BF%90%E8%A1%8C/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/deepseek-harness-%E9%92%A9%E5%AD%90%E4%B8%8E%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%A9%E5%B7%A5%E5%85%B7%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99%E8%BF%90%E8%A1%8C/","path":"deepseek-harness-钩子与权限门禁实战：让工具按你的规则运行/","title":"DeepSeek Harness 钩子与权限门禁实战：让工具按你的规则运行"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://webkong.cn/deepseek-harness-%E9%92%A9%E5%AD%90%E4%B8%8E%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%A9%E5%B7%A5%E5%85%B7%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99%E8%BF%90%E8%A1%8C/","path":"deepseek-harness-钩子与权限门禁实战：让工具按你的规则运行/","title":"DeepSeek Harness 钩子与权限门禁实战：让工具按你的规则运行"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>DeepSeek Harness 钩子与权限门禁实战：让工具按你的规则运行 | WebKong的网络日志</title>
@@ -249,7 +249,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/deepseek-harness-%E9%92%A9%E5%AD%90%E4%B8%8E%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%A9%E5%B7%A5%E5%85%B7%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99%E8%BF%90%E8%A1%8C/">
+    <link itemprop="mainEntityOfPage" href="https://webkong.cn/deepseek-harness-%E9%92%A9%E5%AD%90%E4%B8%8E%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%A9%E5%B7%A5%E5%85%B7%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99%E8%BF%90%E8%A1%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -272,10 +272,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2026-09-07 13:00:00 / 修改时间：20:04:51" itemprop="dateCreated datePublished" datetime="2026-09-07T13:00:00+08:00">2026-09-07</time>
+      <time title="创建时间：2026-09-07 13:00:00" itemprop="dateCreated datePublished" datetime="2026-09-07T13:00:00+08:00">2026-09-07</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2026-09-09 14:48:22" itemprop="dateModified" datetime="2026-09-09T14:48:22+08:00">2026-09-09</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -308,7 +314,7 @@
 </blockquote>
 <span id="more"></span>
 
-<p><a href="https://blog.webkong.cn/deepseek-harness-plugin-services-events/">上一篇</a>讲清楚了 <code>tools</code> 流水线。里面最值得单独展开的就是 <code>tools/pre-execute</code>——它是 <strong>waterfall</strong>，是 dsh 的「可重排策略层」，钩子、权限、沙箱、plan-mode 全都挂在这儿。</p>
+<p><a href="https://webkong.cn/deepseek-harness-plugin-services-events/">上一篇</a>讲清楚了 <code>tools</code> 流水线。里面最值得单独展开的就是 <code>tools/pre-execute</code>——它是 <strong>waterfall</strong>，是 dsh 的「可重排策略层」，钩子、权限、沙箱、plan-mode 全都挂在这儿。</p>
 <p>这篇就用它写一个真正的权限门禁。</p>
 <h1 id="为什么权限要挂在水管上，而不是写进工具里"><a href="#为什么权限要挂在水管上，而不是写进工具里" class="headerlink" title="为什么权限要挂在水管上，而不是写进工具里"></a>为什么权限要挂在水管上，而不是写进工具里</h1><p>新手最容易想到的做法是：在 <code>execute</code> 里 <code>if (args.path.includes(&#39;/etc&#39;)) throw</code>。但我上篇说过，dsh 的纪律是<strong>把部署策略从工具里剥离出来</strong>。原因有三：</p>
 <ol>
@@ -455,7 +461,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://blog.webkong.cn/deepseek-harness-%E9%92%A9%E5%AD%90%E4%B8%8E%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%A9%E5%B7%A5%E5%85%B7%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99%E8%BF%90%E8%A1%8C/" title="DeepSeek Harness 钩子与权限门禁实战：让工具按你的规则运行">https://blog.webkong.cn/deepseek-harness-钩子与权限门禁实战：让工具按你的规则运行/</a>
+      <a href="https://webkong.cn/deepseek-harness-%E9%92%A9%E5%AD%90%E4%B8%8E%E6%9D%83%E9%99%90%E9%97%A8%E7%A6%81%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%A9%E5%B7%A5%E5%85%B7%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99%E8%BF%90%E8%A1%8C/" title="DeepSeek Harness 钩子与权限门禁实战：让工具按你的规则运行">https://webkong.cn/deepseek-harness-钩子与权限门禁实战：让工具按你的规则运行/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！

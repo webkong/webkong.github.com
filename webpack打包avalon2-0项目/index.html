@@ -22,32 +22,32 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"webkong.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 <meta name="description" content="最近项目需要做一个小巧的web应用，所以用了avalon，并用webpack管理代码  安装过程就不在赘述，可以看webpack的安装  安装webpack 新建项目目录  123456789101112├── package.json              # 项目配置├── index.html                # 入口文件1├── index2.html">
 <meta property="og:type" content="article">
 <meta property="og:title" content="webpack打包avalon2.0项目">
-<meta property="og:url" content="https://blog.webkong.cn/webpack%E6%89%93%E5%8C%85avalon2-0%E9%A1%B9%E7%9B%AE/index.html">
+<meta property="og:url" content="https://webkong.cn/webpack%E6%89%93%E5%8C%85avalon2-0%E9%A1%B9%E7%9B%AE/index.html">
 <meta property="og:site_name" content="WebKong的网络日志">
 <meta property="og:description" content="最近项目需要做一个小巧的web应用，所以用了avalon，并用webpack管理代码  安装过程就不在赘述，可以看webpack的安装  安装webpack 新建项目目录  123456789101112├── package.json              # 项目配置├── index.html                # 入口文件1├── index2.html">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog.webkong.cn/images/2016/webapck.png">
+<meta property="og:image" content="https://webkong.cn/images/2016/webapck.png">
 <meta property="article:published_time" content="2016-09-08T11:19:00.000Z">
 <meta property="article:modified_time" content="2026-09-07T03:09:04.794Z">
 <meta property="article:author" content="webkong">
 <meta property="article:tag" content="JavaScript">
 <meta property="article:tag" content="原创">
-<meta property="article:tag" content="模块化">
 <meta property="article:tag" content="webpack">
+<meta property="article:tag" content="模块化">
 <meta property="article:tag" content="jQuery">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.webkong.cn/images/2016/webapck.png">
+<meta name="twitter:image" content="https://webkong.cn/images/2016/webapck.png">
 
 
-<link rel="canonical" href="https://blog.webkong.cn/webpack%E6%89%93%E5%8C%85avalon2-0%E9%A1%B9%E7%9B%AE/">
+<link rel="canonical" href="https://webkong.cn/webpack%E6%89%93%E5%8C%85avalon2-0%E9%A1%B9%E7%9B%AE/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.webkong.cn/webpack%E6%89%93%E5%8C%85avalon2-0%E9%A1%B9%E7%9B%AE/","path":"webpack打包avalon2-0项目/","title":"webpack打包avalon2.0项目"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://webkong.cn/webpack%E6%89%93%E5%8C%85avalon2-0%E9%A1%B9%E7%9B%AE/","path":"webpack打包avalon2-0项目/","title":"webpack打包avalon2.0项目"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>webpack打包avalon2.0项目 | WebKong的网络日志</title>
@@ -251,7 +251,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.webkong.cn/webpack%E6%89%93%E5%8C%85avalon2-0%E9%A1%B9%E7%9B%AE/">
+    <link itemprop="mainEntityOfPage" href="https://webkong.cn/webpack%E6%89%93%E5%8C%85avalon2-0%E9%A1%B9%E7%9B%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -314,7 +314,7 @@
         <blockquote>
 <p>最近项目需要做一个小巧的web应用，所以用了avalon，并用webpack管理代码</p>
 </blockquote>
-<p>安装过程就不在赘述，可以看<a target="_blank" rel="noopener" href="http://webkong.cn/2016/webpack%E5%AE%89%E8%A3%85/">webpack的安装</a></p>
+<p>安装过程就不在赘述，可以看<a href="http://webkong.cn/2016/webpack%E5%AE%89%E8%A3%85/">webpack的安装</a></p>
 <ol>
 <li>安装webpack</li>
 <li>新建项目目录</li>
@@ -347,7 +347,7 @@
 </blockquote>
 <h2 id="配置文件详解"><a href="#配置文件详解" class="headerlink" title="配置文件详解"></a>配置文件详解</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">module: &#123;</span><br><span class="line">    loaders: [&#123;</span><br><span class="line">        test: /\.css$/,</span><br><span class="line">        //loader: &quot;style-loader!css-loader?modules&quot;</span><br><span class="line">        loader: ExtractTextPlugin.extract(&quot;style-loader&quot;, &quot;css-loader&quot;)</span><br><span class="line">    &#125;, &#123;</span><br><span class="line">        test: /\.(jpg|png)$/,</span><br><span class="line">        loader: &quot;url?limit=8192&quot;</span><br><span class="line">    &#125;, &#123;</span><br><span class="line">        test: /\.scss$/,</span><br><span class="line">        //loader: &quot;style!css!sass&quot;</span><br><span class="line">        loader: ExtractTextPlugin.extract(&#x27;style&#x27;, &#x27;css!sass&#x27;)</span><br><span class="line">    &#125;,&#123;</span><br><span class="line">        test: /\.less$/,</span><br><span class="line">        loader: &quot;style!css!less&quot;</span><br><span class="line">    &#125;,&#123;</span><br><span class="line">        test: /\.html$/,</span><br><span class="line">        loader: &quot;html?attrs=img:src img:data-src&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123; test: /\.(woff|ttf|eot|woff2)$/, loader: &quot;file-loader&quot;&#125;</span><br><span class="line"></span><br><span class="line">    ]</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
 <p>配置文件中的loader，用来将各种文件一起打包在一起，css,js,scss,html等文件打包到一起<br>可以去官网查看具体的loader<br>[<a target="_blank" rel="noopener" href="http://webpack.github.io/docs/list-of-plugins.html]">http://webpack.github.io/docs/list-of-plugins.html]</a>(<a target="_blank" rel="noopener" href="http://webpack.github.io/docs/list-of-p">http://webpack.github.io/docs/list-of-p</a></p>
-<p>可以查看<a target="_blank" rel="noopener" href="http://webkong.cn/2016/webpack%E9%85%8D%E7%BD%AE%EF%BC%88jQuery+jq%E6%8F%92%E4%BB%B6%EF%BC%89/">webpack配置jQuery插件</a></p>
+<p>可以查看<a href="http://webkong.cn/2016/webpack%E9%85%8D%E7%BD%AE%EF%BC%88jQuery+jq%E6%8F%92%E4%BB%B6%EF%BC%89/">webpack配置jQuery插件</a></p>
 
     </div>
 
@@ -365,7 +365,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://blog.webkong.cn/webpack%E6%89%93%E5%8C%85avalon2-0%E9%A1%B9%E7%9B%AE/" title="webpack打包avalon2.0项目">https://blog.webkong.cn/webpack打包avalon2-0项目/</a>
+      <a href="https://webkong.cn/webpack%E6%89%93%E5%8C%85avalon2-0%E9%A1%B9%E7%9B%AE/" title="webpack打包avalon2.0项目">https://webkong.cn/webpack打包avalon2-0项目/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -376,8 +376,8 @@
           <div class="post-tags">
               <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
               <a href="/tags/%E5%8E%9F%E5%88%9B/" rel="tag"># 原创</a>
-              <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag"># 模块化</a>
               <a href="/tags/webpack/" rel="tag"># webpack</a>
+              <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag"># 模块化</a>
               <a href="/tags/jQuery/" rel="tag"># jQuery</a>
           </div>
 
