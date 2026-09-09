@@ -17,7 +17,7 @@ date: 2026-09-07 13:00:00
 
 <!-- more -->
 
-[上一篇](https://blog.webkong.cn/deepseek-harness-plugin-services-events/)讲清楚了 `tools` 流水线。里面最值得单独展开的就是 `tools/pre-execute`——它是 **waterfall**，是 dsh 的「可重排策略层」，钩子、权限、沙箱、plan-mode 全都挂在这儿。
+[上一篇](https://webkong.cn/deepseek-harness-plugin-services-events/)讲清楚了 `tools` 流水线。里面最值得单独展开的就是 `tools/pre-execute`——它是 **waterfall**，是 dsh 的「可重排策略层」，钩子、权限、沙箱、plan-mode 全都挂在这儿。
 
 这篇就用它写一个真正的权限门禁。
 

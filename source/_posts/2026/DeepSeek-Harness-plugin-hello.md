@@ -17,7 +17,7 @@ date: 2026-09-07 11:00:00
 
 <!-- more -->
 
-[上一篇](https://blog.webkong.cn/deepseek-harness：一切皆插件的-agent-框架/)里我们摸清了 dsh 的骨架：Agent = Model + Harness，一切能力都是插件。但光懂了架构不算会写插件，这篇是真正落地的教程。
+[上一篇](https://webkong.cn/deepseek-harness：一切皆插件的-agent-框架/)里我们摸清了 dsh 的骨架：Agent = Model + Harness，一切能力都是插件。但光懂了架构不算会写插件，这篇是真正落地的教程。
 
 我会带你走完一条最小、但完全真实的路径：**写一个工具插件 → 注册进 `tools` 服务 → 驱动一次调用 → 通过 `tools/result` 事件观察结果**。全程无密钥、不碰模型。
 

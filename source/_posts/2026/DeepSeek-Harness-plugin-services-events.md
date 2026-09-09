@@ -17,7 +17,7 @@ date: 2026-09-07 12:00:00
 
 <!-- more -->
 
-[上一篇](https://blog.webkong.cn/deepseek-harness-plugin-hello/)我们写出了 `greet` 工具，但它是「照葫芦画瓢」。为什么插件要 `inject: ['tools']`？为什么 `ctx.tools.register(...)` 卸载时会自动注销？为什么观察者插件能靠一个 `tools/result` 事件跟工具插件勾搭上？
+[上一篇](https://webkong.cn/deepseek-harness-plugin-hello/)我们写出了 `greet` 工具，但它是「照葫芦画瓢」。为什么插件要 `inject: ['tools']`？为什么 `ctx.tools.register(...)` 卸载时会自动注销？为什么观察者插件能靠一个 `tools/result` 事件跟工具插件勾搭上？
 
 答案都藏在 dsh 底层的插件系统 **Cordis** 里。这篇把它讲透。
 
