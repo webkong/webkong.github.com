@@ -76,11 +76,11 @@ sitemap:
 ## Themes: https://hexo.io/themes/
 theme: next
 
-# #algolia search
+# #algolia search (credentials removed — rotate keys at Algolia dashboard, never commit secrets)
 # algolia:
-#   applicationID: 'U1DOHPTKLP'
-#   apiKey: 'e375297fe307ce8640b317ba49785353'
-#   adminApiKey: '35bc10d1377f3adee70eb2ffb565bade'
+#   applicationID: 'YOUR_APPLICATION_ID'
+#   apiKey: 'YOUR_SEARCH_ONLY_API_KEY'
+#   adminApiKey: 'YOUR_ADMIN_API_KEY'
 #   indexName: 'webkong'
 #   chunkSize: 5000
 #   fields:
