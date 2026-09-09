@@ -59,7 +59,7 @@ tags:
 
 ### Flex 实现页脚
 
-Flex的语法可以参考我之前的一个[Flex 布局](http://blog.webkong.cn/2017/Flex%E5%B8%83%E5%B1%80/)
+Flex的语法可以参考我之前的一个[Flex 弹性布局](https://webkong.cn/flex%E5%BC%B9%E6%80%A7%E5%B8%83%E5%B1%80/)
 
 使用flex几行代码就可以实现，先在`<body>`上设置`display:flex`, 并添加`flex-direction: column;`让内容纵向排列，或者使用组合属性`flex-flow:column`, 再设置`min-height:100vh`，让body占据整个视窗。在`<main>`上设置`flex:1`来让main自动适配剩余空间的大小。这样就OK了。
 

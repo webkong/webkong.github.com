@@ -15,7 +15,7 @@ tags:
 
 >最近项目需要做一个小巧的web应用，所以用了avalon，并用webpack管理代码
 
-安装过程就不在赘述，可以看[webpack的安装](http://webkong.cn/2016/webpack%E5%AE%89%E8%A3%85/)
+安装过程就不在赘述，可以看[webpack的安装](https://webkong.cn/webpack%E7%9A%84%E5%AE%89%E8%A3%85/)
 
 1. 安装webpack
 2. 新建项目目录
@@ -219,4 +219,4 @@ module: {
 可以去官网查看具体的loader
 [http://webpack.github.io/docs/list-of-plugins.html](http://webpack.github.io/docs/list-of-p
 
-可以查看[webpack配置jQuery插件](http://webkong.cn/2016/webpack配置（jQuery+jq插件）/)
+可以查看[webpack配置jQuery插件](https://webkong.cn/webpack%E9%85%8D%E7%BD%AE%EF%BC%88jquery-jq%E6%8F%92%E4%BB%B6%EF%BC%89/)

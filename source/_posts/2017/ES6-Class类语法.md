@@ -21,7 +21,7 @@ tags:
 <!-- more -->
 ### ES5模拟的类
 
-[JavaScript定义class的三种方法](https://blog.webkong.cn/2014/JavaScript%E5%AE%9A%E4%B9%89%E7%B1%BB)
+[JavaScript定义class的三种方法](https://webkong.cn/javascript%E5%AE%9A%E4%B9%89%E7%B1%BB-class-%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95/)
 
 在ES5没有类概念的时候，模拟类的几种常用的办法，其中构造函数法是最经典也是必会方法。通过在构造函数的Prototype对象上添加属性和方法来构造类。
 
