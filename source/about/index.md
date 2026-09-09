@@ -15,9 +15,6 @@ type: about
 
 > 2013 年开始从事前端工作，致力于前端技术的应用和传播。
 
-> 现就职于茄子快传。
-
-> QQ : 772930508
 > Blog : [http://webkong.cn](#), 2017 年 02 月更改为[https://blog.webkong.cn](https://blog.webkong.cn)
 
 **我的开源 GitBook**

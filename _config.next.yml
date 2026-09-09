@@ -163,7 +163,8 @@ gitalk:
   github_id: webkong
   repo: blog-gitment
   client_id: 54ecf778fa1a619ba5f7
-  client_secret: 7fc721167bf96eb27e9edc7307a50fa3a7d12d4a
+  # client_secret removed: Gitalk runs client-side; never ship the secret.
+  # Use a proxy_gateway + admin_token instead (see Gitalk docs).
   admin_user: webkong
   distraction_free_mode: true
   language: zh-CN

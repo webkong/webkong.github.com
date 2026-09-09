@@ -45,7 +45,7 @@ VPN>
 VPN> connect your.vpn.host:port
 connect your.vpn.host:port
   >> state: Connected
-  >> notice: Connected to vpn.ushareit.me.
+  >> notice: Connected to your.vpn.host.
   >> contacting host (your.vpn.host:port) for login information...
 ```
 
